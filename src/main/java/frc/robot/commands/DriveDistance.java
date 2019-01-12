@@ -13,10 +13,18 @@ import frc.robot.Robot;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class ExampleCommand extends Command {
-  public ExampleCommand() {
-    // Use requires() here to declare subsystem dependencies
-    //requires(Robot.m_subsystem);
+/*public class DriveDistance extends Command {
+  private double targetDistance = 0;
+  private double targetPosition = 0;
+  private double speed = -1;
+  public DriveDistance(double targetDistance) {
+    super("Rive " + targetDistance +
+      (Math.abs(targetDistance) == 1 ? " inch " : " inches ") + 
+      (targetDistance > 0 ? "forward" : "backward"));
+    requires(Robot.drivetrain);
+
+    this.targetDistance = targetDistance;
+    double targetRotations = targetDistance / DriveTrain.WHEEL_CIRCUMFERENCE;
   }
 
   // Called just before this Command runs the first time
@@ -46,3 +54,4 @@ public class ExampleCommand extends Command {
   protected void interrupted() {
   }
 }
+*/
