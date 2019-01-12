@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
+import frc.robot.commands.TankDriveWithXbox;
 //test
 public class Drivetrain extends Subsystem
 {
@@ -36,7 +37,7 @@ public class Drivetrain extends Subsystem
 
     @Override
     protected void initDefaultCommand() {
-      //setDefaultCommand(new TankDriveWithXbox());
+      setDefaultCommand(new TankDriveWithXbox());
 
     }
 
