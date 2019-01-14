@@ -16,10 +16,17 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  */
 public class OI {
   public static final int DRIVER_PORT = 0;
+
+  public static final int SHIFT_DOWN_BUTTON = 5; // Xbox left bumper button
+  public static final int SHIFT_UP_BUTTON = 6; // Xbox right bumper button
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
 
   XboxController Driver = new XboxController(DRIVER_PORT);
+
+  private Button shiftDownButton = new JoystickButton(driver, SHIFT_DOWN_BUTTON);
+  private Button shiftUpButton = new JoystickButton(driver, SHIFT_UP_BUTTON);
+
 
   public double getDriverLeftYAxis() {
     double rawLeftYAxis = Driver.getY(Hand.kLeft);

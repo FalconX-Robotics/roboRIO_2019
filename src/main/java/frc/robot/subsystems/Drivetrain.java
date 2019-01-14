@@ -17,6 +17,7 @@ public class Drivetrain extends Subsystem
     private WPI_TalonSRX rightFront = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_MOTOR);
     private WPI_TalonSRX rightRear = new WPI_TalonSRX(RobotMap.REAR_RIGHT_MOTOR);
     private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightFront, rightRear);
+   
 
     DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
