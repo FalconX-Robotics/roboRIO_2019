@@ -10,6 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
+import org.usfirst.frc.team6662.robot.commands.ShiftToHighGear;
+import org.usfirst.frc.team6662.robot.commands.ShiftToLowGear;
+
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -27,6 +31,10 @@ public class OI {
   private Button shiftDownButton = new JoystickButton(driver, SHIFT_DOWN_BUTTON);
   private Button shiftUpButton = new JoystickButton(driver, SHIFT_UP_BUTTON);
 
+  public OI() {
+		shiftDownButton.whenPressed(new ShiftToLowGear());
+		shiftUpButton.whenPressed(new ShiftToHighGear());
+  }
 
   public double getDriverLeftYAxis() {
     double rawLeftYAxis = Driver.getY(Hand.kLeft);
