@@ -25,15 +25,23 @@ public class OI {
   public static final int SHIFT_UP_BUTTON = 6; // Xbox right bumper button
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
+  public static final int GRAB_HATCH_PANEL_BUTTON = 3; // Xbox X button
+  public static final int RELEASE_HATCH_PANEL_BUTTON = 4; // Xbox Y button
 
   XboxController Driver = new XboxController(DRIVER_PORT);
 
   private Button shiftDownButton = new JoystickButton(driver, SHIFT_DOWN_BUTTON);
   private Button shiftUpButton = new JoystickButton(driver, SHIFT_UP_BUTTON);
+  private Button grabHatchButton = new JoyStickButton(driver, GRAB_HATCH_PANEL_BUTTON);
+  private Button releaseHatchButton = new JoyStickButton(driver, RELEASE_HATCH_PANEL_BUTTON);
 
   public OI() {
+
 		shiftDownButton.whenPressed(new ShiftToLowGear());
-		shiftUpButton.whenPressed(new ShiftToHighGear());
+    shiftUpButton.whenPressed(new ShiftToHighGear());
+    
+    grabHatchButton.whenPressed(new GetHatch(Robot.hatchPanelGrabber.hatchGrab, Robot.hatchPanelGrabber.hatchPush));
+    releaseHatchButton.whenPressed(new ReleaseHatch(Robot.hatchPanelGrabber.hatchGrab, Robot.hatchPanelGrabber.hatchPush));
   }
 
   public double getDriverLeftYAxis() {
