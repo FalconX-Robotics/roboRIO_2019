@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.TankDriveWithXbox;
 
@@ -19,7 +20,6 @@ public class Drivetrain extends Subsystem
     private WPI_TalonSRX rightRear = new WPI_TalonSRX(RobotMap.REAR_RIGHT_MOTOR);
     private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightFront, rightRear);
    
-
     DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
     public enum Gear {
@@ -32,6 +32,11 @@ public class Drivetrain extends Subsystem
     public Drivetrain() {
       super("Drivetrain");
       // Rear motor controllers follow front motor controllers
+      rightFront.setInverted(true);
+      rightRear.setInverted(true);
+      leftFront.setInverted(true);
+      leftRear.setInverted(true);
+
       leftRear.follow(leftFront);
       rightRear.follow(rightFront);
 
@@ -49,11 +54,11 @@ public class Drivetrain extends Subsystem
     public void shiftGear(Gear targetGear) {
       switch (targetGear) {
         case LOW:
-          shifter.set(DoubleSolenoid.Value.kReverse);
+          //shifter.set(DoubleSolenoid.Value.kReverse); what is "shifter"?
           shiftState = Gear.LOW;
           break;
         case HIGH:
-          shifter.set(DoubleSolenoid.Value.kForward);
+          //shifter.set(DoubleSolenoid.Value.kForward);
           shiftState = Gear.HIGH;
           break;
       }
@@ -67,7 +72,5 @@ public class Drivetrain extends Subsystem
     @Override
     protected void initDefaultCommand() {
       setDefaultCommand(new TankDriveWithXbox());
-
     }
-
 }

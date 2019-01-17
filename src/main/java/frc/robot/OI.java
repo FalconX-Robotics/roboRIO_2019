@@ -9,13 +9,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.ShiftToHighGear;
+import frc.robot.commands.ShiftToLowGear;
 
-import org.usfirst.frc.team6662.robot.commands.ShiftToHighGear;
-import org.usfirst.frc.team6662.robot.commands.ShiftToLowGear;
-
-import java.frc.robot.commands.OpenHatch;
-import java.frc.robot.commands.CloseHatch;
-import java.frc.robot.commands.LaunchHatch;
+import frc.robot.commands.OpenHatch;
+import frc.robot.commands.CloseHatch;
+import frc.robot.commands.LaunchPanel;
 
 
 /**
@@ -33,13 +34,13 @@ public class OI {
   public static final int CLOSE_HATCH_PANEL_BUTTON = 4; // Xbox Y button
   public static final int LAUNCH_HATCH_PANEL_BUTTON = 2; // Xbox B button
 
-  XboxController Driver = new XboxController(DRIVER_PORT);
+  XboxController driver = new XboxController(DRIVER_PORT);
 
   private Button shiftDownButton = new JoystickButton(driver, SHIFT_DOWN_BUTTON);
   private Button shiftUpButton = new JoystickButton(driver, SHIFT_UP_BUTTON);
-  private Button openHatchButton = new JoyStickButton(driver, OPEN_HATCH_PANEL_BUTTON);
-  private Button closeHatchButton = new JoyStickButton(driver, CLOSE_HATCH_PANEL_BUTTON);
-  private Button launchHatchButton = new JoyStickButton(driver, LAUNCH_HATCH_PANEL_BUTTON);
+  private Button openHatchButton = new JoystickButton(driver, OPEN_HATCH_PANEL_BUTTON);
+  private Button closeHatchButton = new JoystickButton(driver, CLOSE_HATCH_PANEL_BUTTON);
+  private Button launchHatchButton = new JoystickButton(driver, LAUNCH_HATCH_PANEL_BUTTON);
 
   public OI() {
 
@@ -48,18 +49,18 @@ public class OI {
     
     openHatchButton.whenPressed(new OpenHatch());
     closeHatchButton.whenPressed(new CloseHatch());
-    launchHatchButton.whenPressed(new LaunchHatch());
+    launchHatchButton.whenPressed(new LaunchPanel());
   }
 
   public double getDriverLeftYAxis() {
-    double rawLeftYAxis = Driver.getY(Hand.kLeft);
+    double rawLeftYAxis = driver.getY(Hand.kLeft);
 
     return deadband(rawLeftYAxis, XBOX_LEFT_Y_THRESHOLD);
 
   }
 
   public double getDriverRightYAxis() {
-    double rawRightYAxis = Driver.getY(Hand.kRight);
+    double rawRightYAxis = driver.getY(Hand.kRight);
 
     return deadband(rawRightYAxis, XBOX_RIGHT_Y_THRESHOLD);
 

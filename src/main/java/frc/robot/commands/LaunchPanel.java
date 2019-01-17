@@ -1,5 +1,6 @@
-package main.java.frc.robot.commands;
+package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class LaunchPanel extends CommandGroup {
@@ -13,7 +14,7 @@ public class LaunchPanel extends CommandGroup {
        addSequential(new WaitCommand(), 0.5);
        //Push solenoid out
        addSequential(new ToggleHatchGrabSolenoid(out));
-       //Wait 1
+       //Wait 0.5
        addSequential(new WaitCommand(), 0.5);
        //Push solenoid In
        addSequential(new ToggleHatchGrabSolenoid(in));

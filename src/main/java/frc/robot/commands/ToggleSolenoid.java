@@ -1,6 +1,6 @@
-package main.java.frc.robot.commands;
+package frc.robot.commands;
 
-import org.usfirst.frc.team6662.robot.Robot;
+import edu.wpi.first.wpilibj.command.Command;
 
 public class ToggleSolenoid extends Command {
     
