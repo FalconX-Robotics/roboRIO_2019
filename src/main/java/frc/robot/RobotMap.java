@@ -21,8 +21,6 @@ public class RobotMap {
 
   public static final int SHFTER_REVERSE = 0;
   public static final int SHIFTER_FORWARD = 1;
-  
-  public static final double OPEN_HATCH_DELAY = 1;
 
   public static final int HATCH_GRAB_1 = 1;
   public static final int HATCH_GRAB_2 = 2;

@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import org.usfirst.frc.team6662.robot.commands.ShiftToHighGear;
 import org.usfirst.frc.team6662.robot.commands.ShiftToLowGear;
 
+import java.frc.robot.commands.OpenHatch;
+import java.frc.robot.commands.CloseHatch;
+import java.frc.robot.commands.LaunchHatch;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -25,23 +29,26 @@ public class OI {
   public static final int SHIFT_UP_BUTTON = 6; // Xbox right bumper button
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
-  public static final int GRAB_HATCH_PANEL_BUTTON = 3; // Xbox X button
-  public static final int RELEASE_HATCH_PANEL_BUTTON = 4; // Xbox Y button
+  public static final int OPEN_HATCH_PANEL_BUTTON = 3; // Xbox X button
+  public static final int CLOSE_HATCH_PANEL_BUTTON = 4; // Xbox Y button
+  public static final int LAUNCH_HATCH_PANEL_BUTTON = 2; // Xbox B button
 
   XboxController Driver = new XboxController(DRIVER_PORT);
 
   private Button shiftDownButton = new JoystickButton(driver, SHIFT_DOWN_BUTTON);
   private Button shiftUpButton = new JoystickButton(driver, SHIFT_UP_BUTTON);
-  private Button grabHatchButton = new JoyStickButton(driver, GRAB_HATCH_PANEL_BUTTON);
-  private Button releaseHatchButton = new JoyStickButton(driver, RELEASE_HATCH_PANEL_BUTTON);
+  private Button openHatchButton = new JoyStickButton(driver, OPEN_HATCH_PANEL_BUTTON);
+  private Button closeHatchButton = new JoyStickButton(driver, CLOSE_HATCH_PANEL_BUTTON);
+  private Button launchHatchButton = new JoyStickButton(driver, LAUNCH_HATCH_PANEL_BUTTON);
 
   public OI() {
 
 		shiftDownButton.whenPressed(new ShiftToLowGear());
     shiftUpButton.whenPressed(new ShiftToHighGear());
     
-    grabHatchButton.whenPressed(new GetHatch(Robot.hatchPanelGrabber.hatchGrab, Robot.hatchPanelGrabber.hatchPush));
-    releaseHatchButton.whenPressed(new ReleaseHatch(Robot.hatchPanelGrabber.hatchGrab, Robot.hatchPanelGrabber.hatchPush));
+    openHatchButton.whenPressed(new OpenHatch());
+    closeHatchButton.whenPressed(new CloseHatch());
+    launchHatchButton.whenPressed(new LaunchHatch());
   }
 
   public double getDriverLeftYAxis() {
