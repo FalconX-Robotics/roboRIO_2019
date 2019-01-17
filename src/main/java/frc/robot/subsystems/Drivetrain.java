@@ -23,6 +23,11 @@ public class Drivetrain extends Subsystem
     public Drivetrain() {
       super("Drivetrain");
       // Rear motor controllers follow front motor controllers
+      rightFront.setInverted(true);
+      rightRear.setInverted(true);
+      leftFront.setInverted(true);
+      leftRear.setInverted(true);
+
       leftRear.follow(leftFront);
       rightRear.follow(rightFront);
 
