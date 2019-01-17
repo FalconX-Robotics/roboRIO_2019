@@ -12,11 +12,11 @@ public class LaunchPanel extends CommandGroup {
        //Wait 0.5
        addSequential(new WaitCommand(), 0.5);
        //Push solenoid out
-       addSequential(new ToggleHatchGrabSolenoid(out));
-       //Wait 1
+       addSequential(new ToggleHatchPushSolenoid(out));
+       //Wait 0.5
        addSequential(new WaitCommand(), 0.5);
        //Push solenoid In
-       addSequential(new ToggleHatchGrabSolenoid(in));
+       addSequential(new ToggleHatchPushSolenoid(in));
    }
 
 

@@ -29,16 +29,14 @@ public class OI {
   public static final int SHIFT_UP_BUTTON = 6; // Xbox right bumper button
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
-  public static final int OPEN_HATCH_PANEL_BUTTON = 3; // Xbox X button
-  public static final int CLOSE_HATCH_PANEL_BUTTON = 4; // Xbox Y button
-  public static final int LAUNCH_HATCH_PANEL_BUTTON = 2; // Xbox B button
+  public static final int TOGGLE_HATCH_PANEL_BUTTON = 3; // Xbox X button
+  public static final int LAUNCH_HATCH_PANEL_BUTTON = 4; // Xbox Y button
 
   XboxController Driver = new XboxController(DRIVER_PORT);
 
   private Button shiftDownButton = new JoystickButton(driver, SHIFT_DOWN_BUTTON);
   private Button shiftUpButton = new JoystickButton(driver, SHIFT_UP_BUTTON);
-  private Button openHatchButton = new JoyStickButton(driver, OPEN_HATCH_PANEL_BUTTON);
-  private Button closeHatchButton = new JoyStickButton(driver, CLOSE_HATCH_PANEL_BUTTON);
+  private Button toggleHatchButton = new JoyStickButton(driver, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoyStickButton(driver, LAUNCH_HATCH_PANEL_BUTTON);
 
   public OI() {
@@ -46,8 +44,7 @@ public class OI {
 		shiftDownButton.whenPressed(new ShiftToLowGear());
     shiftUpButton.whenPressed(new ShiftToHighGear());
     
-    openHatchButton.whenPressed(new OpenHatch());
-    closeHatchButton.whenPressed(new CloseHatch());
+    toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchHatch());
   }
 

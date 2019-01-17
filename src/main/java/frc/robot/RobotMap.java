@@ -22,9 +22,9 @@ public class RobotMap {
   public static final int SHFTER_REVERSE = 0;
   public static final int SHIFTER_FORWARD = 1;
 
-  public static final int HATCH_GRAB_1 = 1;
-  public static final int HATCH_GRAB_2 = 2;
+  public static final int HATCH_GRAB_1 = 2;
+  public static final int HATCH_GRAB_2 = 3;
 
-  public static final int HATCH_PUSH_1 = 3;
-  public static final int HATCH_PUSH_2 = 4;
+  public static final int HATCH_PUSH_1 = 4;
+  public static final int HATCH_PUSH_2 = 5;
 }

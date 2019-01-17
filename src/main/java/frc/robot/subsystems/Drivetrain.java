@@ -22,6 +22,8 @@ public class Drivetrain extends Subsystem
 
     DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
+	  private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
+
     public enum Gear {
       LOW, HIGH
     }
