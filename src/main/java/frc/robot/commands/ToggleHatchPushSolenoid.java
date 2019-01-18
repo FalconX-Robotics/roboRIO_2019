@@ -1,18 +1,19 @@
-package main.java.frc.robot.commands;
+package frc.robot.commands;
 
-import org.usfirst.frc.team6662.robot.Robot;
-import edu.wpi.first.wpilibj.command;
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.command.Command;
 
 public class ToggleHatchPushSolenoid extends Command {
   private DoubleSolenoid.Value toggleType;
-   public ToggleHatchPushSolenoid() {
+   public ToggleHatchPushSolenoid(DoubleSolenoid.Value toggleType) {
       super("HatchPushSolenoid");
       this.toggleType = toggleType;
   }
 
   @Override
   protected void execute() {
-      Robot.HatchPanelGrabber.toggleHatchPushSolenoid(toggleType);
+      Robot.hatchPanelGrabber.toggleHatchPushSolenoid(toggleType);
   }
 
   @Override

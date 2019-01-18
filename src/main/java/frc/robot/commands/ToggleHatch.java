@@ -1,19 +1,26 @@
-package main.java.frc.robot.commands;
+package frc.robot.commands;
 
-public class ToggleHatch extends InstantCommand {
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
+
+public class ToggleHatch extends CommandGroup {
+    private boolean solenoidState = false;
 
     public ToggleHatch() {
-        super("ToggleHatch");
-    }
+        Value currentGrabSolenoidState = Robot.hatchPanelGrabber.getHatchGrabSolenoidValue();
 
-    public void execute() {
-        boolean currentGrabSolenoidState = Robot.hatchPanelGrabber.getHatchGrabSolenoidValue();
-        if (currentGrabSolenoidState) {
-            OpenHatch();
+        if (currentGrabSolenoidState == Value.kForward) {
+            solenoidState = true;
+        }
+        
+        if (solenoidState) {
+            addSequential(new OpenHatch());
+            solenoidState = false;
         }
          else 
         {
-            CloseHatch();        
-        }        
+            addSequential(new CloseHatch());        
+        }  
     }
 }
