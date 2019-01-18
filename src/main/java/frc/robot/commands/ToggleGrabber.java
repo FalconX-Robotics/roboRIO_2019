@@ -5,18 +5,18 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ToggleHatchPushSolenoid extends Command {
+public class ToggleGrabber extends Command {
   private DoubleSolenoid.Value toggleType;
 
-   public ToggleHatchPushSolenoid(DoubleSolenoid.Value toggleType) {
-      super("HatchPushSolenoid");
+   public ToggleGrabber(DoubleSolenoid.Value toggleType) {
+      super("Toggle hatch grabber");
       requires(Robot.hatchPanelGrabber);
       this.toggleType = toggleType;
   }
 
   @Override
   protected void execute() {
-      Robot.hatchPanelGrabber.toggleHatchPushSolenoid(toggleType);
+      Robot.hatchPanelGrabber.toggleGrabber(toggleType);
   }
 
   @Override

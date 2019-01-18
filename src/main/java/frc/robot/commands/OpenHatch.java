@@ -9,9 +9,9 @@ public class OpenHatch extends CommandGroup {
 
  public OpenHatch() {
      //Grab solenoid in
-     addSequential(new ToggleHatchGrabSolenoid(in));
+     addSequential(new ToggleGrabber(in));
      //Push solenoid in
-     addSequential(new ToggleHatchPushSolenoid(in));
+     addSequential(new TogglePusher(in));
  }
 
 }

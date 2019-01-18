@@ -9,9 +9,9 @@ public class CloseHatch extends CommandGroup {
 
  public CloseHatch() {
      //Grab solenoid out
-     addSequential(new ToggleHatchGrabSolenoid(out));
+     addSequential(new ToggleGrabber(out));
      //Push solenoid in
-     addSequential(new ToggleHatchPushSolenoid(in));
+     addSequential(new TogglePusher(in));
  }
 
 }

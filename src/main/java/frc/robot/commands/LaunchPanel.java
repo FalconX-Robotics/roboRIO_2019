@@ -9,15 +9,15 @@ public class LaunchPanel extends CommandGroup {
 
    public LaunchPanel() {
        //Grab solenoid in
-       addSequential(new ToggleHatchGrabSolenoid(in));
+       addSequential(new ToggleGrabber(in));
        //Wait 0.5
        addSequential(new WaitCommand(), 0.5);
        //Push solenoid out
-       addSequential(new ToggleHatchGrabSolenoid(out));
+       addSequential(new ToggleGrabber(out));
        //Wait 0.5
        addSequential(new WaitCommand(), 0.5);
        //Push solenoid In
-       addSequential(new ToggleHatchGrabSolenoid(in));
+       addSequential(new ToggleGrabber(in));
    }
 
 
