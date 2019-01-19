@@ -3,14 +3,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ToggleHatch extends CommandGroup {
-    private static boolean solenoidState = false;
+    private static boolean solenoidOpen = false;
 
     public ToggleHatch() {
-        solenoidState = !solenoidState;
+        solenoidOpen = !solenoidOpen; //Switch boolean
 
-        if (solenoidState) {
+        if (solenoidOpen) {
             addSequential(new OpenHatch());
-            solenoidState = false;
         }
          else 
         {

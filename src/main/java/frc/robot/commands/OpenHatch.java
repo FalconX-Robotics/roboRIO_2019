@@ -8,10 +8,10 @@ public class OpenHatch extends CommandGroup {
  private static DoubleSolenoid.Value in = DoubleSolenoid.Value.kReverse;
 
  public OpenHatch() {
-     //Grab solenoid in
-     addSequential(new ToggleHatchGrabSolenoid(in));
      //Push solenoid in
      addSequential(new ToggleHatchPushSolenoid(in));
+     //Grab solenoid in
+     addSequential(new ToggleHatchGrabSolenoid(in));
  }
 
 }

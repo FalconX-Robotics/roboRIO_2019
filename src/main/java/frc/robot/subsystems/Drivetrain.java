@@ -2,13 +2,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
-import frc.robot.commands.ShiftGear;
+//import frc.robot.commands.ShiftGear;
 import frc.robot.commands.TankDriveWithXbox;
 
 public class Drivetrain extends Subsystem
@@ -21,17 +22,17 @@ public class Drivetrain extends Subsystem
     private WPI_TalonSRX rightRear = new WPI_TalonSRX(RobotMap.REAR_RIGHT_MOTOR);
     private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightFront, rightRear);
    
-
+    private Compressor compressor = new Compressor(RobotMap.COMPRESSOR);
     DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-    private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
+    //private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
     public Drivetrain() {
       super("Drivetrain");
       // Rear motor controllers follow front motor controllers
       leftRear.follow(leftFront);
       rightRear.follow(rightFront);
-      shifterBackward();
+      //shifterBackward();
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) 
@@ -39,7 +40,7 @@ public class Drivetrain extends Subsystem
 		drivetrain.tankDrive(leftSpeed, rightSpeed);
     }
 
-    public void shifterForward()
+    /*public void shifterForward()
     {
         shifter.set(Value.kForward);
     }
@@ -48,6 +49,7 @@ public class Drivetrain extends Subsystem
     {
         shifter.set(Value.kReverse);
     }
+    */
   
 
     @Override

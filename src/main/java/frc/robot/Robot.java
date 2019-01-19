@@ -25,8 +25,8 @@ import frc.robot.subsystems.HatchPanelGrabber;
  */
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
-  public static OI oi;
   public static HatchPanelGrabber hatchPanelGrabber;
+  public static OI oi;
   //public static Climber climber;
 
   Command m_autonomousCommand;
@@ -39,8 +39,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
-    oi = new OI();
     hatchPanelGrabber = new HatchPanelGrabber();
+    oi = new OI();
     //climber = new Climber();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -114,10 +114,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    Scheduler.getInstance().run();
     }
-  }
 
   /**
    * This function is called periodically during operator control.
