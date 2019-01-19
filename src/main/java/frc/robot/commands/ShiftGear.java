@@ -1,32 +1,28 @@
-package frc.robot.commands;
+// package frc.robot.commands;
 
-import frc.robot.subsystems.Drivetrain.Gear;
+// import edu.wpi.first.wpilibj.command.InstantCommand;
+// import frc.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
+// public class ShiftGear extends InstantCommand {
+//     private static boolean shiftState = false;
+    
 
-public class ShiftGear extends Command {
-    private Gear targetGear = Gear.LOW;
+//     public ShiftGear() {
+//         super("Shift Gear");
+//         requires(Robot.drivetrain);
+//     }
+    
 
-    public ShiftGear(Gear targetGear) {
-        super("Shift to " + targetGear.toString() + " gear");
-        requires(Robot.drivetrain);
+//     public void execute() {
+//         shiftState = !shiftState;
+        
+//         if (shiftState) {
+//             Robot.drivetrain.shifterForward();
+            
+//         }   
 
-        this.targetGear = targetGear;
-    }
-
-    @Override
-    protected void execute() {
-        Robot.drivetrain.shiftGear(targetGear);
-
-        SmartDashboard.putString("Gear", Robot.drivetrain.getShiftStateName());
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
-
-}
+//         else {
+//             Robot.drivetrain.shifterBackward();
+//         }
+//     }
+// }
