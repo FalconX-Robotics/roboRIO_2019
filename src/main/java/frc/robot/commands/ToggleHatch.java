@@ -1,24 +1,33 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
-public class ToggleHatch extends CommandGroup {
-    private static boolean solenoidOpen = false;
+public class ToggleHatch extends Command {
+    private static boolean isOpen = false;
 
     public ToggleHatch() {
-        solenoidOpen = !solenoidOpen; //Switch boolean
+        super("ToggleHatch");
+    }
 
-        if (solenoidOpen) {
-            SmartDashboard.putBoolean("ToggleHatch", solenoidOpen);
-            addParallel(new OpenHatch());
-            return;
-        }
-         else 
-        {
-            SmartDashboard.putBoolean("ToggleHatch", solenoidOpen);
-            addParallel(new CloseHatch());
-            return;    
+    @Override
+    protected void initialize() {
+        setTimeout(1);
+        isOpen = !isOpen; //Switch boolean
+
+
+        if (isOpen) {
+            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse); 
+            Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward); 
+        } else {
+            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse); 
+            Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse); 
         }  
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return isTimedOut();
     }
 }

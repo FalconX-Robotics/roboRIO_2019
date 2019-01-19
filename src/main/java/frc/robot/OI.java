@@ -11,11 +11,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
-import frc.robot.commands.OpenHatch;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.commands.ShiftGear;
 import frc.robot.commands.ToggleHatch;
-import frc.robot.commands.CloseHatch;
 import frc.robot.commands.LaunchPanel;
 
 
@@ -44,12 +42,12 @@ public class OI {
   //private Button climberPartTwoButton = new JoystickButton(Driver, CLIMBER_PART_TWO_BUTTON);
 
   public OI() {
-
 		//shiftGearButton.whenPressed(new ShiftGear());
-    toggleHatchButton.whenPressed(new ToggleHatch());
-    launchHatchButton.whenPressed(new LaunchPanel());
+    toggleHatchButton.whenReleased(new ToggleHatch());
+    launchHatchButton.whenReleased(new LaunchPanel());
     //climberPartOneButton.whenPressed(new ClimberPartOne());
     //climberPartTwoButton.whenPressed(new EnableClimberBackSolenoid());
+    SmartDashboard.putNumber("TestToggleHatch", 999);
   }
 
   public double getDriverLeftYAxis() {
