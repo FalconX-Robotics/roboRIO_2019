@@ -8,6 +8,7 @@ public class ToggleHatchGrabSolenoid extends Command {
   private DoubleSolenoid.Value toggleType;
    public ToggleHatchGrabSolenoid(DoubleSolenoid.Value toggleType) {
       super("HatchGrabSolenoid");
+      requires(Robot.hatchPanelGrabber);
       this.toggleType = toggleType;
   }
 

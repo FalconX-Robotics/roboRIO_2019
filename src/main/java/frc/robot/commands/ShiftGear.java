@@ -9,6 +9,7 @@ public class ShiftGear extends InstantCommand {
 
     public ShiftGear() {
         super("Shift Gear");
+        requires(Robot.drivetrain);
     }
     
 
