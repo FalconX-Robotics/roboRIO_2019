@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.Drivetrain;
+//import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.HatchPanelGrabber;
 
 /**
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static OI oi;
   public static HatchPanelGrabber hatchPanelGrabber;
+  //public static Climber climber;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -39,6 +41,7 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     oi = new OI();
     hatchPanelGrabber = new HatchPanelGrabber();
+    //climber = new Climber();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }

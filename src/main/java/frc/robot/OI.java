@@ -31,6 +31,8 @@ public class OI {
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
   public static final int TOGGLE_HATCH_PANEL_BUTTON = 3; // Xbox X button
   public static final int LAUNCH_HATCH_PANEL_BUTTON = 4; // Xbox Y button
+  public static final int CLIMBER_PART_ONE_BUTTON = 5; // Xbox X button
+  public static final int CLIMBER_PART_TWO_BUTTON = 6; // Xbox Y button
 
   XboxController Driver = new XboxController(DRIVER_PORT);
 
@@ -38,11 +40,16 @@ public class OI {
   private Button toggleHatchButton = new JoystickButton(Driver, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoystickButton(Driver, LAUNCH_HATCH_PANEL_BUTTON);
 
+  //private Button climberPartOneButton = new JoystickButton(Driver, CLIMBER_PART_ONE_BUTTON);
+  //private Button climberPartTwoButton = new JoystickButton(Driver, CLIMBER_PART_TWO_BUTTON);
+
   public OI() {
 
 		shiftGearButton.whenPressed(new ShiftGear());
     toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchPanel());
+    //climberPartOneButton.whenPressed(new ClimberPartOne());
+    //climberPartTwoButton.whenPressed(new EnableClimberBackSolenoid());
   }
 
   public double getDriverLeftYAxis() {
