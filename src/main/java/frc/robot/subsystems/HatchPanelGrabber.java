@@ -10,13 +10,17 @@ public class HatchPanelGrabber extends Subsystem {
 
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
+        hatchGrabSolenoid.set(Value.kOff);
+        hatchPushSolenoid.set(Value.kOff);
     }
     
     public void toggleHatchGrabSolenoid(Value value) {
+        hatchGrabSolenoid.set(Value.kOff);
         hatchGrabSolenoid.set(value);
     }
 
     public void toggleHatchPushSolenoid(Value value) {
+        hatchGrabSolenoid.set(Value.kOff);
         hatchPushSolenoid.set(value);
     }
 

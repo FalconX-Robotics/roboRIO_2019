@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ToggleHatch extends CommandGroup {
     private static boolean solenoidOpen = false;
@@ -9,11 +10,15 @@ public class ToggleHatch extends CommandGroup {
         solenoidOpen = !solenoidOpen; //Switch boolean
 
         if (solenoidOpen) {
-            addSequential(new OpenHatch());
+            SmartDashboard.putBoolean("ToggleHatch", solenoidOpen);
+            addParallel(new OpenHatch());
+            return;
         }
          else 
         {
-            addSequential(new CloseHatch());        
+            SmartDashboard.putBoolean("ToggleHatch", solenoidOpen);
+            addParallel(new CloseHatch());
+            return;    
         }  
     }
 }

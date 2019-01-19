@@ -13,13 +13,18 @@ public class ToggleHatchGrabSolenoid extends Command {
   }
 
   @Override
+  protected void initialize() {
+    setTimeout(0.5);
+  }
+
+  @Override
   protected void execute() {
       Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(toggleType);
   }
 
   @Override
   protected boolean isFinished() {
-      return true;
-  }
+      return isTimedOut();
 
+}
 }
