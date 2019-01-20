@@ -2,33 +2,45 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class HatchPanelGrabber extends Subsystem {
-    //solenoid that controls the center cylinder
-    private DoubleSolenoid hatchGrabber = new DoubleSolenoid(RobotMap.HATCH_GRAB_MODULE_NUM, RobotMap.HATCH_GRAB_IN, RobotMap.HATCH_GRAB_OUT);
-    //the two outer solenoids that push the panel
-    private DoubleSolenoid hatchPusher = new DoubleSolenoid(RobotMap.HATCH_PUSH_MODULE_NUM, RobotMap.HATCH_PUSH_IN, RobotMap.HATCH_PUSH_OUT);
+    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(RobotMap.HATCH_GRAB_FORWARD, RobotMap.HATCH_GRAB_REVERSE); // Middle piston
+    private DoubleSolenoid hatchPushSolenoid = new DoubleSolenoid(RobotMap.HATCH_PUSH_FORWARD, RobotMap.HATCH_PUSH_REVERSE); // Outside pistons
 
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
-        
+        //hatchGrabSolenoid.set(Value.kOff);
+        //hatchPushSolenoid.set(Value.kOff);
     }
     
-    public void toggleGrabber(Value value) {
-        hatchGrabber.set(value);
+    public void toggleHatchGrabSolenoid(Value value) {
+        if (value == Value.kForward) {
+            SmartDashboard.putBoolean("GrabSoleniod", true);
+        } else {
+            SmartDashboard.putBoolean("GrabSoleniod", false);
+        }
+        hatchGrabSolenoid.set(Value.kOff);
+        hatchGrabSolenoid.set(value);
     }
 
-    public void togglePusher(Value value) {
-        hatchPusher.set(value);
+    public void toggleHatchPushSolenoid(Value value) {
+        if (value == Value.kForward) {
+            SmartDashboard.putBoolean("PushSolenoid", true);
+        } else {
+            SmartDashboard.putBoolean("PushSolenoid", false);
+        }
+        hatchGrabSolenoid.set(Value.kOff);
+        hatchPushSolenoid.set(value);
     }
 
-    public Value getGrabberState(){
-        return hatchGrabber.get();
+    public Value getHatchGrabSolenoidValue() {
+        return hatchGrabSolenoid.get();
     }
 
-    public Value getPusherState(){
-        return hatchPusher.get();
+    public Value getHatchPushSolenoidValue() {
+        return hatchPushSolenoid.get();
     }
 
     @Override
