@@ -13,7 +13,6 @@ public class ToggleHatch extends Command {
 
     @Override
     protected void initialize() {
-        setTimeout(1);
         isOpen = !isOpen; //Switch boolean
 
 
@@ -28,6 +27,6 @@ public class ToggleHatch extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return true;
     }
 }

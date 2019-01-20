@@ -29,9 +29,9 @@ public class LaunchPanel extends Command {
    protected void initialize() {
         try {
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(out);
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.MILLISECONDS.sleep(300);
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(out);
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.MILLISECONDS.sleep(100);
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(in);
         } catch (InterruptedException e) {
 
