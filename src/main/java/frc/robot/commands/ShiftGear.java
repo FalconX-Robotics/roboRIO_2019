@@ -1,32 +1,32 @@
-package frc.robot.commands;
+// package frc.robot.commands;
 
-import frc.robot.subsystems.Drivetrain.Gear;
+// import frc.robot.subsystems.Drivetrain.Gear;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
+// import edu.wpi.first.wpilibj.command.Command;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import frc.robot.Robot;
 
-public class ShiftGear extends Command {
-    private Gear targetGear = Gear.LOW;
+// public class ShiftGear extends Command {
+//     private Gear targetGear = Gear.LOW;
 
-    public ShiftGear(Gear targetGear) {
-        super("Shift to " + targetGear.toString() + " gear");
-        requires(Robot.drivetrain);
+//     public ShiftGear(Gear targetGear) {
+//         super("Shift to " + targetGear.toString() + " gear");
+//         requires(Robot.drivetrain);
 
-        this.targetGear = targetGear;
-    }
+//         this.targetGear = targetGear;
+//     }
 
-    @Override
-    protected void execute() {
-        Robot.drivetrain.shiftGear(targetGear);
+//     @Override
+//     protected void execute() {
+//         Robot.drivetrain.shiftGear(targetGear);
 
-        SmartDashboard.putString("Gear", Robot.drivetrain.getShiftStateName());
-    }
+//         SmartDashboard.putString("Gear", Robot.drivetrain.getShiftStateName());
+//     }
 
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
+//     @Override
+//     protected boolean isFinished() {
+//         return true;
+//     }
 
 
-}
+// }

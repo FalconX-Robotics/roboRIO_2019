@@ -1,17 +1,18 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class CloseHatch extends CommandGroup {
- private static DoubleSolenoid.Value out = DoubleSolenoid.Value.kForward;
- private static DoubleSolenoid.Value in = DoubleSolenoid.Value.kReverse;
+
+ private static Value out = Value.kForward;
+ private static Value in = Value.kReverse;
 
  public CloseHatch() {
-     //Grab solenoid out
-     addSequential(new ToggleGrabber(out));
-     //Push solenoid in
+     //retract pushers
      addSequential(new TogglePusher(in));
+     //close grabbers
+     addSequential(new ToggleGrabber(out));
  }
 
 }

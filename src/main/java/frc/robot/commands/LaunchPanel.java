@@ -8,15 +8,15 @@ public class LaunchPanel extends CommandGroup {
    private static DoubleSolenoid.Value in = DoubleSolenoid.Value.kReverse;
 
    public LaunchPanel() {
-       //Grab solenoid in
+       //Grabber open
        addSequential(new ToggleGrabber(in));
        //Wait 0.5
        addSequential(new WaitCommand(), 0.5);
-       //Push solenoid out
+       //Pusher extend
        addSequential(new ToggleGrabber(out));
        //Wait 0.5
        addSequential(new WaitCommand(), 0.5);
-       //Push solenoid In
+       //Pusher retract
        addSequential(new ToggleGrabber(in));
    }
 
