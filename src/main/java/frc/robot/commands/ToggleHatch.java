@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class ToggleHatch extends Command {
-    private static boolean isOpen = false;
+    //private static boolean isOpen = false;
 
     public ToggleHatch() {
         super("ToggleHatch");
@@ -13,11 +13,9 @@ public class ToggleHatch extends Command {
 
     @Override
     protected void initialize() {
-        setTimeout(1);
-        isOpen = !isOpen; //Switch boolean
+        //isOpen = !isOpen;
 
-
-        if (isOpen) {
+        if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse) {
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse); 
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward); 
         } else {
@@ -28,6 +26,6 @@ public class ToggleHatch extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return true;
     }
 }
