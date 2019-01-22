@@ -1,28 +1,27 @@
-// package frc.robot.commands;
+package frc.robot.commands;
 
-// import edu.wpi.first.wpilibj.command.InstantCommand;
-// import frc.robot.Robot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
-// public class ShiftGear extends InstantCommand {
-//     private static boolean shiftState = false;
-    
+public class ShiftGear extends InstantCommand {
+    private Value toShift;
 
-//     public ShiftGear() {
-//         super("Shift Gear");
-//         requires(Robot.drivetrain);
-//     }
-    
+    public ShiftGear(Value toShift) {
+        super("ShiftGear");
+        this.toShift = toShift;
+    }
 
-//     public void execute() {
-//         shiftState = !shiftState;
+    @Override
+    public void execute() {
         
-//         if (shiftState) {
-//             Robot.drivetrain.shifterForward();
-            
-//         }   
-
-//         else {
-//             Robot.drivetrain.shifterBackward();
-//         }
-//     }
-// }
+        if (toShift == Value.kReverse) {
+            Robot.drivetrain.shifterForward();
+            SmartDashboard.putString("Gear", "High");
+        } else {
+            Robot.drivetrain.shifterBackward();
+            SmartDashboard.putString("Gear", "Low");
+        }
+    }
+}

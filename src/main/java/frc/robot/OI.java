@@ -11,11 +11,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import frc.robot.commands.ShiftGear;
 import frc.robot.commands.ToggleHatch;
+import frc.robot.commands.InitializeClimber;
 import frc.robot.commands.LaunchPanel;
-
+import frc.robot.commands.ToggleGear;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -24,48 +23,54 @@ import frc.robot.commands.LaunchPanel;
 public class OI {
   public static final int DRIVER_PORT = 0;
 
-  //public static final int SHIFT_GEAR_BUTTON = 2; // Xbox B button
+  public static final int SHIFT_GEAR_BUTTON = 2; // Xbox B button
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
+  public static final double TRIGGER_THRESHOLD = 0.1;
   public static final int TOGGLE_HATCH_PANEL_BUTTON = 3; // Xbox X button
   public static final int LAUNCH_HATCH_PANEL_BUTTON = 4; // Xbox Y button
-  public static final int CLIMBER_PART_ONE_BUTTON = 5; // Xbox X button
-  public static final int CLIMBER_PART_TWO_BUTTON = 6; // Xbox Y button
+  public static final int CLIMBER_INITIALIZE_BUTTON = 5; // Xbox X button
 
   XboxController Driver = new XboxController(DRIVER_PORT);
 
-  //private Button shiftGearButton = new JoystickButton(Driver, SHIFT_GEAR_BUTTON);
+  private Button shiftGearButton = new JoystickButton(Driver, SHIFT_GEAR_BUTTON);
   private Button toggleHatchButton = new JoystickButton(Driver, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoystickButton(Driver, LAUNCH_HATCH_PANEL_BUTTON);
-
-  //private Button climberPartOneButton = new JoystickButton(Driver, CLIMBER_PART_ONE_BUTTON);
-  //private Button climberPartTwoButton = new JoystickButton(Driver, CLIMBER_PART_TWO_BUTTON);
+  private Button initializeClimberButton = new JoystickButton(Driver, CLIMBER_INITIALIZE_BUTTON);
 
   public OI() {
-		//shiftGearButton.whenPressed(new ShiftGear());
-    toggleHatchButton.whenReleased(new ToggleHatch());
-    launchHatchButton.whenReleased(new LaunchPanel());
-    //climberPartOneButton.whenPressed(new ClimberPartOne());
-    //climberPartTwoButton.whenPressed(new EnableClimberBackSolenoid());
-    SmartDashboard.putNumber("TestToggleHatch", 999);
+    shiftGearButton.whenPressed(new ToggleGear());
+    toggleHatchButton.whenPressed(new ToggleHatch());
+    launchHatchButton.whenPressed(new LaunchPanel());
+    initializeClimberButton.whenPressed(new InitializeClimber());
+  }
+
+  public double getDriverLeftTriggerAxis() {
+    double triggerLeftAxis = Driver.getTriggerAxis(Hand.kLeft);
+
+    return deadband(triggerLeftAxis, TRIGGER_THRESHOLD);
+  }
+
+  public double getDriverRightTriggerAxis() {
+    double triggerRightAxis = Driver.getTriggerAxis(Hand.kRight);
+
+    return deadband(triggerRightAxis, TRIGGER_THRESHOLD);
   }
 
   public double getDriverLeftYAxis() {
     double rawLeftYAxis = Driver.getY(Hand.kLeft);
 
     return deadband(rawLeftYAxis, XBOX_LEFT_Y_THRESHOLD);
-
   }
 
   public double getDriverRightYAxis() {
     double rawRightYAxis = Driver.getY(Hand.kRight);
 
     return deadband(rawRightYAxis, XBOX_RIGHT_Y_THRESHOLD);
-
   }
 
   public double deadband(double input, double threshold) {
     return Math.abs(input) <= Math.abs(threshold) ? 0 : input;
   }
-  
+
 }

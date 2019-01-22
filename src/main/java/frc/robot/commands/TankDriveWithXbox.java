@@ -5,7 +5,7 @@ import frc.robot.Robot;
 
 public class TankDriveWithXbox extends Command {
     public TankDriveWithXbox() {
-        super ("Tank drive with Xbox Controller");
+        super("Tank drive with Xbox Controller");
         requires(Robot.drivetrain);
     }
 
@@ -14,8 +14,8 @@ public class TankDriveWithXbox extends Command {
         double leftSpeed = Robot.oi.getDriverLeftYAxis();
         double rightSpeed = Robot.oi.getDriverRightYAxis();
 
-        Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
-        
+        Robot.drivetrain.tankDrive(rightSpeed, leftSpeed); // swapped control sticks
+
     }
 
     @Override
