@@ -14,7 +14,7 @@ public class TankDriveWithXbox extends Command {
         double leftSpeed = Robot.oi.getDriverLeftYAxis();
         double rightSpeed = Robot.oi.getDriverRightYAxis();
 
-        Robot.drivetrain.tankDrive(rightSpeed, leftSpeed); // swapped control sticks
+        Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
 
     }
 
