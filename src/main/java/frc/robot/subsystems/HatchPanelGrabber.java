@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class HatchPanelGrabber extends Subsystem {
@@ -15,6 +16,35 @@ public class HatchPanelGrabber extends Subsystem {
         //hatchPushSolenoid.set(Value.kOff);
     }
     
+    public enum hatchPanelState
+    {  
+        OPENED, LAUNCHING, CLOSED, INVALID;
+
+        static hatchPanelState currentState = CLOSED;
+
+        public static hatchPanelState checkState() {
+            hatchPanelState state = INVALID;
+            
+            //check if both is close
+            //check if both is open
+            //check if push is open, grab is close
+            //check if push is close, grab is open
+            if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kForward && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kReverse) {
+                state = CLOSED;
+            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kForward) {
+                state = LAUNCHING;
+            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kReverse) {
+                state = OPENED;
+            }
+
+            return state;
+        }
+
+        public static hatchPanelState get(){
+            return currentState;
+        }
+    }
+
     public void toggleHatchGrabSolenoid(Value value) {
         if (value == Value.kForward) {
             SmartDashboard.putBoolean("GrabSoleniod", true);
