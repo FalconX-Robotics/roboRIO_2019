@@ -30,11 +30,14 @@ public class RobotMap {
 
   public static final int FRONT_FORWARD_CLIMB_SOLENOID = 6;
   public static final int FRONT_REVERSE_CLIMB_SOLENOID = 7;
-  
+
   public static final int BACK_FORWARD_CLIMB_SOLENOID = 7;
   public static final int BACK_REVERSE_CLIMB_SOLENOID = 7;
 
   public static final int CLIMBER_MOTOR = 4;
 
   public static final int COMPRESSOR = 0;
+
+  public static final int encoderChannelA = 0;
+  public static final int encoderChannelB = 1;
 }

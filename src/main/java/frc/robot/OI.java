@@ -12,8 +12,11 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.ToggleHatch;
+import frc.robot.commands.ChangeDirection;
 import frc.robot.commands.InitializeClimber;
 import frc.robot.commands.LaunchPanel;
+import frc.robot.commands.ToggleBackClimberSolenoid;
+import frc.robot.commands.ToggleFrontClimberSolenoid;
 import frc.robot.commands.ToggleGear;
 
 /**
@@ -21,50 +24,71 @@ import frc.robot.commands.ToggleGear;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  public static final int DRIVER_PORT = 0;
+  public static final int DRIVER_PORT_ONE = 0;
+  public static final int DRIVER_PORT_TWO = 1;
 
+  // Driver One
   public static final int SHIFT_GEAR_BUTTON = 2; // Xbox B button
+  public static final int CHANGE_ROBOT_DIRECTION_BUTTON = 1; // Xbox A button
+
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
   public static final double TRIGGER_THRESHOLD = 0.1;
+
+  public static final int CLIMBER_INITIALIZE_BUTTON = 4; // Xbox Y button
+  public static final int CLIMBER_FRONT_BUTTON = 8; // Xbox Start button
+  public static final int CLIMBER_BACK_BUTTON = 7; // Xbox Select button
+  // Driver Two
   public static final int TOGGLE_HATCH_PANEL_BUTTON = 3; // Xbox X button
   public static final int LAUNCH_HATCH_PANEL_BUTTON = 4; // Xbox Y button
-  public static final int CLIMBER_INITIALIZE_BUTTON = 5; // Xbox X button
 
-  XboxController Driver = new XboxController(DRIVER_PORT);
+  XboxController driverOne = new XboxController(DRIVER_PORT_ONE);
+  XboxController driverTwo = new XboxController(DRIVER_PORT_TWO);
 
-  private Button shiftGearButton = new JoystickButton(Driver, SHIFT_GEAR_BUTTON);
-  private Button toggleHatchButton = new JoystickButton(Driver, TOGGLE_HATCH_PANEL_BUTTON);
-  private Button launchHatchButton = new JoystickButton(Driver, LAUNCH_HATCH_PANEL_BUTTON);
-  private Button initializeClimberButton = new JoystickButton(Driver, CLIMBER_INITIALIZE_BUTTON);
+  // Climber (Driver One)
+  private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
+  private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
+  // Hatch (Driver Two)
+  private Button toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
+  private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
+  // Drivetrain (Driver One)
+  private Button shiftGearButton = new JoystickButton(driverOne, SHIFT_GEAR_BUTTON);
+  private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
+  private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
   public OI() {
-    shiftGearButton.whenPressed(new ToggleGear());
+    // Climber
+    climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
+    climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
+    initializeClimberButton.whenPressed(new InitializeClimber());
+    // Hatch
     toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchPanel());
-    initializeClimberButton.whenPressed(new InitializeClimber());
+    // Drivetrain
+    shiftGearButton.whenPressed(new ToggleGear());
+    changeRobotDirectionButton.whenPressed(new ChangeDirection());
   }
 
   public double getDriverLeftTriggerAxis() {
-    double triggerLeftAxis = Driver.getTriggerAxis(Hand.kLeft);
+    double triggerLeftAxis = driverOne.getTriggerAxis(Hand.kLeft);
 
     return deadband(triggerLeftAxis, TRIGGER_THRESHOLD);
   }
 
   public double getDriverRightTriggerAxis() {
-    double triggerRightAxis = Driver.getTriggerAxis(Hand.kRight);
+    double triggerRightAxis = driverOne.getTriggerAxis(Hand.kRight);
 
     return deadband(triggerRightAxis, TRIGGER_THRESHOLD);
   }
 
   public double getDriverLeftYAxis() {
-    double rawLeftYAxis = Driver.getY(Hand.kLeft);
+    double rawLeftYAxis = driverOne.getY(Hand.kLeft);
 
     return deadband(rawLeftYAxis, XBOX_LEFT_Y_THRESHOLD);
   }
 
   public double getDriverRightYAxis() {
-    double rawRightYAxis = Driver.getY(Hand.kRight);
+    double rawRightYAxis = driverOne.getY(Hand.kRight);
 
     return deadband(rawRightYAxis, XBOX_RIGHT_Y_THRESHOLD);
   }

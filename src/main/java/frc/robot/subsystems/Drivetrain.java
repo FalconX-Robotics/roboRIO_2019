@@ -4,7 +4,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 //import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.commands.TankDriveWithXbox;
@@ -22,6 +24,10 @@ public class Drivetrain extends Subsystem {
   // private Compressor compressor = new Compressor(RobotMap.COMPRESSOR);
   DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
+  // private Encoder encoder = new Encoder(RobotMap.encoderChannelA,
+  // RobotMap.encoderChannelB, false,
+  // Encoder.EncodingType.k4X);
+
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
   public Drivetrain() {
@@ -29,25 +35,105 @@ public class Drivetrain extends Subsystem {
     // Rear motor controllers follow front motor controllers
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
-    shifterBackward();
+
+    // encoder.setMinRate(60);
+    // encoder.setDistancePerPulse(5);
+    // encoder.setSamplesToAverage(10);
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drivetrain.tankDrive(leftSpeed, rightSpeed);
   }
 
+  public enum GearShiftState {
+    LOW, HIGH;
+
+    private static GearShiftState currentState = GearShiftState.LOW;
+
+    public static GearShiftState get() {
+      return currentState;
+    }
+
+    public static void set(GearShiftState state) {
+      currentState = state;
+      SmartDashboard.putString("GearShiftState", currentState.toString());
+    }
+
+    public static boolean check(GearShiftState state) {
+      if (GearShiftState.get() == state) {
+        return true;
+      }
+      return false;
+    }
+
+  }
+
+  public enum DirectionState {
+    FORWARD, BACKWARD, INVALID;
+
+    private static DirectionState currentState = DirectionState.FORWARD;
+
+    public static DirectionState get() {
+      return currentState;
+    }
+
+    public static void set(DirectionState state) {
+      currentState = state;
+      SmartDashboard.putString("DirectionState", currentState.toString());
+    }
+
+    public static boolean check(DirectionState state) {
+      if (DirectionState.get() == state) {
+        return true;
+      }
+      return false;
+    }
+
+    // public static DirectionState evaluate() {
+    // private DirectionState state;
+    // if (leftSide.getInverted() && rightSide.getInverted()) {
+    // state = BACKWARD;
+    // } else if (!(leftSide.getInverted() && rightSide.getInverted())) {
+    // state = FORWARD;
+    // } else {
+    // state = INVALID;
+    // }
+    // return state;
+    // }
+  }
+
+  public void faceForwards() {
+    leftSide.setInverted(false);
+    rightSide.setInverted(false);
+    DirectionState.set(DirectionState.FORWARD);
+  }
+
+  public void faceBackwards() {
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
+    DirectionState.set(DirectionState.BACKWARD);
+  }
+
+  public boolean getLeftDirection() {
+    return leftSide.getInverted();
+  }
+
+  public boolean getRightDirection() {
+    return rightSide.getInverted();
+  }
+
   public void shifterForward() {
     shifter.set(Value.kForward);
+    GearShiftState.set(GearShiftState.HIGH);
   }
 
   public void shifterBackward() {
     shifter.set(Value.kReverse);
+    GearShiftState.set(GearShiftState.LOW);
   }
 
-  public Value getShifterValue() {
-    return shifter.get();
+  public GearShiftState getShifterValue() {
+    return GearShiftState.get();
   }
 
   @Override

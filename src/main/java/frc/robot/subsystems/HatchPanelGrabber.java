@@ -13,41 +13,39 @@ public class HatchPanelGrabber extends Subsystem {
     private DoubleSolenoid hatchPushSolenoid = new DoubleSolenoid(RobotMap.HATCH_PUSH_FORWARD,
             RobotMap.HATCH_PUSH_REVERSE); // Outside pistons
 
-    enum HatchPanelStatus {
-
-    }
-
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
         hatchGrabSolenoid.set(Value.kOff);
         hatchPushSolenoid.set(Value.kOff);
     }
-    
-    public enum hatchPanelState
-    {  
+
+    public enum hatchPanelState {
         OPENED, LAUNCHING, CLOSED, INVALID;
 
-        static hatchPanelState currentState = CLOSED;
+        private static hatchPanelState currentState = CLOSED;
 
         public static hatchPanelState checkState() {
             hatchPanelState state = INVALID;
-            
-            //check if both is close
-            //check if both is open
-            //check if push is open, grab is close
-            //check if push is close, grab is open
-            if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kForward && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kReverse) {
+
+            // check if both is close
+            // check if both is open
+            // check if push is open, grab is close
+            // check if push is close, grab is open
+            if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kForward
+                    && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kReverse) {
                 state = CLOSED;
-            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kForward) {
+            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
+                    && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kForward) {
                 state = LAUNCHING;
-            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kReverse) {
+            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
+                    && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == Value.kReverse) {
                 state = OPENED;
             }
 
             return state;
         }
 
-        public static hatchPanelState get(){
+        public static hatchPanelState get() {
             return currentState;
         }
     }

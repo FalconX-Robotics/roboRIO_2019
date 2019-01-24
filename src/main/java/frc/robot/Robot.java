@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
     // MAKE THIS LAST
     oi = new OI();
 
+    drivetrain.shifterBackward();
+
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
