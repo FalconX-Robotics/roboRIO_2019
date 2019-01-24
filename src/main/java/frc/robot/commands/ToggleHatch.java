@@ -1,13 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Robot;
 import frc.robot.subsystems.HatchPanelGrabber;
 import frc.robot.subsystems.HatchPanelGrabber.hatchPanelState;
 
 public class ToggleHatch extends Command {
-    //private static boolean isOpen = false;
 
     public ToggleHatch() {
         super("ToggleHatch");
@@ -15,22 +14,21 @@ public class ToggleHatch extends Command {
 
     @Override
     protected void initialize() {
-        //isOpen = !isOpen;
 
         if (hatchPanelState.get() == hatchPanelState.OPENED) {
-            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse); 
+            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse);
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward);
 
-        }  else if (hatchPanelState.get() == hatchPanelState.CLOSED) {
-            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse); 
-            Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse); 
-
-        }  else if (hatchPanelState.get() == hatchPanelState.LAUNCHING) {
+        } else if (hatchPanelState.get() == hatchPanelState.CLOSED) {
+            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse);
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
 
-        }  else if (hatchPanelState.get() == hatchPanelState.INVALID) {
+        } else if (hatchPanelState.get() == hatchPanelState.LAUNCHING) {
+            Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
+
+        } else if (hatchPanelState.get() == hatchPanelState.INVALID) {
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(Value.kReverse);
-        } 
+        }
     }
 
     @Override

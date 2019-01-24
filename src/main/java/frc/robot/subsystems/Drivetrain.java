@@ -1,59 +1,144 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 //import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.RobotMap;
-//import frc.robot.commands.ShiftGear;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.commands.TankDriveWithXbox;
+import frc.robot.RobotMap;
 
-public class Drivetrain extends Subsystem
-{
-    private WPI_TalonSRX leftFront = new WPI_TalonSRX(RobotMap.FRONT_LEFT_MOTOR);
-    private WPI_TalonSRX leftRear = new WPI_TalonSRX(RobotMap.REAR_LEFT_MOTOR);
-    private SpeedControllerGroup leftSide = new SpeedControllerGroup(leftFront, leftRear);
+public class Drivetrain extends Subsystem {
+  private WPI_TalonSRX leftFront = new WPI_TalonSRX(RobotMap.FRONT_LEFT_MOTOR);
+  private WPI_TalonSRX leftRear = new WPI_TalonSRX(RobotMap.REAR_LEFT_MOTOR);
+  private SpeedControllerGroup leftSide = new SpeedControllerGroup(leftFront, leftRear);
 
-    private WPI_TalonSRX rightFront = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_MOTOR);
-    private WPI_TalonSRX rightRear = new WPI_TalonSRX(RobotMap.REAR_RIGHT_MOTOR);
-    private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightFront, rightRear);
-   
-    //private Compressor compressor = new Compressor(RobotMap.COMPRESSOR);
-    DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
+  private WPI_TalonSRX rightFront = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_MOTOR);
+  private WPI_TalonSRX rightRear = new WPI_TalonSRX(RobotMap.REAR_RIGHT_MOTOR);
+  private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightFront, rightRear);
 
-    //private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
+  // private Compressor compressor = new Compressor(RobotMap.COMPRESSOR);
+  DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-    public Drivetrain() {
-      super("Drivetrain");
-      // Rear motor controllers follow front motor controllers
-      leftRear.follow(leftFront);
-      rightRear.follow(rightFront);
-      //shifterBackward();
+  // private Encoder encoder = new Encoder(RobotMap.encoderChannelA,
+  // RobotMap.encoderChannelB, false,
+  // Encoder.EncodingType.k4X);
+
+  private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
+
+  public Drivetrain() {
+    super("Drivetrain");
+    // Rear motor controllers follow front motor controllers
+    leftRear.follow(leftFront);
+    rightRear.follow(rightFront);
+
+    // encoder.setMinRate(60);
+    // encoder.setDistancePerPulse(5);
+    // encoder.setSamplesToAverage(10);
+  }
+
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    drivetrain.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public enum GearShiftState {
+    LOW, HIGH;
+
+    private static GearShiftState currentState = GearShiftState.LOW;
+
+    public static GearShiftState get() {
+      return currentState;
     }
 
-    public void tankDrive(double leftSpeed, double rightSpeed) 
-    {
-		drivetrain.tankDrive(leftSpeed, rightSpeed);
+    public static void set(GearShiftState state) {
+      currentState = state;
+      SmartDashboard.putString("GearShiftState", currentState.toString());
     }
 
-    /*public void shifterForward()
-    {
-        shifter.set(Value.kForward);
+    public static boolean check(GearShiftState state) {
+      if (GearShiftState.get() == state) {
+        return true;
+      }
+      return false;
     }
 
-    public void shifterBackward() 
-    {
-        shifter.set(Value.kReverse);
-    }
-    */
-  
+  }
 
-    @Override
-    protected void initDefaultCommand() {
-      setDefaultCommand(new TankDriveWithXbox());
+  public enum DirectionState {
+    FORWARD, BACKWARD, INVALID;
 
+    private static DirectionState currentState = DirectionState.FORWARD;
+
+    public static DirectionState get() {
+      return currentState;
     }
+
+    public static void set(DirectionState state) {
+      currentState = state;
+      SmartDashboard.putString("DirectionState", currentState.toString());
+    }
+
+    public static boolean check(DirectionState state) {
+      if (DirectionState.get() == state) {
+        return true;
+      }
+      return false;
+    }
+
+    // public static DirectionState evaluate() {
+    // private DirectionState state;
+    // if (leftSide.getInverted() && rightSide.getInverted()) {
+    // state = BACKWARD;
+    // } else if (!(leftSide.getInverted() && rightSide.getInverted())) {
+    // state = FORWARD;
+    // } else {
+    // state = INVALID;
+    // }
+    // return state;
+    // }
+  }
+
+  public void faceForwards() {
+    leftSide.setInverted(false);
+    rightSide.setInverted(false);
+    DirectionState.set(DirectionState.FORWARD);
+  }
+
+  public void faceBackwards() {
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
+    DirectionState.set(DirectionState.BACKWARD);
+  }
+
+  public boolean getLeftDirection() {
+    return leftSide.getInverted();
+  }
+
+  public boolean getRightDirection() {
+    return rightSide.getInverted();
+  }
+
+  public void shifterForward() {
+    shifter.set(Value.kForward);
+    GearShiftState.set(GearShiftState.HIGH);
+  }
+
+  public void shifterBackward() {
+    shifter.set(Value.kReverse);
+    GearShiftState.set(GearShiftState.LOW);
+  }
+
+  public GearShiftState getShifterValue() {
+    return GearShiftState.get();
+  }
+
+  @Override
+  protected void initDefaultCommand() {
+    setDefaultCommand(new TankDriveWithXbox());
+  }
 
 }

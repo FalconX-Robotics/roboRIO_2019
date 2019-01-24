@@ -1,57 +1,48 @@
-/*package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-public class Climber extends Subsystem
-{
-    private DoubleSolenoid frontSolenoid = new DoubleSolenoid(RobotMap.FRONT_FORWARD_CLIMB_SOLENOID, RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
-    private DoubleSolenoid backSolenoid = new DoubleSolenoid(RobotMap.BACK_FORWARD_CLIMB_SOLENOID, RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
+public class Climber extends Subsystem {
+
+    private DoubleSolenoid frontSolenoid = new DoubleSolenoid(RobotMap.FRONT_FORWARD_CLIMB_SOLENOID,
+            RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
+    private DoubleSolenoid backSolenoid = new DoubleSolenoid(RobotMap.BACK_FORWARD_CLIMB_SOLENOID,
+            RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+    private WPI_TalonSRX climberMotor = new WPI_TalonSRX(RobotMap.CLIMBER_MOTOR);
 
     public Climber() {
-      super("Climber");
+        super("Climber");
     }
 
-    public void frontLeftForward() {
-        frontLeft.set(Value.kForward);
+    public void setClimberMotorSpeed(double speed) {
+        climberMotor.set(speed);
     }
 
-    public void frontLeftReverse() {
-        frontLeft.set(Value.kReverse);
+    public void setFrontSolenoid(Value toValue) {
+        frontSolenoid.set(toValue);
     }
 
-    public void frontRightForward() {
-        frontRight.set(Value.kForward);
+    public void setBackSolenoid(Value toValue) {
+        backSolenoid.set(toValue);
     }
 
-    public void frontRightReverse() {
-        frontRight.set(Value.kReverse);
+    public Value getFrontSolenoidValue() {
+        return frontSolenoid.get();
     }
 
-    public void backLeftForward() {
-        backLeft.set(Value.kForward);
+    public Value getBackSolenoidValue() {
+        return backSolenoid.get();
     }
-
-    public void backLeftReverse() {
-        backLeft.set(Value.kReverse);
-    }
-
-    public void backRightForward() {
-        backRight.set(Value.kForward);
-    }
-
-    public void backRighttReverse() {
-        backRight.set(Value.kReverse);
-    }
-
-
-  
 
     @Override
     protected void initDefaultCommand() {
+
     }
 
 }
-*/
