@@ -40,4 +40,8 @@ public class RobotMap {
 
   public static final int encoderChannelA = 0;
   public static final int encoderChannelB = 1;
+  public static final int COUNTS_PER_REVOLUTION = 4096; // SRX Magnetic Encoder
+  // https://www.ctr-electronics.com/downloads/pdf/Magnetic%20Encoder%20User's%20Guide.pdf
+  // Section 1.4
+  public static final double WHEEL_DIAMETER = 15.24; // in cm
 }

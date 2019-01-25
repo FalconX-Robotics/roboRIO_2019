@@ -41,8 +41,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
-    hatchPanelGrabber = new HatchPanelGrabber();
-    climber = new Climber();
+    //hatchPanelGrabber = new HatchPanelGrabber();
+    //climber = new Climber();
 
     // MAKE THIS LAST
     oi = new OI();

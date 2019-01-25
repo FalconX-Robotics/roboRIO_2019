@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain.DirectionState;
 
 public class TankDriveWithXbox extends Command {
     public TankDriveWithXbox() {
@@ -14,7 +15,18 @@ public class TankDriveWithXbox extends Command {
         double leftSpeed = Robot.oi.getDriverLeftYAxis();
         double rightSpeed = Robot.oi.getDriverRightYAxis();
 
-        Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
+        if (DirectionState.check(DirectionState.FORWARD)) {
+            Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
+
+        } else if (DirectionState.check(DirectionState.BACKWARD)) {
+            Robot.drivetrain.tankDrive(rightSpeed, leftSpeed);
+
+        } else if (DirectionState.check(DirectionState.INVALID)) {
+            Robot.drivetrain.faceForwards();
+            Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
+        }
+
+
 
     }
 

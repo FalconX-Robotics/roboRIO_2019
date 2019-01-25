@@ -58,12 +58,12 @@ public class OI {
 
   public OI() {
     // Climber
-    climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
-    climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
-    initializeClimberButton.whenPressed(new InitializeClimber());
+    //climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
+    //climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
+    //initializeClimberButton.whenPressed(new InitializeClimber());
     // Hatch
-    toggleHatchButton.whenPressed(new ToggleHatch());
-    launchHatchButton.whenPressed(new LaunchPanel());
+    //toggleHatchButton.whenPressed(new ToggleHatch());
+    //launchHatchButton.whenPressed(new LaunchPanel());
     // Drivetrain
     shiftGearButton.whenPressed(new ToggleGear());
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
@@ -77,7 +77,7 @@ public class OI {
 
   public double getDriverRightTriggerAxis() {
     double triggerRightAxis = driverOne.getTriggerAxis(Hand.kRight);
-
+    System.out.println(triggerRightAxis);
     return deadband(triggerRightAxis, TRIGGER_THRESHOLD);
   }
 

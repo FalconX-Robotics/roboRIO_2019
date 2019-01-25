@@ -24,9 +24,8 @@ public class Drivetrain extends Subsystem {
   // private Compressor compressor = new Compressor(RobotMap.COMPRESSOR);
   DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  // private Encoder encoder = new Encoder(RobotMap.encoderChannelA,
-  // RobotMap.encoderChannelB, false,
-  // Encoder.EncodingType.k4X);
+  private Encoder encoder = new Encoder(RobotMap.encoderChannelA, RobotMap.encoderChannelB, false,
+      Encoder.EncodingType.k4X);
 
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
@@ -39,6 +38,8 @@ public class Drivetrain extends Subsystem {
     // encoder.setMinRate(60);
     // encoder.setDistancePerPulse(5);
     // encoder.setSamplesToAverage(10);
+    encoder.reset();
+    encoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -102,6 +103,32 @@ public class Drivetrain extends Subsystem {
     // }
   }
 
+  // ENCODERS
+  public double findDistancePerPulse(double coutsPerRevolution) {
+    return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
+  }
+
+  public double getEncoderCount() {
+    SmartDashboard.putNumber("Encoder value", encoder.get());
+    return encoder.get();
+  }
+
+  // SHIFTER
+  public void shifterForward() {
+    shifter.set(Value.kForward);
+    GearShiftState.set(GearShiftState.HIGH);
+  }
+
+  public void shifterBackward() {
+    shifter.set(Value.kReverse);
+    GearShiftState.set(GearShiftState.LOW);
+  }
+
+  public GearShiftState getShifterValue() {
+    return GearShiftState.get();
+  }
+
+  // FACE
   public void faceForwards() {
     leftSide.setInverted(false);
     rightSide.setInverted(false);
@@ -120,20 +147,6 @@ public class Drivetrain extends Subsystem {
 
   public boolean getRightDirection() {
     return rightSide.getInverted();
-  }
-
-  public void shifterForward() {
-    shifter.set(Value.kForward);
-    GearShiftState.set(GearShiftState.HIGH);
-  }
-
-  public void shifterBackward() {
-    shifter.set(Value.kReverse);
-    GearShiftState.set(GearShiftState.LOW);
-  }
-
-  public GearShiftState getShifterValue() {
-    return GearShiftState.get();
   }
 
   @Override
