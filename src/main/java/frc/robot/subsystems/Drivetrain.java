@@ -24,7 +24,9 @@ public class Drivetrain extends Subsystem {
   // private Compressor compressor = new Compressor(RobotMap.COMPRESSOR);
   DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  private Encoder encoder = new Encoder(RobotMap.encoderChannelA, RobotMap.encoderChannelB, false,
+  private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
+      Encoder.EncodingType.k4X);
+  private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
       Encoder.EncodingType.k4X);
 
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
@@ -38,8 +40,9 @@ public class Drivetrain extends Subsystem {
     // encoder.setMinRate(60);
     // encoder.setDistancePerPulse(5);
     // encoder.setSamplesToAverage(10);
-    encoder.reset();
-    encoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    resetEncoders();
+    leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -104,13 +107,38 @@ public class Drivetrain extends Subsystem {
   }
 
   // ENCODERS
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
   public double findDistancePerPulse(double coutsPerRevolution) {
     return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
   }
 
-  public double getEncoderCount() {
-    SmartDashboard.putNumber("Encoder value", encoder.get());
-    return encoder.get();
+  public double getEncodersCount() {
+    return (leftEncoder.get() + rightEncoder.get()) / 2;
+  }
+
+  // public double average(double... args) {
+  // int sum = 0;
+  // for (int i : args)
+  // sum += i;
+
+  // return sum / args.length;
+  // }
+
+  public double getLeftEncoderDistance() {
+    return leftEncoder.getDistance();
+  }
+
+  public double getRightEncoderDistance() {
+    return rightEncoder.getDistance();
+  }
+
+  // @returns average of encoder distances
+  public double getEncodersDistance() {
+    return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
   }
 
   // SHIFTER
