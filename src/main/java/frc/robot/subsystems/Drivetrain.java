@@ -40,9 +40,9 @@ public class Drivetrain extends Subsystem {
     // encoder.setMinRate(60);
     // encoder.setDistancePerPulse(5);
     // encoder.setSamplesToAverage(10);
-    resetEncoders();
     leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    resetEncoders();
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -117,7 +117,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getEncodersCount() {
-    return (leftEncoder.get() + rightEncoder.get()) / 2;
+    return (leftEncoder.get() + leftEncoder.get()) / 2;
   }
 
   // public double average(double... args) {
@@ -138,7 +138,7 @@ public class Drivetrain extends Subsystem {
 
   // @returns average of encoder distances
   public double getEncodersDistance() {
-    return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
+    return (getLeftEncoderDistance() + getLeftEncoderDistance()) / 2;
   }
 
   // SHIFTER

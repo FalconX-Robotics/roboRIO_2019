@@ -28,7 +28,7 @@ public class OI {
   public static final int DRIVER_PORT_TWO = 1;
 
   // Driver One
-  public static final int SHIFT_GEAR_BUTTON = 2; // Xbox B button
+  public static final int SHIFT_GEAR_BUTTON = 5; // Xbox Left Bumper
   public static final int CHANGE_ROBOT_DIRECTION_BUTTON = 1; // Xbox A button
 
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
@@ -58,12 +58,12 @@ public class OI {
 
   public OI() {
     // Climber
-    //climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
-    //climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
-    //initializeClimberButton.whenPressed(new InitializeClimber());
+    // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
+    // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
+    // initializeClimberButton.whenPressed(new InitializeClimber());
     // Hatch
-    //toggleHatchButton.whenPressed(new ToggleHatch());
-    //launchHatchButton.whenPressed(new LaunchPanel());
+    // toggleHatchButton.whenPressed(new ToggleHatch());
+    // launchHatchButton.whenPressed(new LaunchPanel());
     // Drivetrain
     shiftGearButton.whenPressed(new ToggleGear());
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
