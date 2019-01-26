@@ -66,7 +66,7 @@ public class HatchPanelGrabber extends Subsystem {
         } else {
             SmartDashboard.putBoolean("PushSolenoid", false);
         }
-        hatchGrabSolenoid.set(Value.kOff);
+        hatchPushSolenoid.set(Value.kOff);
         hatchPushSolenoid.set(value);
     }
 
