@@ -42,6 +42,7 @@ public class RobotMap {
   public static final int LEFT_ENCODER_CHANNEL_B = 1;
   public static final int RIGHT_ENCODER_CHANNEL_A = 0;
   public static final int RIGHT_ENCODER_CHANNEL_B = 1;
+  public static final int ROBOT_GEAR_SHIFT_SPEED = 85; //This is a random value not suited for the drivetrain, in cm.
   public static final int COUNTS_PER_REVOLUTION = 4096; // SRX Magnetic Encoder
   // https://www.ctr-electronics.com/downloads/pdf/Magnetic%20Encoder%20User's%20Guide.pdf
   // Section 1.4s

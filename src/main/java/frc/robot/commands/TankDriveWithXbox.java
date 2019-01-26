@@ -41,16 +41,28 @@ public class TankDriveWithXbox extends Command {
 
             SmartDashboard.putNumber("Encoder Distance", distance);
 
-            // if traveled distance passes distance to shift gear, shift gear
-            if (distance > RobotMap.DISTANCE_TO_SHIFT) {
-                // Shift gear to HIGH
+            // // if traveled distance passes distance to shift gear, shift gear
+            // if (distance > RobotMap.DISTANCE_TO_SHIFT) {
+            //     // Shift gear to HIGH
+            //     Robot.drivetrain.shifterForward();
+            // } else {
+            //     // Shift gear to LOW
+            //     Robot.drivetrain.shifterBackward();
+            // }
+            // startDistance = Robot.drivetrain.getEncodersDistance();
+
+            if(Robot.drivetrain.getSpeed() > (double) RobotMap.ROBOT_GEAR_SHIFT_SPEED)
+            {
                 Robot.drivetrain.shifterForward();
-            } else {
-                // Shift gear to LOW
+            }
+            else
+            {
                 Robot.drivetrain.shifterBackward();
             }
-            startDistance = Robot.drivetrain.getEncodersDistance();
         }
+        
+
+
     }
 
     @Override
