@@ -117,7 +117,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getEncodersCount() {
-    //return (leftEncoder.get() + leftEncoder.get()) / 2;
+    // return (leftEncoder.get() + leftEncoder.get()) / 2;
     return (leftEncoder.get() + rightEncoder.get() / 2);
   }
 
@@ -137,16 +137,15 @@ public class Drivetrain extends Subsystem {
     return rightEncoder.getDistance();
   }
 
-  //returns speed of drivetrain in cm/s
-  public double getSpeed()
-  {
+  // returns speed of drivetrain in cm/s
+  public double getSpeed() {
     return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
   }
 
   // @returns average of encoder distances
   public double getEncodersDistance() {
-   // return (getLeftEncoderDistance() + getLeftEncoderDistance()) / 2;
-   return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
+    // return (getLeftEncoderDistance() + getLeftEncoderDistance()) / 2;
+    return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
   }
 
   // SHIFTER
