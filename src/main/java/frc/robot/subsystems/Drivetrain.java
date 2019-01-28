@@ -60,7 +60,7 @@ public class Drivetrain extends Subsystem {
 
     public static void set(GearShiftState state) {
       currentState = state;
-      SmartDashboard.putString("GearShiftState", currentState.toString());
+      SmartDashboard.putString("Gear Shift State", currentState.toString());
     }
 
     public static boolean check(GearShiftState state) {
@@ -83,7 +83,7 @@ public class Drivetrain extends Subsystem {
 
     public static void set(DirectionState state) {
       currentState = state;
-      SmartDashboard.putString("DirectionState", currentState.toString());
+      SmartDashboard.putString("Direction State", currentState.toString());
     }
 
     public static boolean check(DirectionState state) {

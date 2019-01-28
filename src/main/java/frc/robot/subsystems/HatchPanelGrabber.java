@@ -52,9 +52,9 @@ public class HatchPanelGrabber extends Subsystem {
 
     public void toggleHatchGrabSolenoid(Value value) {
         if (value == Value.kForward) {
-            SmartDashboard.putBoolean("GrabSoleniod", true);
+            SmartDashboard.putBoolean("Grab Soleniod", true);
         } else {
-            SmartDashboard.putBoolean("GrabSoleniod", false);
+            SmartDashboard.putBoolean("Grab Soleniod", false);
         }
         hatchGrabSolenoid.set(Value.kOff);
         hatchGrabSolenoid.set(value);
@@ -62,9 +62,9 @@ public class HatchPanelGrabber extends Subsystem {
 
     public void toggleHatchPushSolenoid(Value value) {
         if (value == Value.kForward) {
-            SmartDashboard.putBoolean("PushSolenoid", true);
+            SmartDashboard.putBoolean("Push Solenoid", true);
         } else {
-            SmartDashboard.putBoolean("PushSolenoid", false);
+            SmartDashboard.putBoolean("Push Solenoid", false);
         }
         hatchPushSolenoid.set(Value.kOff);
         hatchPushSolenoid.set(value);
