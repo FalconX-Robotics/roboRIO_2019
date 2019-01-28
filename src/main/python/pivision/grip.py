@@ -12,15 +12,15 @@ class GripPipeline:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [53.41726618705036, 101.67235494880548]
-        self.__hsl_threshold_saturation = [135.03280109728422, 254.7360385073562]
-        self.__hsl_threshold_luminance = [73.38129496402877, 255.0]
+        self.__hsv_threshold_hue = [46.64498412831466, 117.6110330058808]
+        self.__hsv_threshold_saturation = [0.0, 255.0]
+        self.__hsv_threshold_value = [234.36151079136692, 255.0]
 
-        self.hsl_threshold_output = None
+        self.hsv_threshold_output = None
 
-        self.__blur_input = self.hsl_threshold_output
+        self.__blur_input = self.hsv_threshold_output
         self.__blur_type = BlurType.Box_Blur
-        self.__blur_radius = 3.603603603603604
+        self.__blur_radius = 5.405405405405405
 
         self.blur_output = None
 
@@ -45,12 +45,12 @@ class GripPipeline:
         self.__filter_contours_min_width = 0.0
         self.__filter_contours_max_width = 1000.0
         self.__filter_contours_min_height = 0.0
-        self.__filter_contours_max_height = 1000.0
-        self.__filter_contours_solidity = [0, 100]
-        self.__filter_contours_max_vertices = 1000.0
+        self.__filter_contours_max_height = 10000.0
+        self.__filter_contours_solidity = [92.62589928057554, 100]
+        self.__filter_contours_max_vertices = 800.0
         self.__filter_contours_min_vertices = 0.0
-        self.__filter_contours_min_ratio = 0.1
-        self.__filter_contours_max_ratio = 0.5
+        self.__filter_contours_min_ratio = 0.0
+        self.__filter_contours_max_ratio = 100.0
 
         self.filter_contours_output = None
 
@@ -59,12 +59,12 @@ class GripPipeline:
         """
         Runs the pipeline and sets all outputs to new values.
         """
-        # Step HSL_Threshold0:
-        self.__hsl_threshold_input = source0
-        (self.hsl_threshold_output) = self.__hsl_threshold(self.__hsl_threshold_input, self.__hsl_threshold_hue, self.__hsl_threshold_saturation, self.__hsl_threshold_luminance)
+        # Step HSV_Threshold0:
+        self.__hsv_threshold_input = source0
+        (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
 
         # Step Blur0:
-        self.__blur_input = self.hsl_threshold_output
+        self.__blur_input = self.hsv_threshold_output
         (self.blur_output) = self.__blur(self.__blur_input, self.__blur_type, self.__blur_radius)
 
         # Step Find_Lines0:
@@ -85,18 +85,18 @@ class GripPipeline:
 
 
     @staticmethod
-    def __hsl_threshold(input, hue, sat, lum):
-        """Segment an image based on hue, saturation, and luminance ranges.
+    def __hsv_threshold(input, hue, sat, val):
+        """Segment an image based on hue, saturation, and value ranges.
         Args:
             input: A BGR numpy.ndarray.
             hue: A list of two numbers the are the min and max hue.
             sat: A list of two numbers the are the min and max saturation.
-            lum: A list of two numbers the are the min and max luminance.
+            lum: A list of two numbers the are the min and max value.
         Returns:
             A black and white numpy.ndarray.
         """
-        out = cv2.cvtColor(input, cv2.COLOR_BGR2HLS)
-        return cv2.inRange(out, (hue[0], lum[0], sat[0]),  (hue[1], lum[1], sat[1]))
+        out = cv2.cvtColor(input, cv2.COLOR_BGR2HSV)
+        return cv2.inRange(out, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
 
     @staticmethod
     def __blur(src, type, radius):

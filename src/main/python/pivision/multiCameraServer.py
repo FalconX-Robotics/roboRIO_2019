@@ -187,23 +187,35 @@ if __name__ == "__main__":
     img = np.zeros(shape=(480, 640, 3), dtype=np.uint8)
     cvSink = CameraServer.getInstance().getVideo()
 
-
     sd = nt.getTable("SmartDashboard")
     sd.addEntryListener(valueChanged)
-    i = 0
     gripVideo = CameraServer.getInstance().putVideo("GRIP stream", 640, 480)
+    sd.putBoolean("testLines", False)
+    sd.putBoolean("testContours", False)
 
     ### Things to do with output grip information ###
     def communicate(pipeline):
+        # Check for lines
+        if pipeline.filter_lines_output != []:
+            sd.putBoolean("testLines", True)
+        else:
+            sd.putBoolean("testLines", False)
+            # Check for contours
         if pipeline.filter_contours_output != []:
-            print("I got something!")
             sd.putBoolean("testContours", True)
         else:
             sd.putBoolean("testContours", False)
-            print("No objects detected (empty)")
 
     #### loop forever ####
     while True:
+        # For console output
+        cDetection = False
+        lDetection = False
+        if sd.getEntry("testContours").value == True:
+            cDetection = True
+        if sd.getEntry("testLines").value == True:
+            lDetection = True
+        # Process images
         frameTime, frame = cvSink.grabFrame(img)
         gripVideo.putFrame(frame)
         try:
@@ -212,5 +224,12 @@ if __name__ == "__main__":
 
             communicate(pipeline)
         except:
-            print("No objects detected (error)")
+            sd.putBoolean("testLines", False)
+            sd.putBoolean("testContours", False)
+        
+        # Console output (test)
+        if sd.getEntry("testContours").value == True or sd.getEntry("testLines").value == True:
+            print("I see something!")
+        else:
+            print("No object detected.")
         time.sleep(0.25)
