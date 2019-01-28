@@ -28,7 +28,8 @@ public class OI {
   public static final int DRIVER_PORT_TWO = 1;
 
   // Driver One
-  public static final int SHIFT_GEAR_BUTTON = 2; // Xbox B button
+  public static final int SHIFT_GEAR_BUTTON = 5; // Xbox Left Bumper
+  public static final int SECOND_SHIFT_GEAR_BUTTON = 6; // Xbox Right Bumper
   public static final int CHANGE_ROBOT_DIRECTION_BUTTON = 1; // Xbox A button
 
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
@@ -53,19 +54,21 @@ public class OI {
   private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
   // Drivetrain (Driver One)
   private Button shiftGearButton = new JoystickButton(driverOne, SHIFT_GEAR_BUTTON);
+  private Button secondShiftGearButton = new JoystickButton(driverOne, SECOND_SHIFT_GEAR_BUTTON);
   private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
   public OI() {
     // Climber
-    climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
-    climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
-    initializeClimberButton.whenPressed(new InitializeClimber());
+    // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
+    // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
+    // initializeClimberButton.whenPressed(new InitializeClimber());
     // Hatch
-    toggleHatchButton.whenPressed(new ToggleHatch());
-    launchHatchButton.whenPressed(new LaunchPanel());
+    // toggleHatchButton.whenPressed(new ToggleHatch());
+    // launchHatchButton.whenPressed(new LaunchPanel());
     // Drivetrain
     shiftGearButton.whenPressed(new ToggleGear());
+    secondShiftGearButton.whenPressed(new ToggleGear());
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
   }
 
@@ -77,7 +80,7 @@ public class OI {
 
   public double getDriverRightTriggerAxis() {
     double triggerRightAxis = driverOne.getTriggerAxis(Hand.kRight);
-
+    System.out.println(triggerRightAxis);
     return deadband(triggerRightAxis, TRIGGER_THRESHOLD);
   }
 

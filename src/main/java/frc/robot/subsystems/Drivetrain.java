@@ -24,9 +24,10 @@ public class Drivetrain extends Subsystem {
   // private Compressor compressor = new Compressor(RobotMap.COMPRESSOR);
   DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  // private Encoder encoder = new Encoder(RobotMap.encoderChannelA,
-  // RobotMap.encoderChannelB, false,
-  // Encoder.EncodingType.k4X);
+  private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
+      Encoder.EncodingType.k4X);
+  private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
+      Encoder.EncodingType.k4X);
 
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
@@ -39,6 +40,9 @@ public class Drivetrain extends Subsystem {
     // encoder.setMinRate(60);
     // encoder.setDistancePerPulse(5);
     // encoder.setSamplesToAverage(10);
+    leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    resetEncoders();
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -56,7 +60,7 @@ public class Drivetrain extends Subsystem {
 
     public static void set(GearShiftState state) {
       currentState = state;
-      SmartDashboard.putString("GearShiftState", currentState.toString());
+      SmartDashboard.putString("Gear Shift State", currentState.toString());
     }
 
     public static boolean check(GearShiftState state) {
@@ -79,7 +83,7 @@ public class Drivetrain extends Subsystem {
 
     public static void set(DirectionState state) {
       currentState = state;
-      SmartDashboard.putString("DirectionState", currentState.toString());
+      SmartDashboard.putString("Direction State", currentState.toString());
     }
 
     public static boolean check(DirectionState state) {
@@ -102,6 +106,64 @@ public class Drivetrain extends Subsystem {
     // }
   }
 
+  // ENCODERS
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
+  public double findDistancePerPulse(double coutsPerRevolution) {
+    return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
+  }
+
+  public double getEncodersCount() {
+    // return (leftEncoder.get() + leftEncoder.get()) / 2;
+    return (leftEncoder.get() + rightEncoder.get() / 2);
+  }
+
+  // public double average(double... args) {
+  // int sum = 0;
+  // for (int i : args)
+  // sum += i;
+
+  // return sum / args.length;
+  // }
+
+  public double getLeftEncoderDistance() {
+    return leftEncoder.getDistance();
+  }
+
+  public double getRightEncoderDistance() {
+    return rightEncoder.getDistance();
+  }
+
+  // returns speed of drivetrain in cm/s
+  public double getSpeed() {
+    return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
+  }
+
+  // @returns average of encoder distances
+  public double getEncodersDistance() {
+    // return (getLeftEncoderDistance() + getLeftEncoderDistance()) / 2;
+    return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
+  }
+
+  // SHIFTER
+  public void shifterForward() {
+    shifter.set(Value.kForward);
+    GearShiftState.set(GearShiftState.HIGH);
+  }
+
+  public void shifterBackward() {
+    shifter.set(Value.kReverse);
+    GearShiftState.set(GearShiftState.LOW);
+  }
+
+  public GearShiftState getShifterValue() {
+    return GearShiftState.get();
+  }
+
+  // FACE
   public void faceForwards() {
     leftSide.setInverted(false);
     rightSide.setInverted(false);
@@ -120,20 +182,6 @@ public class Drivetrain extends Subsystem {
 
   public boolean getRightDirection() {
     return rightSide.getInverted();
-  }
-
-  public void shifterForward() {
-    shifter.set(Value.kForward);
-    GearShiftState.set(GearShiftState.HIGH);
-  }
-
-  public void shifterBackward() {
-    shifter.set(Value.kReverse);
-    GearShiftState.set(GearShiftState.LOW);
-  }
-
-  public GearShiftState getShifterValue() {
-    return GearShiftState.get();
   }
 
   @Override
