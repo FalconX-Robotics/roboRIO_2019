@@ -29,6 +29,7 @@ public class OI {
 
   // Driver One
   public static final int SHIFT_GEAR_BUTTON = 5; // Xbox Left Bumper
+  public static final int SECOND_SHIFT_GEAR_BUTTON = 6; // Xbox Right Bumper
   public static final int CHANGE_ROBOT_DIRECTION_BUTTON = 1; // Xbox A button
 
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
@@ -53,6 +54,7 @@ public class OI {
   private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
   // Drivetrain (Driver One)
   private Button shiftGearButton = new JoystickButton(driverOne, SHIFT_GEAR_BUTTON);
+  private Button secondShiftGearButton = new JoystickButton(driverOne, SECOND_SHIFT_GEAR_BUTTON);
   private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
@@ -66,6 +68,7 @@ public class OI {
     // launchHatchButton.whenPressed(new LaunchPanel());
     // Drivetrain
     shiftGearButton.whenPressed(new ToggleGear());
+    secondShiftGearButton.whenPressed(new ToggleGear());
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
   }
 
