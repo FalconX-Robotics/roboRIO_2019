@@ -184,12 +184,12 @@ if __name__ == "__main__":
     for cameraConfig in cameraConfigs:
         cameras.append(startCamera(cameraConfig))
     
-    img = np.zeros(shape=(4, 3, 3), dtype=np.uint8)
+    img = np.zeros(shape=(40, 30, 3), dtype=np.uint8)
     cvSink = CameraServer.getInstance().getVideo()
 
     sd = nt.getTable("SmartDashboard")
     sd.addEntryListener(valueChanged)
-    gripVideo = CameraServer.getInstance().putVideo("GRIP stream", 4, 3)
+    gripVideo = CameraServer.getInstance().putVideo("GRIP stream", 40, 30)
     sd.putBoolean("testLines", False)
     sd.putBoolean("testContours", False)
 
