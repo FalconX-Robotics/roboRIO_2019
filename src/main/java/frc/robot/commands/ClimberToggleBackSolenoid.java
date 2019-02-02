@@ -17,8 +17,4 @@ public class ClimberToggleBackSolenoid extends InstantCommand {
         Robot.climber.setBackSolenoid(toValue);
     }
 
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
 }
