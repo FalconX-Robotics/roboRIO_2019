@@ -8,6 +8,7 @@ public class ToggleGear extends Command {
 
     public ToggleGear() {
         super("ToggleGear");
+        requires(Robot.drivetrain);
         // super(Robot.drivetrain.getShifterValue() == Value.kForward ? Value.kReverse :
         // Value.kForward);
     }
@@ -18,7 +19,7 @@ public class ToggleGear extends Command {
             Robot.drivetrain.shifterForward();
 
         } else if (GearShiftState.check(GearShiftState.HIGH)) {
-            Robot.drivetrain.shifterBackward();
+           Robot.drivetrain.shifterBackward();
         }
     }
 

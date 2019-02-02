@@ -10,6 +10,7 @@ public class ToggleHatch extends Command {
 
     public ToggleHatch() {
         super("ToggleHatch");
+        requires(Robot.hatchPanelGrabber);
     }
 
     @Override
