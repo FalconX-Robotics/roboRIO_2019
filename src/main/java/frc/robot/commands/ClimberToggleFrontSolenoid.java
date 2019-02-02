@@ -17,9 +17,4 @@ public class ClimberToggleFrontSolenoid extends InstantCommand {
         Robot.climber.setFrontSolenoid(toValue);
 
     }
-
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
 }

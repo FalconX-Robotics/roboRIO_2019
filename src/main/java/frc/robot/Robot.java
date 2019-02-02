@@ -12,9 +12,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.HatchPanelGrabber;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+import edu.wpi.first.wpilibj.AnalogGyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,12 +31,21 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static HatchPanelGrabber hatchPanelGrabber;
   public static Climber climber;
+  public static Cargo cargo;
+  public static ToggleGear toggleGearCommand;
 
   // MAKE THIS LAST
   public static OI oi;
 
+  // private static Dictionary commandsDictionary = new Hashtable();
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  // public static void addToCommandsTable() {
+  // commandsDictionary.put("ToggleGear", new ToggleGear());
+  // commandsDictionary.put("WaitCommand", new WaitCommand());
+  // }
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -43,14 +56,27 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     //hatchPanelGrabber = new HatchPanelGrabber();
     //climber = new Climber();
+    //cargo = new Cargo();
 
     // MAKE THIS LAST
     oi = new OI();
 
-    drivetrain.shifterBackward();
+    // drivetrain.shifterBackward();
 
-    // chooser.addOption("My Auto", new MyAutoCommand());
+    // SMART_DASH_BOARD
+    // addToCommandsTable();
+    toggleGearCommand = new ToggleGear();
+
     SmartDashboard.putData("Auto mode", m_chooser);
+    // Subsystems
+    SmartDashboard.putData("Drivetrain", drivetrain);
+    // SmartDashboard.putData("Climber", new Climber());
+    // SmartDashboard.putData("HatchPanelGrabber", new HatchPanelGrabber());
+
+    // Command
+    // for (String name : commandsDictionary.keySet()) {
+
+    // }
   }
 
   /**
@@ -64,6 +90,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Gyro angle", drivetrain.getGyroAngle());
   }
 
   /**
