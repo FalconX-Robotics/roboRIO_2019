@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.util.Logger;
 
+import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -33,6 +35,7 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Cargo cargo;
   public static ToggleGear toggleGearCommand;
+  public static Logger errorLog;
 
   // MAKE THIS LAST
   public static OI oi;
@@ -60,6 +63,11 @@ public class Robot extends TimedRobot {
 
     // MAKE THIS LAST
     oi = new OI();
+    try {
+      errorLog = new Logger("errorLog");
+    } catch(IOException e) {
+
+    }
 
     // drivetrain.shifterBackward();
 
@@ -77,6 +85,8 @@ public class Robot extends TimedRobot {
     // for (String name : commandsDictionary.keySet()) {
 
     // }
+
+    errorLog.log("Robot started");
   }
 
   /**

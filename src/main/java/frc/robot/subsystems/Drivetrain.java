@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.commands.TankDriveWithXbox;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class Drivetrain extends Subsystem {
@@ -26,7 +27,7 @@ public class Drivetrain extends Subsystem {
 
   private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  private Compressor stupidFuckingCompressor = new Compressor(RobotMap.COMPRESSOR);
+  private Compressor normalCompressor = new Compressor(RobotMap.COMPRESSOR);
 
   private AnalogGyro gyro;
 
@@ -44,7 +45,7 @@ public class Drivetrain extends Subsystem {
     // Rear motor controllers follow front motor controllers
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
-    stupidFuckingCompressor.setClosedLoopControl(true);
+    normalCompressor.setClosedLoopControl(true);
     // leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // resetEncoders();
@@ -156,6 +157,22 @@ public class Drivetrain extends Subsystem {
         SmartDashboard.putString("Direction State", currentState.toString());
       }
 
+      public static DirectionState update() {
+        DirectionState state;
+
+        if (Robot.drivetrain.getLeftDirection() != Robot.drivetrain.getRightDirection()) {
+            state = INVALID;
+        } else {
+          if (Robot.drivetrain.getLeftDirection() == true) {
+            state = BACKWARD;
+          }
+          state = FORWARD;
+        }
+
+        set(state);
+        return state;
+      }
+
       public static boolean check(DirectionState state) {
         if (DirectionState.get() == state) {
           return true;
@@ -179,13 +196,13 @@ public class Drivetrain extends Subsystem {
     public void faceForwards() {
       leftSide.setInverted(false);
       rightSide.setInverted(false);
-      DirectionState.set(DirectionState.FORWARD);
+      DirectionState.update();
     }
 
     public void faceBackwards() {
       leftSide.setInverted(true);
       rightSide.setInverted(true);
-      DirectionState.set(DirectionState.BACKWARD);
+      DirectionState.update();
     }
 
     public boolean getLeftDirection() {

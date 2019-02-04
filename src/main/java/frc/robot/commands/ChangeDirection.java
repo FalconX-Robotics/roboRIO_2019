@@ -12,11 +12,15 @@ public class ChangeDirection extends Command {
 
     @Override
     protected void execute() {
-        if (DirectionState.check(DirectionState.FORWARD)) {
+        DirectionState state = DirectionState.update();
+
+        if (state == DirectionState.FORWARD) {
             Robot.drivetrain.faceBackwards();
-        } else if (DirectionState.check(DirectionState.BACKWARD)) {
+        } else if (state == DirectionState.BACKWARD) {
             Robot.drivetrain.faceForwards();
         }
+
+        DirectionState.update();
 
     }
 
