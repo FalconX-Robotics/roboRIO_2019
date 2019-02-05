@@ -35,7 +35,8 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Cargo cargo;
   public static ToggleGear toggleGearCommand;
-  public static Logger errorLog;
+  public static String fileSeparator = System.getProperty("file.separator");
+  public static Logger errorLog = new Logger("errorLog", "src" + fileSeparator + "main" + fileSeparator + "java" + fileSeparator + "frc" + fileSeparator + "robot" + fileSeparator + "util", true, false); //ez;
 
   // MAKE THIS LAST
   public static OI oi;
@@ -63,11 +64,6 @@ public class Robot extends TimedRobot {
 
     // MAKE THIS LAST
     oi = new OI();
-    try {
-      errorLog = new Logger("errorLog");
-    } catch(IOException e) {
-
-    }
 
     // drivetrain.shifterBackward();
 
@@ -86,7 +82,7 @@ public class Robot extends TimedRobot {
 
     // }
 
-    errorLog.log("Robot started");
+    errorLog.log("Robot initialized");
   }
 
   /**

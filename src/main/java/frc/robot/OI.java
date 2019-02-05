@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -138,4 +139,7 @@ public class OI {
     return Math.abs(input) <= Math.abs(threshold) ? 0 : input;
   }
 
+  public void rumble(GenericHID.RumbleType type, double value) {
+    driverOne.setRumble(type, value);
+  }
 }
