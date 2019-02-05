@@ -5,8 +5,8 @@ import frc.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DoubleSolenoid; 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value; 
 
 public class Climber extends Subsystem {
 

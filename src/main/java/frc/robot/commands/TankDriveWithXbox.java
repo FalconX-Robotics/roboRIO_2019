@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain.DirectionState;
@@ -15,6 +16,12 @@ public class TankDriveWithXbox extends Command {
     protected void execute() {
         double leftSpeed = Robot.oi.getDriverLeftYAxis();
         double rightSpeed = Robot.oi.getDriverRightYAxis();
+
+        Robot.oi.rumble(RumbleType.kLeftRumble, leftSpeed);
+        Robot.oi.rumble(RumbleType.kRightRumble, rightSpeed);
+
+        Robot.oi.rumble(RumbleType.kLeftRumble, leftSpeed*-1);
+        Robot.oi.rumble(RumbleType.kRightRumble, rightSpeed*-1);
 
         if (DirectionState.check(DirectionState.FORWARD)) {
             Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
