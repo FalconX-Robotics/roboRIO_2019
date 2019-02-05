@@ -33,7 +33,7 @@ public class TankDriveWithXbox extends Command {
             Robot.drivetrain.faceForwards();
             Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
         }
-
+        //!
         // long startTime = System.nanoTime();
         // double startDistance = Robot.drivetrain.getEncodersDistance();
 
@@ -46,12 +46,12 @@ public class TankDriveWithXbox extends Command {
         //     SmartDashboard.putNumber("Encoder Distance", distance);
         //     SmartDashboard.putNumber("Encoder Angle", Robot.drivetrain.getEncodersCount());
         //     SmartDashboard.putNumber("Robot Speed (cm/s)", Robot.drivetrain.getSpeed());
-            // // if traveled distance passes distance to shift gear, shift gear
+            // if traveled distance passes distance to shift gear, shift gear
             // if (distance > RobotMap.DISTANCE_TO_SHIFT) {
-            // // Shift gear to HIGH
+            // Shift gear to HIGH
             // Robot.drivetrain.shifterForward();
             // } else {
-            // // Shift gear to LOW
+            // Shift gear to LOW
             // Robot.drivetrain.shifterBackward();
             // }
             // startDistance = Robot.drivetrain.getEncodersDistance();

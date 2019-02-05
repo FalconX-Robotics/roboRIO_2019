@@ -42,6 +42,7 @@ public class Cargo extends Subsystem {
         }
     }
 
+    /* 
     // public enum CargoState {
     // OPENED, LAUNCH, TOPOPEN, INCORRECT;
 
@@ -78,6 +79,7 @@ public class Cargo extends Subsystem {
     // return currentState;
     // }
     // }
+    */
 
     public void toggleCargoLowerSolenoid(Value value) {
         if (value == Value.kForward) {
