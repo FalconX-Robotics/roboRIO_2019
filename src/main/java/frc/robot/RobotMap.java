@@ -19,6 +19,7 @@ public class RobotMap {
   public static final int FRONT_RIGHT_MOTOR = 0;
   public static final int REAR_RIGHT_MOTOR = 3;
 
+  public static final boolean ENABLE_TOGGLE_GEAR_SHIFT = false;
   public static final int SHIFTER_FORWARD = 0;
   public static final int SHIFTER_REVERSE = 1;
 

@@ -18,6 +18,8 @@ import frc.robot.commands.InitializeClimber;
 import frc.robot.commands.LaunchLowerCargo;
 import frc.robot.commands.LaunchPanel;
 import frc.robot.commands.LaunchUpperCargo;
+import frc.robot.commands.ShiftToHigh;
+import frc.robot.commands.ShiftToLow;
 import frc.robot.commands.ToggleBackClimberSolenoid;
 import frc.robot.commands.ToggleFrontClimberSolenoid;
 import frc.robot.commands.ToggleGear;
@@ -80,33 +82,51 @@ public class OI {
     changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
     // Climber (Driver One)
-    // initializeClimberButton = new JoystickButton(driverOne,
-    // CLIMBER_INITIALIZE_BUTTON);
+    //!
+    // initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
     // climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
     // climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
+    
 
     // Hatch (Driver Two)
+    //!
     // toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
     // launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
 
     // Cargo (Driver Two)
+    //!
     // toggleUpperCargoButton = new JoystickButton(driverTwo,
     // TOGGLE_UPPER_CARGO_BUTTON);
     // toggleLowerCargoButton = new JoystickButton(driverTwo,
     // TOGGLE_LOWER_CARGO_BUTTON);
 
     // Bind button to command
-    shiftGearButton.whenPressed(new ToggleGear());
-    secondShiftGearButton.whenPressed(new ToggleGear());
+
+    // Gear Shift (Driver One)
+    if (RobotMap.ENABLE_TOGGLE_GEAR_SHIFT) {
+      shiftGearButton.whenPressed(new ToggleGear());
+      secondShiftGearButton.whenPressed(new ToggleGear());
+    } else {
+      shiftGearButton.whenPressed(new ShiftToLow());
+      secondShiftGearButton.whenPressed(new ShiftToHigh());
+    }
+
+    // Change which direction is forward (Driver One)
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
-    // toggleHatchButton.whenPressed(new ToggleHatch());
-    // launchHatchButton.whenPressed(new LaunchPanel());
-
+    // Climber (Driver One)
+    //!
     // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
     // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
     // initializeClimberButton.whenPressed(new InitializeClimber());
 
+    // Hatch (Driver Two)
+    //!
+    // toggleHatchButton.whenPressed(new ToggleHatch());
+    // launchHatchButton.whenPressed(new LaunchPanel());
+
+    // Cargo (Driver Two)
+    //!
     // toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());
     // toggleLowerCargoButton.whenPressed(new LaunchLowerCargo());
   }

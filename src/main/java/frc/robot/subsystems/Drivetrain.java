@@ -30,7 +30,7 @@ public class Drivetrain extends Subsystem {
   private Compressor normalCompressor = new Compressor(RobotMap.COMPRESSOR);
 
   private AnalogGyro gyro;
-
+  //!
   // private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A,
   // RobotMap.LEFT_ENCODER_CHANNEL_B, false,
   // Encoder.EncodingType.k4X);
@@ -46,6 +46,7 @@ public class Drivetrain extends Subsystem {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
     normalCompressor.setClosedLoopControl(true);
+    //!
     // leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // resetEncoders();
@@ -62,7 +63,8 @@ public class Drivetrain extends Subsystem {
     drivetrain.tankDrive(leftSpeed, rightSpeed);
   }
 
-  // // ENCODERS
+  // ENCODERS
+  //!
   // public void resetEncoders() {
   // leftEncoder.reset();
   // rightEncoder.reset();
@@ -71,9 +73,9 @@ public class Drivetrain extends Subsystem {
   public double findDistancePerPulse(double coutsPerRevolution) {
     return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
   }
-
+  //!
   // public double getEncodersCount() {
-  // // return (leftEncoder.get() + leftEncoder.get()) / 2;
+  // return (leftEncoder.get() + leftEncoder.get()) / 2;
   // return (leftEncoder.get() + rightEncoder.get() / 2);
   // }
 
@@ -93,14 +95,14 @@ public class Drivetrain extends Subsystem {
   // return rightEncoder.getDistance();
   // }
 
-  // // returns speed of drivetrain in cm/s
+  // returns speed of drivetrain in cm/s
   // public double getSpeed() {
   // return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
   // }
 
-  // // @returns average of encoder distances
+  // returns average of encoder distances
   // public double getEncodersDistance() {
-  // // return (getLeftEncoderDistance() + getLeftEncoderDistance()) / 2;
+  // return (getLeftEncoderDistance() + getLeftEncoderDistance()) / 2;
   // return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
   // }
 
@@ -179,7 +181,7 @@ public class Drivetrain extends Subsystem {
         }
         return false;
       }
-
+      /*
       // public static DirectionState evaluate() {
       // private DirectionState state;
       // if (leftSide.getInverted() && rightSide.getInverted()) {
@@ -191,6 +193,7 @@ public class Drivetrain extends Subsystem {
       // }
       // return state;
       // }
+      */
     }
 
     public void faceForwards() {
