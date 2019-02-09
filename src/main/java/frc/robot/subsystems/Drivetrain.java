@@ -1,16 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-//import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.commands.TankDriveWithXbox;
@@ -44,15 +41,18 @@ public class Drivetrain extends Subsystem {
 
   public Drivetrain() {
     super("Drivetrain");
-    // Rear motor controllers follow front motor controllers
+    // INITIALIZE
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
+    shifterBackward();
     // normalCompressor.setClosedLoopControl(true);
-    // !
+
+    // ENCODERS
     // leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // resetEncoders();
 
+    // GYRO
     gyro = new AnalogGyro(0);
     gyro.calibrate();
   }

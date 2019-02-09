@@ -23,11 +23,15 @@ public class Cargo extends Subsystem {
 
         private static CargoState currentState = READY;
 
-        public static void setCurrentState(CargoState state) {
+        public static void set(CargoState state) {
             currentState = state;
         }
 
-        public static CargoState checkState() {
+        public static CargoState get() {
+            return currentState;
+        }
+
+        public static CargoState check() {
             if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward) {
                 if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward) {
                     currentState = INVALID;
@@ -41,45 +45,6 @@ public class Cargo extends Subsystem {
             return currentState;
         }
     }
-
-    /* 
-    // public enum CargoState {
-    // OPENED, LAUNCH, TOPOPEN, INCORRECT;
-
-    // private static CargoState currentState = TOPOPEN;
-
-    // public static CargoState checkState() {
-    // CargoState state = TOPOPEN;
-
-    // if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse
-    // && Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward) {
-    // state = TOPOPEN;
-    // } else if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse
-    // && Robot.cargo.getCargoLowerSolenoidValue() == Value.kReverse) {
-    // state = OPENED;
-    // } else if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward
-    // && Robot.cargo.getCargoLowerSolenoidValue() == Value.kReverse) {
-    // state = INCORRECT;
-    // } else if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward
-    // && Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward) {
-    // state = LAUNCH;
-    // }
-    // return state;
-    // }
-
-    // public static void setState(CargoState state) {
-    // currentState = state;
-    // }
-
-    // public static CargoState getState() {
-    // return currentState;
-    // }
-
-    // public static CargoState get() {
-    // return currentState;
-    // }
-    // }
-    */
 
     public void toggleCargoLowerSolenoid(Value value) {
         if (value == Value.kForward) {

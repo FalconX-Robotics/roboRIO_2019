@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.HatchPanelGrabber.hatchPanelState;
+import frc.robot.subsystems.HatchPanelGrabber.HatchPanelGrabberState;
 
 public class ToggleHatch extends Command {
 
@@ -15,23 +15,23 @@ public class ToggleHatch extends Command {
     @Override
     protected void initialize() {
 
-        if (hatchPanelState.get() == hatchPanelState.OPENED) {
+        if (HatchPanelGrabberState.get() == HatchPanelGrabberState.OPENED) {
             // Push Solenoid in
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);
             // Grab Solenoid out
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward);
 
-        } else if (hatchPanelState.get() == hatchPanelState.CLOSED) {
+        } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.CLOSED) {
             // Push Solenoid in
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);
             // Grab Solenoid in
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
 
-        } else if (hatchPanelState.get() == hatchPanelState.LAUNCHING) {
+        } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.LAUNCHING) {
             // Grab Solenoid in (So it can't break)
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
 
-        } else if (hatchPanelState.get() == hatchPanelState.INVALID) {
+        } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.INVALID) {
             // Push Solenoid in (So it unbreaks)
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);
         }

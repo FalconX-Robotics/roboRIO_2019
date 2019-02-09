@@ -19,18 +19,18 @@ public class HatchPanelGrabber extends Subsystem {
         hatchPushSolenoid.set(false);
     }
 
-    public enum hatchPanelState {
+    public enum HatchPanelGrabberState {
         OPENED, LAUNCHING, CLOSED, INVALID;
 
-        private static hatchPanelState currentState = CLOSED;
+        private static HatchPanelGrabberState currentState = CLOSED;
 
-        public static hatchPanelState checkState() {
-            hatchPanelState state = INVALID;
+        public static HatchPanelGrabberState get() {
+            return currentState;
+        }
 
-            // check if both is close
-            // check if both is open
-            // check if push is open, grab is close
-            // check if push is close, grab is open
+        public static HatchPanelGrabberState check() {
+            HatchPanelGrabberState state = INVALID;
+
             if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kForward
                     && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == false) {
                 state = CLOSED;
@@ -45,10 +45,6 @@ public class HatchPanelGrabber extends Subsystem {
             SmartDashboard.putString("Hatch Panel State", state.toString());
 
             return state;
-        }
-
-        public static hatchPanelState get() {
-            return currentState;
         }
     }
 
