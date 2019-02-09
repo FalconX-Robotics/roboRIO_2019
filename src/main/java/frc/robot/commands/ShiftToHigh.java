@@ -14,14 +14,12 @@ public class ShiftToHigh extends Command {
 
     @Override
     public void initialize() {
-        
+
         if (GearShiftState.check(GearShiftState.LOW)) {
             Robot.drivetrain.shifterForward();
-            Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
 
         } else if (GearShiftState.check(GearShiftState.HIGH)) {
-           Robot.drivetrain.shifterForward();
-           Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
+            Robot.drivetrain.shifterForward();
         }
     }
 

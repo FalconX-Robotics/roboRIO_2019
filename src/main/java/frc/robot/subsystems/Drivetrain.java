@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 //import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +32,7 @@ public class Drivetrain extends Subsystem {
   private Compressor normalCompressor = new Compressor(RobotMap.COMPRESSOR);
 
   private AnalogGyro gyro;
-  //!
+  // !
   // private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A,
   // RobotMap.LEFT_ENCODER_CHANNEL_B, false,
   // Encoder.EncodingType.k4X);
@@ -45,8 +47,8 @@ public class Drivetrain extends Subsystem {
     // Rear motor controllers follow front motor controllers
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
-    normalCompressor.setClosedLoopControl(true);
-    //!
+    // normalCompressor.setClosedLoopControl(true);
+    // !
     // leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // resetEncoders();
@@ -63,8 +65,11 @@ public class Drivetrain extends Subsystem {
     drivetrain.tankDrive(leftSpeed, rightSpeed);
   }
 
+  // public void arcadeDrive(double speed, double rotation) {
+  // drivetrain.arcadeDrive(speed, rotation);
+  // }
+
   // ENCODERS
-  //!
   // public void resetEncoders() {
   // leftEncoder.reset();
   // rightEncoder.reset();
@@ -73,7 +78,7 @@ public class Drivetrain extends Subsystem {
   public double findDistancePerPulse(double coutsPerRevolution) {
     return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
   }
-  //!
+  // !
   // public double getEncodersCount() {
   // return (leftEncoder.get() + leftEncoder.get()) / 2;
   // return (leftEncoder.get() + rightEncoder.get() / 2);
@@ -130,95 +135,89 @@ public class Drivetrain extends Subsystem {
 
   }
 
-    public void shifterForward() {
-      shifter.set(Value.kForward);
-      GearShiftState.set(GearShiftState.HIGH);
+  public void shifterForward() {
+    shifter.set(Value.kForward);
+    GearShiftState.set(GearShiftState.HIGH);
+  }
+
+  public void shifterBackward() {
+    shifter.set(Value.kReverse);
+    GearShiftState.set(GearShiftState.LOW);
+  }
+
+  public GearShiftState getShifterValue() {
+    return GearShiftState.get();
+  }
+
+  // FACE
+  public enum DirectionState {
+    FORWARD, BACKWARD, INVALID;
+
+    private static DirectionState currentState = DirectionState.FORWARD;
+
+    public static DirectionState get() {
+      return currentState;
     }
 
-    public void shifterBackward() {
-      shifter.set(Value.kReverse);
-      GearShiftState.set(GearShiftState.LOW);
+    public static void set(DirectionState state) {
+      currentState = state;
+      SmartDashboard.putString("Direction State", currentState.toString());
     }
 
-    public GearShiftState getShifterValue() {
-      return GearShiftState.get();
-    }
+    public static DirectionState update() {
+      DirectionState state;
 
-    // FACE
-    public enum DirectionState {
-      FORWARD, BACKWARD, INVALID;
-
-      private static DirectionState currentState = DirectionState.FORWARD;
-
-      public static DirectionState get() {
-        return currentState;
-      }
-
-      public static void set(DirectionState state) {
-        currentState = state;
-        SmartDashboard.putString("Direction State", currentState.toString());
-      }
-
-      public static DirectionState update() {
-        DirectionState state;
-
-        if (Robot.drivetrain.getLeftDirection() != Robot.drivetrain.getRightDirection()) {
-            state = INVALID;
-        } else {
-          if (Robot.drivetrain.getLeftDirection() == true) {
-            state = BACKWARD;
-          }
-          state = FORWARD;
+      if (Robot.drivetrain.getLeftDirection() != Robot.drivetrain.getRightDirection()) {
+        state = INVALID;
+      } else {
+        if (Robot.drivetrain.getLeftDirection() == true) {
+          state = BACKWARD;
         }
-
-        set(state);
-        return state;
+        state = FORWARD;
       }
 
-      public static boolean check(DirectionState state) {
-        if (DirectionState.get() == state) {
-          return true;
-        }
-        return false;
+      set(state);
+      return state;
+    }
+
+    public static boolean check(DirectionState state) {
+      if (DirectionState.get() == state) {
+        return true;
       }
-      /*
-      // public static DirectionState evaluate() {
-      // private DirectionState state;
-      // if (leftSide.getInverted() && rightSide.getInverted()) {
-      // state = BACKWARD;
-      // } else if (!(leftSide.getInverted() && rightSide.getInverted())) {
-      // state = FORWARD;
-      // } else {
-      // state = INVALID;
-      // }
-      // return state;
-      // }
-      */
+      return false;
     }
+    /*
+     * // public static DirectionState evaluate() { // private DirectionState state;
+     * // if (leftSide.getInverted() && rightSide.getInverted()) { // state =
+     * BACKWARD; // } else if (!(leftSide.getInverted() && rightSide.getInverted()))
+     * { // state = FORWARD; // } else { // state = INVALID; // } // return state;
+     * // }
+     */
+  }
 
-    public void faceForwards() {
-      leftSide.setInverted(false);
-      rightSide.setInverted(false);
-      DirectionState.update();
-    }
+  public void faceForwards() {
+    leftSide.setInverted(false);
+    rightSide.setInverted(false);
+    DirectionState.update();
+  }
 
-    public void faceBackwards() {
-      leftSide.setInverted(true);
-      rightSide.setInverted(true);
-      DirectionState.update();
-    }
+  public void faceBackwards() {
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
+    DirectionState.update();
+  }
 
-    public boolean getLeftDirection() {
-      return leftSide.getInverted();
-    }
+  public boolean getLeftDirection() {
+    return leftSide.getInverted();
+  }
 
-    public boolean getRightDirection() {
-      return rightSide.getInverted();
-    }
+  public boolean getRightDirection() {
+    return rightSide.getInverted();
+  }
 
-    @Override
-    protected void initDefaultCommand() {
-      setDefaultCommand(new TankDriveWithXbox());
-    }
+  @Override
+  protected void initDefaultCommand() {
+    setDefaultCommand(new TankDriveWithXbox());
+  }
 
 }
