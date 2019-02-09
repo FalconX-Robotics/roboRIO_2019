@@ -8,18 +8,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import frc.robot.util.Logger;
-
-import java.io.IOException;
-import java.util.Dictionary;
-import java.util.Hashtable;
-
 import edu.wpi.first.wpilibj.AnalogGyro;
 
 /**
@@ -36,21 +31,12 @@ public class Robot extends TimedRobot {
   public static Cargo cargo;
   public static ToggleGear toggleGearCommand;
   public static String fileSeparator = System.getProperty("file.separator");
-  // public static Logger errorLog = new Logger("errorLog", "src" + fileSeparator + "main" + fileSeparator + "java"
-      // + fileSeparator + "frc" + fileSeparator + "robot" + fileSeparator + "util", true, false); // ez;
 
   // MAKE THIS LAST
   public static OI oi;
 
-  // private static Dictionary commandsDictionary = new Hashtable();
-
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  // public static void addToCommandsTable() {
-  // commandsDictionary.put("ToggleGear", new ToggleGear());
-  // commandsDictionary.put("WaitCommand", new WaitCommand());
-  // }
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -59,7 +45,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // drivetrain = new Drivetrain();
-
     // hatchPanelGrabber = new HatchPanelGrabber();
     // climber = new Climber();
     // cargo = new Cargo();
@@ -68,24 +53,11 @@ public class Robot extends TimedRobot {
     // MAKE THIS LAST
     // oi = new OI();
 
-    // drivetrain.shifterBackward();
-
     // SMART_DASH_BOARD
-    // addToCommandsTable();
-    // toggleGearCommand = new ToggleGear();
-
     SmartDashboard.putData("Auto mode", m_chooser);
-    // Subsystems
     // SmartDashboard.putData("Drivetrain", drivetrain);
-    // SmartDashboard.putData("Climber", new Climber());
-    // SmartDashboard.putData("HatchPanelGrabber", new HatchPanelGrabber());
-
-    // Command
-    // for (String name : commandsDictionary.keySet()) {
-
-    // }
-
-    // errorLog.log("Robot initialized");
+    // SmartDashboard.putData("Climber", Climber);
+    // SmartDashboard.putData("HatchPanelGrabber", HatchPanelGrabber;
   }
 
   /**
@@ -109,6 +81,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    cargo.toggleCargoUpperSolenoid(Value.kOff);
+    cargo.toggleCargoLowerSolenoid(Value.kForward);
+    climber.setFrontSolenoid(Value.kReverse);
+    climber.setBackSolenoid(Value.kReverse);
+
+    Climber.ClimberState.set(Climber.ClimberState.READY);
   }
 
   @Override

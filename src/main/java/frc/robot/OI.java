@@ -42,9 +42,9 @@ public class OI {
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
   public static final double TRIGGER_THRESHOLD = 0.1;
 
-  public static final int CLIMBER_INITIALIZE_BUTTON = 4; // Xbox Y button
-  public static final int CLIMBER_FRONT_BUTTON = 8; // Xbox Start button
-  public static final int CLIMBER_BACK_BUTTON = 7; // Xbox Select button
+  public static final int CLIMBER_INITIALIZE_BUTTON = 8; // Xbox Start button
+  public static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
+  public static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
   // Driver Two
   public static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
   public static final int TOGGLE_LOWER_CARGO_BUTTON = 1; // Xbox A Button
@@ -82,19 +82,19 @@ public class OI {
     changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
     // Climber (Driver One)
-    //!
-    // initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
+    // !
+    // initializeClimberButton = new JoystickButton(driverOne,
+    // CLIMBER_INITIALIZE_BUTTON);
     // climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
     // climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
-    
 
     // Hatch (Driver Two)
-    //!
+    // !
     // toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
     // launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
 
     // Cargo (Driver Two)
-    //!
+    // !
     // toggleUpperCargoButton = new JoystickButton(driverTwo,
     // TOGGLE_UPPER_CARGO_BUTTON);
     // toggleLowerCargoButton = new JoystickButton(driverTwo,
@@ -115,18 +115,18 @@ public class OI {
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
     // Climber (Driver One)
-    //!
+    // !
     // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
     // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
     // initializeClimberButton.whenPressed(new InitializeClimber());
 
     // Hatch (Driver Two)
-    //!
+    // !
     // toggleHatchButton.whenPressed(new ToggleHatch());
     // launchHatchButton.whenPressed(new LaunchPanel());
 
     // Cargo (Driver Two)
-    //!
+    // !
     // toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());
     // toggleLowerCargoButton.whenPressed(new LaunchLowerCargo());
   }

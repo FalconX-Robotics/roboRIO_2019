@@ -37,8 +37,16 @@ public class Vision {
         obiWan.addEntryListener("rectangle2", (table, key, entry, rectangleTwoValue, flags) -> {
             // Values are:
             // Left to right; and if x value is the same, it's up to down
-            double[][] rectLeft = organize(rectangleOneValue.getDoubleArray());
-            double[][] rectRight = organize(rectangleTwoValue.getDoubleArray());
+            double[] doubleArrayOne = rectangleOneValue.getDoubleArray(),
+                    doubleArrayTwo = rectangleTwoValue.getDoubleArray();
+
+            if (doubleArrayOne.length + doubleArrayTwo.length < 16) {
+                SmartDashboard.putBoolean("Found rectangles", false);
+                return;
+            }
+            SmartDashboard.putBoolean("Found rectangles", true);
+
+            double[][] rectLeft = organize(doubleArrayOne), rectRight = organize(doubleArrayTwo);
 
             // find rect side
             // average x value of rect 1 is more rect 2 then rect 1 is right
@@ -141,10 +149,6 @@ public class Vision {
     }
 
     public static double getPerWidth(double[][] array) {
-        // d(P, Q) = sqrt(p(x2 − x1)^2 + (y2 − y1)^2): equation to get distance
-        // return Math.sqrt(Math.pow((array[1][0] - array[0][0]), 2) +
-        // Math.pow((array[1][1] - array[0][1]), 2));
-
         // use 2th, and 3th value
         double height = Math.abs(array[1][1] - array[2][1]);
         SmartDashboard.putNumber("Pixel height", height);
@@ -155,10 +159,10 @@ public class Vision {
         double average = 0;
 
         for (double n : nums) {
-            average += n;
+            average = n + average;
         }
 
-        return average / nums.length;
+        return (double) average / nums.length;
     }
 
     public static double[] getDimensionArray(double[][] array, int dim) {
