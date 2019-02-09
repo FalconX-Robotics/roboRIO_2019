@@ -42,7 +42,8 @@ public class RobotMap {
   public static final int CLIMBER_MOTOR = 4;
 
   public static final int COMPRESSOR = 0;
-
+  public static final int RELAY_COMPRESSOR = 1;
+  public static final int PRESSURE_SWITCH_DI = 0;
   public static final int LEFT_ENCODER_CHANNEL_A = 0;
   public static final int LEFT_ENCODER_CHANNEL_B = 1;
   public static final int RIGHT_ENCODER_CHANNEL_A = 0;

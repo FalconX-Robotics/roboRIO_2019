@@ -36,7 +36,8 @@ public class Robot extends TimedRobot {
   public static Cargo cargo;
   public static ToggleGear toggleGearCommand;
   public static String fileSeparator = System.getProperty("file.separator");
-  public static Logger errorLog = new Logger("errorLog", "src" + fileSeparator + "main" + fileSeparator + "java" + fileSeparator + "frc" + fileSeparator + "robot" + fileSeparator + "util", true, false); //ez;
+  // public static Logger errorLog = new Logger("errorLog", "src" + fileSeparator + "main" + fileSeparator + "java"
+      // + fileSeparator + "frc" + fileSeparator + "robot" + fileSeparator + "util", true, false); // ez;
 
   // MAKE THIS LAST
   public static OI oi;
@@ -57,24 +58,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain = new Drivetrain();
-    //!
-    //hatchPanelGrabber = new HatchPanelGrabber();
-    //climber = new Climber();
-    //cargo = new Cargo();
+    // drivetrain = new Drivetrain();
+
+    // hatchPanelGrabber = new HatchPanelGrabber();
+    // climber = new Climber();
+    // cargo = new Cargo();
+    Vision.initialize();
 
     // MAKE THIS LAST
-    oi = new OI();
+    // oi = new OI();
 
     // drivetrain.shifterBackward();
 
     // SMART_DASH_BOARD
     // addToCommandsTable();
-    toggleGearCommand = new ToggleGear();
+    // toggleGearCommand = new ToggleGear();
 
     SmartDashboard.putData("Auto mode", m_chooser);
     // Subsystems
-    SmartDashboard.putData("Drivetrain", drivetrain);
+    // SmartDashboard.putData("Drivetrain", drivetrain);
     // SmartDashboard.putData("Climber", new Climber());
     // SmartDashboard.putData("HatchPanelGrabber", new HatchPanelGrabber());
 
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot {
 
     // }
 
-    errorLog.log("Robot initialized");
+    // errorLog.log("Robot initialized");
   }
 
   /**
@@ -97,7 +99,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Gyro angle", drivetrain.getGyroAngle());
+    // SmartDashboard.putNumber("Gyro angle", drivetrain.getGyroAngle());
   }
 
   /**
