@@ -12,17 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.ToggleHatch;
-import frc.robot.commands.ChangeDirection;
-import frc.robot.commands.InitializeClimber;
-import frc.robot.commands.LaunchLowerCargo;
-import frc.robot.commands.LaunchPanel;
-import frc.robot.commands.LaunchUpperCargo;
-import frc.robot.commands.ShiftToHigh;
-import frc.robot.commands.ShiftToLow;
-import frc.robot.commands.ToggleBackClimberSolenoid;
-import frc.robot.commands.ToggleFrontClimberSolenoid;
-import frc.robot.commands.ToggleGear;
+import frc.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -70,8 +60,8 @@ public class OI {
   private Button launchHatchButton;
 
   // Cargo (Driver Two)
-  private Button toggleUpperCargoButton;
   private Button toggleLowerCargoButton;
+  private Button toggleUpperCargoButton;
 
   public OI() {
     // Initialize button

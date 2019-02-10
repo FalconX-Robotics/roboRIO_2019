@@ -44,18 +44,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // drivetrain = new Drivetrain();
+    drivetrain = new Drivetrain();
     // hatchPanelGrabber = new HatchPanelGrabber();
     // climber = new Climber();
     // cargo = new Cargo();
-    Vision.initialize();
+    // Vision.initialize();
 
     // MAKE THIS LAST
-    // oi = new OI();
+    oi = new OI();
 
     // SMART_DASH_BOARD
     SmartDashboard.putData("Auto mode", m_chooser);
-    // SmartDashboard.putData("Drivetrain", drivetrain);
+    SmartDashboard.putData("Drivetrain", drivetrain);
     // SmartDashboard.putData("Climber", Climber);
     // SmartDashboard.putData("HatchPanelGrabber", HatchPanelGrabber;
   }
@@ -81,12 +81,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    cargo.toggleCargoUpperSolenoid(Value.kOff);
-    cargo.toggleCargoLowerSolenoid(Value.kForward);
-    climber.setFrontSolenoid(Value.kReverse);
-    climber.setBackSolenoid(Value.kReverse);
+    // cargo.toggleCargoUpperSolenoid(Value.kOff);
+    // cargo.toggleCargoLowerSolenoid(Value.kForward);
+    // climber.setFrontSolenoid(Value.kReverse);
+    // climber.setBackSolenoid(Value.kReverse);
 
-    Climber.ClimberState.set(Climber.ClimberState.READY);
+    // Climber.ClimberState.set(Climber.ClimberState.READY);
   }
 
   @Override

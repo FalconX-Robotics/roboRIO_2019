@@ -10,7 +10,7 @@ public class InitializeClimber extends CommandGroup {
         super("InitializeClimber");
         ClimberState.set(ClimberState.INITIALIZED);
         // Open two Solenoids
-        addParallel(new ClimberToggleFrontSolenoid(Value.kForward));
+        addSequential(new ClimberToggleFrontSolenoid(Value.kForward));
         addSequential(new ClimberToggleBackSolenoid(Value.kForward));
         addSequential(new WaitCommand(), 2);
     }

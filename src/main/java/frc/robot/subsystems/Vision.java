@@ -59,14 +59,9 @@ public class Vision {
             SmartDashboard.putString("Left rect", Arrays.deepToString(rectLeft));
             SmartDashboard.putString("Right rect", Arrays.deepToString(rectRight));
 
-            // array1: left rect
-            // array2: right rect
-
-            // rect 1 (left)
             double perLeftHeight = getPerWidth(rectLeft);
             double rectangleLeft = findDistanceToCamera(knownHeight, focalLength, perLeftHeight);
 
-            // rect 2 (right)
             double perRightHeight = getPerWidth(rectRight);
             double rectangleRight = findDistanceToCamera(knownHeight, focalLength, perRightHeight);
 
@@ -103,8 +98,6 @@ public class Vision {
         SmartDashboard.putNumber("Horizontal distance", x);
         SmartDashboard.putNumber("Vertical distance", y);
 
-        // Robot.errorLog.log("X: " + x, "Y: " + y);
-
         return new double[] { x, y };
     }
 
@@ -112,8 +105,10 @@ public class Vision {
         return (width * Math.cos(76)) + (height * Math.cos(14));
     }
 
-    public static double findDistanceToCamera(double knownHeight, double focalLength, double perHeight) {
-        return (double) (knownHeight * focalLength) / perHeight;
+    public static double findDistanceToCamera(double objectHeight, double focalLength, double imageHeight) {
+        double realHeight = 73.5; // in cm because imperial is ew
+        double camHeight = 95;
+        return (double) (imageHeight * realHeight * focalLength) / (objectHeight * camHeight);
     }
 
     public static double[][] organizeToTuples(double[] array) {

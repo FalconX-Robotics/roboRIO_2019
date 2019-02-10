@@ -172,8 +172,9 @@ public class Drivetrain extends Subsystem {
       } else {
         if (Robot.drivetrain.getLeftDirection() == true) {
           state = BACKWARD;
+        } else {
+            state = FORWARD;
         }
-        state = FORWARD;
       }
 
       set(state);
