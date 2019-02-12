@@ -8,7 +8,7 @@ import frc.robot.subsystems.HatchPanelGrabber.HatchPanelGrabberState;
 public class ToggleHatch extends Command {
 
     public ToggleHatch() {
-        super("ToggleHatch");
+        super("Toggle Hatch");
         requires(Robot.hatchPanelGrabber);
     }
 

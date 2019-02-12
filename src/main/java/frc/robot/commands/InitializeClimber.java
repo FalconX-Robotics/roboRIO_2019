@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 public class InitializeClimber extends CommandGroup {
 
     public InitializeClimber() {
-        super("InitializeClimber");
+        super("Initialize Climber");
         ClimberState.set(ClimberState.INITIALIZED);
         // Open two Solenoids
         addSequential(new ClimberToggleFrontSolenoid(Value.kForward));

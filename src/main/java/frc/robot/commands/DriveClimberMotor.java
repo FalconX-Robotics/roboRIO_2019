@@ -7,7 +7,7 @@ import frc.robot.subsystems.Climber.ClimberState;
 public class DriveClimberMotor extends Command {
 
     public DriveClimberMotor() {
-        super("DriveClimberMotor");
+        super("Drive Climber Motor");
         requires(Robot.climber);
     }
 

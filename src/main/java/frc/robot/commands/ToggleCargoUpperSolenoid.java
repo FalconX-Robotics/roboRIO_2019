@@ -9,7 +9,7 @@ public class ToggleCargoUpperSolenoid extends InstantCommand {
     Value toggleValue;
 
     public ToggleCargoUpperSolenoid(Value toggleValue) {
-        super("ToggleCargoUpperSolenoid");
+        super("Toggle Cargo Upper Solenoid");
         this.toggleValue = toggleValue;
     }
 

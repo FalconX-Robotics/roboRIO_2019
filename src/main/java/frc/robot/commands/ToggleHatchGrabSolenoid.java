@@ -8,7 +8,7 @@ public class ToggleHatchGrabSolenoid extends InstantCommand {
     private Value toggleValue;
 
     public ToggleHatchGrabSolenoid(Value toggleValue) {
-        super("ToggleHatchGrabSolenoid");
+        super("Toggle Hatch Grab Solenoid");
         this.toggleValue = toggleValue;
     }
 
