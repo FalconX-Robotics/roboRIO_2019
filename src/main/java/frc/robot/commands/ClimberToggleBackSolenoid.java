@@ -8,7 +8,7 @@ public class ClimberToggleBackSolenoid extends InstantCommand {
     private Value toValue;
 
     public ClimberToggleBackSolenoid(Value toValue) {
-        super("ClimberToggleBackSolenoid");
+        super("Climber Toggle Back Solenoid");
         this.toValue = toValue;
     }
 
