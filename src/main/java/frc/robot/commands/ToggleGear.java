@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain.GearShiftState;
@@ -8,7 +7,7 @@ import frc.robot.subsystems.Drivetrain.GearShiftState;
 public class ToggleGear extends Command {
 
     public ToggleGear() {
-        super("ToggleGear");
+        super("Toggle Gear");
         requires(Robot.drivetrain);
         /*
          * // super(Robot.drivetrain.getShifterValue() == Value.kForward ?

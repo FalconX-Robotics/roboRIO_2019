@@ -7,7 +7,7 @@ public class ToggleHatchPushSolenoid extends InstantCommand {
     private boolean toggleValue;
 
     public ToggleHatchPushSolenoid(boolean toggleValue) {
-        super("ToggleHatchPushSolenoid");
+        super("Toggle Hatch Push Solenoid");
         this.toggleValue = toggleValue;
     }
 

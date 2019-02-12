@@ -7,9 +7,9 @@ public class LaunchLowerCargo extends CommandGroup {
 
     public LaunchLowerCargo() {
         super("Launch Lower Cargo");
-        // Reverse then immediately push out when button goes down
+        // Reverse then immediately push out when ball goes down
         addSequential(new ToggleCargoLowerSolenoid(Value.kReverse));
-        addSequential(new WaitCommand(), 2); // A delay of 2 second
+        addSequential(new WaitCommand(), 2); // A delay of 2 seconds
         addSequential(new ToggleCargoLowerSolenoid(Value.kForward));
     }
 

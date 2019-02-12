@@ -2,11 +2,13 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.followers.EncoderFollower;
 
 import java.util.Arrays;
 
@@ -18,10 +20,13 @@ public class Vision {
     private static NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
     private static NetworkTable obiWan;
 
-    private static double knownDistance = 1;
+    // private static double knownDistance = 1;
     private static double knownHeight = 5.75;
     private static NetworkTableValue rectangleOneValue;
     private static double focalLength = 200; // change later //218; 202; 191
+    private static EncoderFollower leftFollower;
+    private static EncoderFollower rightFollower;
+    private static Notifier followerNotifier;
 
     public static void initialize() {
         obiWan = networkTableInstance.getTable("ObiWan");
@@ -73,6 +78,21 @@ public class Vision {
             SmartDashboard.putNumber("Calculated y", y);
 
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
+    }
+
+    public static void followPath() {
+        if (leftFollower.isFinished() || rightFollower.isFinished()) {
+            followerNotifier.stop();
+        } else {
+            double leftSpeed = leftFollower.calculate((int) Robot.drivetrain.getLeftEncoderCount());
+            double rightSpeed = rightFollower.calculate((int) Robot.drivetrain.getRightEncoderCount());
+            double heading = Robot.drivetrain.getGyroAngle();
+            double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
+            double headingDifference = Pathfinder.boundHalfDegrees(desiredHeading - heading);
+            double turn = 0.8 * (-1.0 / 80.0) * headingDifference;
+            Robot.drivetrain.setLeftSide(leftSpeed + turn);
+            Robot.drivetrain.setRightSide(rightSpeed - turn);
+        }
     }
 
     public static double[] calculate(double a, double b) {
