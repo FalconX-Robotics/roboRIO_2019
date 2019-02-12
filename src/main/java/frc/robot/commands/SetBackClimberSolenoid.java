@@ -8,7 +8,7 @@ public class SetBackClimberSolenoid extends InstantCommand {
     private Value state;
 
     public SetBackClimberSolenoid(Value state) {
-        super("SetBackClimberSolenoid");
+        super("Set Back Climber Solenoid");
         this.state = state;
     }
 

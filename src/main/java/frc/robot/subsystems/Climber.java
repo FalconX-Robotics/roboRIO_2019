@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.DriveClimberMotor;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -18,6 +19,22 @@ public class Climber extends Subsystem {
 
     public Climber() {
         super("Climber");
+        setFrontSolenoid(Value.kReverse);
+        setBackSolenoid(Value.kReverse);
+    }
+
+    public enum ClimberState {
+        INITIALIZED, READY, INVALID;
+
+        private static ClimberState currentState = READY;
+
+        public static ClimberState get() {
+            return currentState;
+        }
+
+        public static void set(ClimberState state) {
+            currentState = state;
+        }
     }
 
     public void setClimberMotorSpeed(double speed) {
@@ -42,7 +59,6 @@ public class Climber extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
+        setDefaultCommand(new DriveClimberMotor());
     }
-
 }

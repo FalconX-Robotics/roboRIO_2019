@@ -9,12 +9,12 @@ public class ToggleCargoLowerSolenoid extends InstantCommand {
     Value toggleValue;
 
     public ToggleCargoLowerSolenoid(Value toggleValue) {
-        super("ToggleCargoLowerSolenoid");
+        super("Toggle Cargo Lower Solenoid");
         this.toggleValue = toggleValue;
     }
 
     public void initialize() {
-        if (CargoState.checkState() == CargoState.READY)
+        if (CargoState.check() == CargoState.READY)
             Robot.cargo.toggleCargoLowerSolenoid(toggleValue);
         else {
             Robot.cargo.toggleCargoUpperSolenoid(Value.kReverse);
@@ -23,26 +23,21 @@ public class ToggleCargoLowerSolenoid extends InstantCommand {
         }
     }
 }
-
-// package frc.robot.commands;
-
-// import edu.wpi.first.wpilibj.command.InstantCommand;
-// import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-// import frc.robot.Robot;
-// import frc.robot.subsystems.Cargo.CargoState;
-
-// public class ToggleCargoLowerSolenoid extends InstantCommand {
-
-// public ToggleCargoLowerSolenoid(Value toggleValue) {
-// super("ToggleLowerSolenoid");
-// }
-
-// public void initialize() {
-// CargoState state = CargoState.getState();
-
-// if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward
-// && Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward) {
-// CargoState.setState(CargoState.LAUNCH);
-// }
-// }
-// }
+/*
+ * // package frc.robot.commands;
+ * 
+ * // import edu.wpi.first.wpilibj.command.InstantCommand; // import
+ * edu.wpi.first.wpilibj.DoubleSolenoid.Value; // import frc.robot.Robot; //
+ * import frc.robot.subsystems.Cargo.CargoState;
+ * 
+ * // public class ToggleCargoLowerSolenoid extends InstantCommand {
+ * 
+ * // public ToggleCargoLowerSolenoid(Value toggleValue) { //
+ * super("ToggleLowerSolenoid"); // }
+ * 
+ * // public void initialize() { // CargoState state = CargoState.getState();
+ * 
+ * // if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward // &&
+ * Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward) { //
+ * CargoState.setState(CargoState.LAUNCH); // } // } // }
+ */

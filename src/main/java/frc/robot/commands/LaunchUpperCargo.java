@@ -1,15 +1,15 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class LaunchUpperCargo extends CommandGroup {
 
     public LaunchUpperCargo() {
-        // Pushes out, then retract
+        super("Launch Upper Cargo");
+        // Push ball out and in with cargo upper solenoid
         addSequential(new ToggleCargoUpperSolenoid(Value.kForward));
-        addSequential(new WaitCommand(), 0.5); // A delay of 2 second
+        addSequential(new WaitCommand(), 0.5); // A delay of 0.5 seconds
         addSequential(new ToggleCargoUpperSolenoid(Value.kReverse));
     }
-
 }
