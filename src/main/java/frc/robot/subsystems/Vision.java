@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -15,14 +16,18 @@ import java.util.Arrays;
 public class Vision {
 
     private static final double TAPE_WIDTH = 8;
+    private static final double CAMERA_HEIGHT = 95;
     private static double theta, B, d, alpha, x, y;
+    private static double[] vectorUno, vectorDos;
 
     private static NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
     private static NetworkTable obiWan;
+    private static NetworkTable smartDashboard;
 
     // private static double knownDistance = 1;
     private static double knownHeight = 5.75;
-    private static NetworkTableValue rectangleOneValue;
+    private static NetworkTableValue rectangleOneAngles;
+    private static NetworkTableValue rectangleTwoAngles;
     private static double focalLength = 200; // change later //218; 202; 191
     private static EncoderFollower leftFollower;
     private static EncoderFollower rightFollower;
@@ -30,52 +35,60 @@ public class Vision {
 
     public static void initialize() {
         obiWan = networkTableInstance.getTable("ObiWan");
-
+        smartDashboard = networkTableInstance.getTable("SmartDashboard");
+        NetworkTableEntry horizontal = smartDashboard.getEntry("horizontal");
+        NetworkTableEntry depth = smartDashboard.getEntry("depth");
         /*
          * ObiWan values: rectangle1: arrays with 8 intergers rectangle2: arrys with 8
          * intergers
          */
         obiWan.addEntryListener("rectangle1", (table, key, entry, value, flags) -> {
-            rectangleOneValue = value;
+            rectangleOneAngles = value;
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
 
         obiWan.addEntryListener("rectangle2", (table, key, entry, rectangleTwoValue, flags) -> {
+            rectangleTwoAngles = rectangleTwoValue;
             // Values are:
             // Left to right; and if x value is the same, it's up to down
-            double[] doubleArrayOne = rectangleOneValue.getDoubleArray(),
-                    doubleArrayTwo = rectangleTwoValue.getDoubleArray();
+            // double[] doubleArrayOne = rectangleOneValue.getDoubleArray(),
+            //         doubleArrayTwo = rectangleTwoValue.getDoubleArray();
 
-            if (doubleArrayOne.length + doubleArrayTwo.length < 16) {
-                SmartDashboard.putBoolean("Found rectangles", false);
-                return;
+            // if (doubleArrayOne.length + doubleArrayTwo.length < 16) {
+            //     SmartDashboard.putBoolean("Found rectangles", false);
+            //     return;
+            // }
+            // SmartDashboard.putBoolean("Found rectangles", true);
+
+            // double[][] rectLeft = organize(doubleArrayOne), rectRight = organize(doubleArrayTwo);
+
+            // // find rect side
+            // // average x value of rect 1 is more rect 2 then rect 1 is right
+            // if (average(getDimensionArray(rectLeft, 0)) > average(getDimensionArray(rectRight, 0))) {
+            //     double[][] copy = rectLeft.clone();
+            //     rectLeft = rectRight;
+            //     rectRight = copy;
+            // }
+
+            // SmartDashboard.putString("Left rect", Arrays.deepToString(rectLeft));
+            // SmartDashboard.putString("Right rect", Arrays.deepToString(rectRight));
+
+            // double perLeftHeight = getPerWidth(rectLeft);
+            // double rectangleLeft = findDistanceToCamera(knownHeight, focalLength, perLeftHeight);
+
+            // double perRightHeight = getPerWidth(rectRight);
+            // double rectangleRight = findDistanceToCamera(knownHeight, focalLength, perRightHeight);
+            SmartDashboard.putString("Length of rectangles", "One: " + rectangleOneAngles.getDoubleArray().length +  " Two: " + rectangleTwoValue.getDoubleArray().length);
+            if(rectangleOneAngles.getDoubleArray().length == 2) {
+                vectorUno = vectorize(rectangleOneAngles.getDoubleArray()[0], rectangleOneAngles.getDoubleArray()[1]);
+                vectorDos = vectorize(rectangleTwoAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[1]);
+                horizontal.setDouble((vectorUno[0]+vectorDos[0])/2);
+                depth.setDouble((vectorUno[2]+vectorDos[2])/2);
             }
-            SmartDashboard.putBoolean("Found rectangles", true);
+            // x = calculatedValues[0];
+            // y = calculatedValues[1];
 
-            double[][] rectLeft = organize(doubleArrayOne), rectRight = organize(doubleArrayTwo);
-
-            // find rect side
-            // average x value of rect 1 is more rect 2 then rect 1 is right
-            if (average(getDimensionArray(rectLeft, 0)) > average(getDimensionArray(rectRight, 0))) {
-                double[][] copy = rectLeft.clone();
-                rectLeft = rectRight;
-                rectRight = copy;
-            }
-
-            SmartDashboard.putString("Left rect", Arrays.deepToString(rectLeft));
-            SmartDashboard.putString("Right rect", Arrays.deepToString(rectRight));
-
-            double perLeftHeight = getPerWidth(rectLeft);
-            double rectangleLeft = findDistanceToCamera(knownHeight, focalLength, perLeftHeight);
-
-            double perRightHeight = getPerWidth(rectRight);
-            double rectangleRight = findDistanceToCamera(knownHeight, focalLength, perRightHeight);
-
-            double[] calculatedValues = calculate(rectangleLeft, rectangleRight);
-            x = calculatedValues[0];
-            y = calculatedValues[1];
-
-            SmartDashboard.putNumber("Calculated X", x);
-            SmartDashboard.putNumber("Calculated y", y);
+            // SmartDashboard.putNumber("Calculated X", x);
+            // SmartDashboard.putNumber("Calculated y", y);
 
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
     }
@@ -94,8 +107,15 @@ public class Vision {
             Robot.drivetrain.setRightSide(rightSpeed - turn);
         }
     }
-
+    public static double[] vectorize(double xAngle, double yAngle) {
+        double[] position = new double[3];
+        position[0] = Math.tan(Math.toRadians(xAngle))/Math.tan(Math.toRadians(yAngle));
+        position[1] = CAMERA_HEIGHT - 72.5;
+        position[2] = 1/Math.tan(Math.toRadians(yAngle));
+        return position;
+    }
     public static double[] calculate(double a, double b) {
+
         theta = Math.acos(-1 * (Math.pow(TAPE_WIDTH, 2) - Math.pow(a, 2) - Math.pow(b, 2)) / (2 * a * b));
         B = Math.asin(b * Math.sin(theta) / TAPE_WIDTH);
 

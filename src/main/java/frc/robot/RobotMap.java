@@ -23,10 +23,10 @@ public class RobotMap {
   public static final int SHIFTER_FORWARD = 0;
   public static final int SHIFTER_REVERSE = 1;
 
-  public static final int HATCH_GRAB_FORWARD = 4;
-  public static final int HATCH_GRAB_REVERSE = 5;
+  public static final int HATCH_GRAB_FORWARD = 0;
+  public static final int HATCH_GRAB_REVERSE = 1;
 
-  public static final int HATCH_PUSH = 6;
+  public static final int HATCH_PUSH = 2;
 
   public static final int FRONT_FORWARD_CLIMB_SOLENOID = 6;
   public static final int FRONT_REVERSE_CLIMB_SOLENOID = 7;
@@ -39,7 +39,7 @@ public class RobotMap {
   public static final int LOWER_PISTON_IN = 4;
   public static final int LOWER_PISTON_OUT = 5;
 
-  public static final int CLIMBER_MOTOR = 4;
+  public static final int CLIMBER_MOTOR = 6;
 
   public static final int COMPRESSOR = 0;
   public static final int RELAY_COMPRESSOR = 1;

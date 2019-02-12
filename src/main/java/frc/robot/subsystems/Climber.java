@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveClimberMotor;
 
@@ -11,9 +12,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Climber extends Subsystem {
 
-    private DoubleSolenoid frontSolenoid = new DoubleSolenoid(RobotMap.FRONT_FORWARD_CLIMB_SOLENOID,
+    private DoubleSolenoid frontSolenoid = new DoubleSolenoid(1, RobotMap.FRONT_FORWARD_CLIMB_SOLENOID,
             RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
-    private DoubleSolenoid backSolenoid = new DoubleSolenoid(RobotMap.BACK_FORWARD_CLIMB_SOLENOID,
+    private DoubleSolenoid backSolenoid = new DoubleSolenoid(1, RobotMap.BACK_FORWARD_CLIMB_SOLENOID,
             RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
     private WPI_TalonSRX climberMotor = new WPI_TalonSRX(RobotMap.CLIMBER_MOTOR);
 
@@ -34,6 +35,7 @@ public class Climber extends Subsystem {
 
         public static void set(ClimberState state) {
             currentState = state;
+            SmartDashboard.putString("Climber State", state.toString());
         }
     }
 
