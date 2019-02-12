@@ -6,6 +6,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.HatchPanelGrabber.HatchPanelGrabberState;
 
 public class ToggleHatch extends Command {
+    // private static boolean state = false;
 
     public ToggleHatch() {
         super("Toggle Hatch");
@@ -14,23 +15,17 @@ public class ToggleHatch extends Command {
 
     @Override
     protected void initialize() {
+        // state = !state;
+        // Robot.hatchPanelGrabber.toggleHatchPushSolenoid(state);
+
+        HatchPanelGrabberState.check();
 
         if (HatchPanelGrabberState.get() == HatchPanelGrabberState.OPENED) {
-            // Push Solenoid in
-            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);
             // Grab Solenoid out
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward);
-
         } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.CLOSED) {
-            // Push Solenoid in
-            Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);
             // Grab Solenoid in
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
-
-        } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.LAUNCHING) {
-            // Grab Solenoid in (So it can't break)
-            Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
-
         } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.INVALID) {
             // Push Solenoid in (So it unbreaks)
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);

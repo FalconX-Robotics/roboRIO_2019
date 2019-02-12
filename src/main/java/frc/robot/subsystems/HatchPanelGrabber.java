@@ -9,9 +9,9 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class HatchPanelGrabber extends Subsystem {
-    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(RobotMap.HATCH_GRAB_FORWARD,
+    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(1, RobotMap.HATCH_GRAB_FORWARD,
             RobotMap.HATCH_GRAB_REVERSE); // Middle piston
-    private Solenoid hatchPushSolenoid = new Solenoid(RobotMap.HATCH_PUSH); // Outside pistons
+    private Solenoid hatchPushSolenoid = new Solenoid(1, RobotMap.HATCH_PUSH); // Outside pistons
 
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
@@ -42,28 +42,22 @@ public class HatchPanelGrabber extends Subsystem {
                 state = OPENED;
             }
 
-            SmartDashboard.putString("Hatch Panel State", state.toString());
+            currentState = state;
+
+            SmartDashboard.putString("Hatch Panel Grabber State", state.toString());
 
             return state;
         }
     }
 
     public void toggleHatchGrabSolenoid(Value value) {
-        if (value == Value.kForward) {
-            SmartDashboard.putBoolean("Grab Soleniod", true);
-        } else {
-            SmartDashboard.putBoolean("Grab Soleniod", false);
-        }
+        SmartDashboard.putString("Grab Soleniod", value.toString());
         hatchGrabSolenoid.set(value);
     }
 
     public void toggleHatchPushSolenoid(Boolean value) {
-        if (value == true) {
-            SmartDashboard.putBoolean("Push Solenoid", true);
-        } else {
-            SmartDashboard.putBoolean("Push Solenoid", false);
-        }
-        hatchPushSolenoid.set(false);
+        SmartDashboard.putBoolean("Push Soleniod", value);
+        hatchPushSolenoid.set(value);
     }
 
     public Value getHatchGrabSolenoidValue() {

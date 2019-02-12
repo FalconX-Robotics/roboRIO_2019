@@ -37,24 +37,24 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    drivetrain = new Drivetrain();
-    hatchPanelGrabber = new HatchPanelGrabber();
-    climber = new Climber();
-    cargo = new Cargo();
+    //drivetrain = new Drivetrain();
+    //hatchPanelGrabber = new HatchPanelGrabber();
+    //climber = new Climber();
+    //cargo = new Cargo();
     Vision.initialize();
 
     // MAKE THIS LAST
     oi = new OI();
 
     // SMART_DASH_BOARD
-    SmartDashboard.putData("Drivetrain", drivetrain);
-    SmartDashboard.putData("Climber", climber);
-    SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
+    // SmartDashboard.putData("Drivetrain", drivetrain);
+    // SmartDashboard.putData("Climber", climber);
+    // SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
   }
 
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Gyro angle", drivetrain.getGyroAngle());
+   // SmartDashboard.putNumber("Gyro angle", drivetrain.getGyroAngle());
   }
 
   @Override

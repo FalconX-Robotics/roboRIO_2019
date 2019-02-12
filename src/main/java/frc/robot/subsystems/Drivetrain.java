@@ -49,8 +49,8 @@ public class Drivetrain extends Subsystem {
     rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     resetEncoders();
 
-    // GYRO
-    gyro.calibrate();
+    // // GYRO
+    // gyro.calibrate();
   }
 
   public double getGyroAngle() {

@@ -42,6 +42,8 @@ public class Cargo extends Subsystem {
                 currentState = INVALID;
             }
 
+            SmartDashboard.putString("Cargo State", currentState.toString());
+
             return currentState;
         }
     }
