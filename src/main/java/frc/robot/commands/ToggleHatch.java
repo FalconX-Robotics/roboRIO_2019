@@ -18,15 +18,13 @@ public class ToggleHatch extends Command {
         // state = !state;
         // Robot.hatchPanelGrabber.toggleHatchPushSolenoid(state);
 
-        HatchPanelGrabberState.check();
-
-        if (HatchPanelGrabberState.get() == HatchPanelGrabberState.OPENED) {
+        if (HatchPanelGrabberState.check(HatchPanelGrabberState.OPENED)) {
             // Grab Solenoid out
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward);
-        } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.CLOSED) {
+        } else if (HatchPanelGrabberState.check(HatchPanelGrabberState.CLOSED)) {
             // Grab Solenoid in
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
-        } else if (HatchPanelGrabberState.get() == HatchPanelGrabberState.INVALID) {
+        } else if (HatchPanelGrabberState.check(HatchPanelGrabberState.INVALID)) {
             // Push Solenoid in (So it unbreaks)
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);
         }

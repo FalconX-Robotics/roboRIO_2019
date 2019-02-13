@@ -37,6 +37,13 @@ public class Climber extends Subsystem {
             currentState = state;
             SmartDashboard.putString("Climber State", state.toString());
         }
+
+        public static boolean check(ClimberState state) {
+            if (ClimberState.get() == state) {
+                return true;
+            }
+            return false;
+        }
     }
 
     public void setClimberMotorSpeed(double speed) {
