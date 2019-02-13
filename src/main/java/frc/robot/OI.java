@@ -67,29 +67,26 @@ public class OI {
     // Bind button to command
 
     // Gear Shift (Driver One)
-    // shiftGearButton.whenPressed(new ToggleGear());
-    // secondShiftGearButton.whenPressed(new ToggleGear());
-    // shiftGearButton.whenPressed(new ShiftToLow());
-    // secondShiftGearButton.whenPressed(new ShiftToHigh());
+    shiftGearButton.whenPressed(new ToggleGear());
+    secondShiftGearButton.whenPressed(new ToggleGear());
+    shiftGearButton.whenPressed(new ShiftToLow());
+    secondShiftGearButton.whenPressed(new ShiftToHigh());
 
-    // // Change which direction is forward (Driver One)
-    // changeRobotDirectionButton.whenPressed(new ChangeDirection());
+    // Change which direction is forward (Driver One)
+    changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
     // // Climber (Driver One)
-    // // !
     // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
     // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
     // initializeClimberButton.whenPressed(new InitializeClimber());
 
-    // Hatch (Driver Two)
-    // !
-    // toggleHatchButton.whenPressed(new ToggleHatch());
-    // launchHatchButton.whenPressed(new LaunchPanel());
+    // Hatch (Driver Two)    
+    toggleHatchButton.whenPressed(new ToggleHatch());
+    launchHatchButton.whenPressed(new LaunchPanel());
 
     // Cargo (Driver Two)
-    // !
-    // toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());
-    // toggleLowerCargoButton.whenPressed(new LaunchLowerCargo());
+    toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());
+    toggleLowerCargoButton.whenPressed(new LaunchLowerCargo());
   }
 
   public double getDriverLeftTriggerAxis() {

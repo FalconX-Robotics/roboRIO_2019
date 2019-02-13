@@ -28,35 +28,46 @@ public class HatchPanelGrabber extends Subsystem {
             return currentState;
         }
 
-        public static HatchPanelGrabberState check() {
-            HatchPanelGrabberState state = INVALID;
+        public static void set(HatchPanelGrabberState state) {
+            currentState = state;
+        }
 
+        public static HatchPanelGrabberState update() {
             if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kForward
                     && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == false) {
-                state = CLOSED;
+                set(CLOSED);
             } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
                     && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == true) {
-                state = LAUNCHING;
+                set(LAUNCHING);
             } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
                     && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == false) {
-                state = OPENED;
+                set(OPENED);
+            } else {
+                set(INVALID);
             }
 
-            currentState = state;
+            SmartDashboard.putString("Hatch Panel Grabber State", currentState.toString());
 
-            SmartDashboard.putString("Hatch Panel Grabber State", state.toString());
+            return currentState;
+        }
 
-            return state;
+        public static boolean check(HatchPanelGrabberState state) {
+            if (HatchPanelGrabberState.get() == state) {
+                return true;
+            }
+            return false;
         }
     }
 
     public void toggleHatchGrabSolenoid(Value value) {
         SmartDashboard.putString("Grab Soleniod", value.toString());
+        HatchPanelGrabberState.update();
         hatchGrabSolenoid.set(value);
     }
 
     public void toggleHatchPushSolenoid(Boolean value) {
         SmartDashboard.putBoolean("Push Soleniod", value);
+        HatchPanelGrabberState.update();
         hatchPushSolenoid.set(value);
     }
 

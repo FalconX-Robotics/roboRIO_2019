@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.commands.TankDriveWithXbox;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Drivetrain extends Subsystem {
 
@@ -28,34 +31,40 @@ public class Drivetrain extends Subsystem {
 
   // private Compressor normalCompressor = new Compressor(RobotMap.COMPRESSOR);
 
-  private AnalogGyro gyro = new AnalogGyro(0);;
-  private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
-      Encoder.EncodingType.k4X);
-  private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
-      Encoder.EncodingType.k4X);
+  // private AnalogGyro gyro = new AnalogGyro(0);;
+  // private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
+  //     Encoder.EncodingType.k4X);
+  // private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
+  //     Encoder.EncodingType.k4X);
 
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
+  private static NetworkTable obiWan;
+  private static NetworkTableEntry directionStateEntry;
+
   public Drivetrain() {
     super("Drivetrain");
+    SmartDashboard.putString("Drivetrain", "enabled");
     // INITIALIZE
+    obiWan = NetworkTableInstance.getDefault().getTable("ObiWan");
+    directionStateEntry = obiWan.getEntry("DirectionState");
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
     shifterBackward();
     // normalCompressor.setClosedLoopControl(true);
 
     // ENCODERS
-    leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
-    rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
-    resetEncoders();
+    // leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    // rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    // resetEncoders();
 
-    // // GYRO
+    // GYRO
     // gyro.calibrate();
   }
 
-  public double getGyroAngle() {
-    return gyro.getAngle();
-  }
+  // public double getGyroAngle() {
+  //   return gyro.getAngle();
+  // }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drivetrain.tankDrive(leftSpeed, rightSpeed);
@@ -74,53 +83,53 @@ public class Drivetrain extends Subsystem {
   // }
 
   // ENCODERS
-  public void resetEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-  }
-
-  public double findDistancePerPulse(double coutsPerRevolution) {
-    return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
-  }
-
-  // !
-  public double getEncodersCount() {
-    return (leftEncoder.get() + rightEncoder.get() / 2);
-  }
-
-  public double getLeftEncoderCount() {
-    return leftEncoder.get();
-  }
-
-  public double getRightEncoderCount() {
-    return rightEncoder.get();
-  }
-
-  // public <T extends Number> T average(T[] nums) {
-  // T sum = 0;
-  // for (T num : nums) {
-  // sum = sum + num;
-  // }
-  // return sum;
+  // public void resetEncoders() {
+  //   leftEncoder.reset();
+  //   rightEncoder.reset();
   // }
 
-  public double getLeftEncoderDistance() {
-    return leftEncoder.getDistance();
-  }
+  // public double findDistancePerPulse(double coutsPerRevolution) {
+  //   return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
+  // }
 
-  public double getRightEncoderDistance() {
-    return rightEncoder.getDistance();
-  }
+  // // !
+  // public double getEncodersCount() {
+  //   return (leftEncoder.get() + rightEncoder.get() / 2);
+  // }
 
-  // returns speed of drivetrain in cm/s
-  public double getSpeed() {
-    return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
-  }
+  // public double getLeftEncoderCount() {
+  //   return leftEncoder.get();
+  // }
 
-  // returns average of encoder distances
-  public double getEncodersDistance() {
-    return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
-  }
+  // public double getRightEncoderCount() {
+  //   return rightEncoder.get();
+  // }
+
+  // // public <T extends Number> T average(T[] nums) {
+  // // T sum = 0;
+  // // for (T num : nums) {
+  // // sum = sum + num;
+  // // }
+  // // return sum;
+  // // }
+
+  // public double getLeftEncoderDistance() {
+  //   return leftEncoder.getDistance();
+  // }
+
+  // public double getRightEncoderDistance() {
+  //   return rightEncoder.getDistance();
+  // }
+
+  // // returns speed of drivetrain in cm/s
+  // public double getSpeed() {
+  //   return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
+  // }
+
+  // // returns average of encoder distances
+  // public double getEncodersDistance() {
+  //   return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
+  // }
 
   // SHIFTER
   public enum GearShiftState {
@@ -173,6 +182,7 @@ public class Drivetrain extends Subsystem {
     public static void set(DirectionState state) {
       currentState = state;
       SmartDashboard.putString("Direction State", currentState.toString());
+      directionStateEntry.setString(state.toString());
     }
 
     public static DirectionState update() {
