@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,17 +43,17 @@ public class Robot extends TimedRobot {
     // cargo = new Cargo();
     // Vision.initialize();
 
-    if (RobotMap.DRIVETRAIN_ENABLED) {
+    // if (RobotMap.DRIVETRAIN_ENABLED) {
       drivetrain = new Drivetrain();
-    } if (RobotMap.HATCH_PANEL_GRABBER_ENABLED) {
+    // } if (RobotMap.HATCH_PANEL_GRABBER_ENABLED) {
       hatchPanelGrabber = new HatchPanelGrabber();
-    } if (RobotMap.CLIMBER_ENABLED) {
-      climber = new Climber();
-    } if (RobotMap.CARGO_ENABLED) {
+    // } if (RobotMap.CLIMBER_ENABLED) {
+      // climber = new Climber();
+    // } if (RobotMap.CARGO_ENABLED) {
       cargo = new Cargo();
-    } if (RobotMap.VISION_ENABLED) {
+    // } if (RobotMap.VISION_ENABLED) {
       //Vision.initialize();
-    }
+    // }
 
     // MAKE THIS LAST
     oi = new OI();

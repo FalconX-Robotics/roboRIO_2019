@@ -25,6 +25,7 @@ public class HatchPanelGrabber extends Subsystem {
         private static HatchPanelGrabberState currentState = CLOSED;
 
         public static HatchPanelGrabberState get() {
+            SmartDashboard.putString("HatchPanelGrabberState", currentState.toString());
             return currentState;
         }
 

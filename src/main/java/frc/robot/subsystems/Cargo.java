@@ -9,19 +9,18 @@ import frc.robot.Robot;
 
 public class Cargo extends Subsystem {
     private DoubleSolenoid cargoUpperSolenoid = new DoubleSolenoid(RobotMap.CARGO_UPPER_PISTON_IN, RobotMap.CARGO_UPPER_PISTON_OUT);
-
     private DoubleSolenoid cargoLowerSolenoid = new DoubleSolenoid(RobotMap.CARGO_LOWER_PISTON_IN, RobotMap.CARGO_LOWER_PISTON_OUT);
 
     public Cargo() {
         super("Cargo Push");
-        toggleCargoUpperSolenoid(Value.kOff);
-        toggleCargoLowerSolenoid(Value.kForward);
+        cargoUpperSolenoid.set(Value.kOff);
+        cargoLowerSolenoid.set(Value.kForward);
     }
 
     public enum CargoState {
-        READY, INVALID;
+        TOPREADY, BOTTOMREADY, TOPLAUNCH, INVALID;
 
-        private static CargoState currentState = READY;
+        private static CargoState currentState = TOPREADY;
 
         public static void set(CargoState state) {
             currentState = state;
@@ -32,15 +31,22 @@ public class Cargo extends Subsystem {
         }
 
         public static CargoState update() {
-            if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward) {
-                if (Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward) {
-                    set(INVALID);
-                } else {
-                    set(READY);
-                }
-            } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kReverse) {
+            if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward 
+            && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
+                set(TOPREADY);
+
+            } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kReverse 
+            && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
+                set(BOTTOMREADY);
+
+            } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward 
+            && Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward) {
+                set(TOPLAUNCH);
+
+            } else {
                 set(INVALID);
             }
+
 
             SmartDashboard.putString("Cargo State", currentState.toString());
 

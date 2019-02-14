@@ -14,7 +14,7 @@ public class ToggleCargoLowerSolenoid extends InstantCommand {
     }
 
     public void initialize() {
-        if (CargoState.check(CargoState.READY))
+        if (!CargoState.check(CargoState.INVALID))
             Robot.cargo.toggleCargoLowerSolenoid(toggleValue);
         else {
             Robot.cargo.toggleCargoUpperSolenoid(Value.kReverse);
