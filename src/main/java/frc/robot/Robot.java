@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     // } if (RobotMap.HATCH_PANEL_GRABBER_ENABLED) {
       hatchPanelGrabber = new HatchPanelGrabber();
     // } if (RobotMap.CLIMBER_ENABLED) {
-      // climber = new Climber();
+      climber = new Climber();
     // } if (RobotMap.CARGO_ENABLED) {
       cargo = new Cargo();
     // } if (RobotMap.VISION_ENABLED) {

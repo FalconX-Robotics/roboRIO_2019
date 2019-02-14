@@ -14,14 +14,15 @@ public class Climber extends Subsystem {
 
     private DoubleSolenoid frontSolenoid = new DoubleSolenoid(1, RobotMap.FRONT_FORWARD_CLIMB_SOLENOID,
             RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
-    private DoubleSolenoid backSolenoid = new DoubleSolenoid(1, RobotMap.BACK_FORWARD_CLIMB_SOLENOID,
+    private DoubleSolenoid backSolenoid = new DoubleSolenoid(RobotMap.BACK_FORWARD_CLIMB_SOLENOID,
             RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
     private WPI_TalonSRX climberMotor = new WPI_TalonSRX(RobotMap.CLIMBER_MOTOR);
 
     public Climber() {
         super("Climber");
-        setFrontSolenoid(Value.kReverse);
-        setBackSolenoid(Value.kReverse);
+        frontSolenoid.set(Value.kReverse);
+        backSolenoid.set(Value.kReverse); //alright then
+        climberMotor.setInverted(true);
     }
 
     public enum ClimberState {

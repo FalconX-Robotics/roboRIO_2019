@@ -29,13 +29,11 @@ public class Drivetrain extends Subsystem {
 
   private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  // private Compressor normalCompressor = new Compressor(RobotMap.COMPRESSOR);
-
   // private AnalogGyro gyro = new AnalogGyro(0);;
-  // private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
-  //     Encoder.EncodingType.k4X);
-  // private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
-  //     Encoder.EncodingType.k4X);
+  private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
+      Encoder.EncodingType.k4X);
+  private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
+      Encoder.EncodingType.k4X);
 
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
@@ -83,53 +81,53 @@ public class Drivetrain extends Subsystem {
   // }
 
   // ENCODERS
-  // public void resetEncoders() {
-  //   leftEncoder.reset();
-  //   rightEncoder.reset();
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
+  public double findDistancePerPulse(double coutsPerRevolution) {
+    return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
+  }
+
+  // !
+  public double getEncodersCount() {
+    return (leftEncoder.get() + rightEncoder.get() / 2);
+  }
+
+  public double getLeftEncoderCount() {
+    return leftEncoder.get();
+  }
+
+  public double getRightEncoderCount() {
+    return rightEncoder.get();
+  }
+
+  // public <T extends Number> T average(T[] nums) {
+  // T sum = 0;
+  // for (T num : nums) {
+  // sum = sum + num;
+  // }
+  // return sum;
   // }
 
-  // public double findDistancePerPulse(double coutsPerRevolution) {
-  //   return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
-  // }
+  public double getLeftEncoderDistance() {
+    return leftEncoder.getDistance();
+  }
 
-  // // !
-  // public double getEncodersCount() {
-  //   return (leftEncoder.get() + rightEncoder.get() / 2);
-  // }
+  public double getRightEncoderDistance() {
+    return rightEncoder.getDistance();
+  }
 
-  // public double getLeftEncoderCount() {
-  //   return leftEncoder.get();
-  // }
+  // returns speed of drivetrain in cm/s
+  public double getSpeed() {
+    return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
+  }
 
-  // public double getRightEncoderCount() {
-  //   return rightEncoder.get();
-  // }
-
-  // // public <T extends Number> T average(T[] nums) {
-  // // T sum = 0;
-  // // for (T num : nums) {
-  // // sum = sum + num;
-  // // }
-  // // return sum;
-  // // }
-
-  // public double getLeftEncoderDistance() {
-  //   return leftEncoder.getDistance();
-  // }
-
-  // public double getRightEncoderDistance() {
-  //   return rightEncoder.getDistance();
-  // }
-
-  // // returns speed of drivetrain in cm/s
-  // public double getSpeed() {
-  //   return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
-  // }
-
-  // // returns average of encoder distances
-  // public double getEncodersDistance() {
-  //   return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
-  // }
+  // returns average of encoder distances
+  public double getEncodersDistance() {
+    return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
+  }
 
   // SHIFTER
   public enum GearShiftState {
