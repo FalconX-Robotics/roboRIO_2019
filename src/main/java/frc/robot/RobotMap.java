@@ -14,19 +14,19 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-  public static final int FRONT_LEFT_MOTOR = 1;
-  public static final int REAR_LEFT_MOTOR = 2;
-  public static final int FRONT_RIGHT_MOTOR = 0;
+  public static final int FRONT_LEFT_MOTOR = 2;
+  public static final int REAR_LEFT_MOTOR = 4;
+  public static final int FRONT_RIGHT_MOTOR = 5;
   public static final int REAR_RIGHT_MOTOR = 3;
 
   public static final boolean ENABLE_TOGGLE_GEAR_SHIFT = false;
   public static final int SHIFTER_FORWARD = 0;
   public static final int SHIFTER_REVERSE = 1;
 
-  public static final int HATCH_GRAB_FORWARD = 4;
-  public static final int HATCH_GRAB_REVERSE = 5;
+  public static final int HATCH_GRAB_FORWARD = 0;
+  public static final int HATCH_GRAB_REVERSE = 1;
 
-  public static final int HATCH_PUSH = 6;
+  public static final int HATCH_PUSH = 2;
 
   public static final int FRONT_FORWARD_CLIMB_SOLENOID = 6;
   public static final int FRONT_REVERSE_CLIMB_SOLENOID = 7;
@@ -34,12 +34,12 @@ public class RobotMap {
   public static final int BACK_FORWARD_CLIMB_SOLENOID = 8;
   public static final int BACK_REVERSE_CLIMB_SOLENOID = 9;
 
-  public static final int UPPER_PISTON_IN = 2;
-  public static final int UPPER_PISTON_OUT = 3;
-  public static final int LOWER_PISTON_IN = 4;
-  public static final int LOWER_PISTON_OUT = 5;
+  public static final int CARGO_UPPER_PISTON_IN = 2;
+  public static final int CARGO_UPPER_PISTON_OUT = 3;
+  public static final int CARGO_LOWER_PISTON_IN = 6;
+  public static final int CARGO_LOWER_PISTON_OUT = 7;
 
-  public static final int CLIMBER_MOTOR = 4;
+  public static final int CLIMBER_MOTOR = 6;
 
   public static final int COMPRESSOR = 0;
   public static final int RELAY_COMPRESSOR = 1;
@@ -57,7 +57,8 @@ public class RobotMap {
   public static final long UPDATE_TIME = (long) 200000000; // in nano seconds (for updating gear shifting)
 
   public static final boolean DRIVETRAIN_ENABLED = true;
-  public static final boolean HATCH_PANEL_GRABBER_ENABLED = false;
+  public static final boolean HATCH_PANEL_GRABBER_ENABLED = true;
   public static final boolean CLIMBER_ENABLED = false;
-  public static final boolean CARGO_ENABLED = false;
+  public static final boolean CARGO_ENABLED = true;
+  public static final boolean VISION_ENABLED = false;
 }

@@ -9,9 +9,9 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class HatchPanelGrabber extends Subsystem {
-    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(RobotMap.HATCH_GRAB_FORWARD,
+    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(1, RobotMap.HATCH_GRAB_FORWARD,
             RobotMap.HATCH_GRAB_REVERSE); // Middle piston
-    private Solenoid hatchPushSolenoid = new Solenoid(RobotMap.HATCH_PUSH); // Outside pistons
+    private Solenoid hatchPushSolenoid = new Solenoid(1, RobotMap.HATCH_PUSH); // Outside pistons
 
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
@@ -25,45 +25,51 @@ public class HatchPanelGrabber extends Subsystem {
         private static HatchPanelGrabberState currentState = CLOSED;
 
         public static HatchPanelGrabberState get() {
+            SmartDashboard.putString("HatchPanelGrabberState", currentState.toString());
             return currentState;
         }
 
-        public static HatchPanelGrabberState check() {
-            HatchPanelGrabberState state = INVALID;
+        public static void set(HatchPanelGrabberState state) {
+            currentState = state;
+        }
 
+        public static HatchPanelGrabberState update() {
             if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kForward
                     && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == false) {
-                state = CLOSED;
+                set(CLOSED);
             } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
                     && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == true) {
-                state = LAUNCHING;
+                set(LAUNCHING);
             } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
                     && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == false) {
-                state = OPENED;
+                set(OPENED);
+            } else {
+                set(INVALID);
             }
 
-            SmartDashboard.putString("Hatch Panel State", state.toString());
+            SmartDashboard.putString("Hatch Panel Grabber State", currentState.toString());
 
-            return state;
+            return currentState;
+        }
+
+        public static boolean check(HatchPanelGrabberState state) {
+            if (HatchPanelGrabberState.get() == state) {
+                return true;
+            }
+            return false;
         }
     }
 
     public void toggleHatchGrabSolenoid(Value value) {
-        if (value == Value.kForward) {
-            SmartDashboard.putBoolean("Grab Soleniod", true);
-        } else {
-            SmartDashboard.putBoolean("Grab Soleniod", false);
-        }
+        SmartDashboard.putString("Grab Soleniod", value.toString());
+        HatchPanelGrabberState.update();
         hatchGrabSolenoid.set(value);
     }
 
     public void toggleHatchPushSolenoid(Boolean value) {
-        if (value == true) {
-            SmartDashboard.putBoolean("Push Solenoid", true);
-        } else {
-            SmartDashboard.putBoolean("Push Solenoid", false);
-        }
-        hatchPushSolenoid.set(false);
+        SmartDashboard.putBoolean("Push Soleniod", value);
+        HatchPanelGrabberState.update();
+        hatchPushSolenoid.set(value);
     }
 
     public Value getHatchGrabSolenoidValue() {

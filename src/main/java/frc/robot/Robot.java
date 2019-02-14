@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,24 +38,35 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    drivetrain = new Drivetrain();
-    hatchPanelGrabber = new HatchPanelGrabber();
-    climber = new Climber();
-    cargo = new Cargo();
-    Vision.initialize();
+    // hatchPanelGrabber = new HatchPanelGrabber();
+    // climber = new Climber();
+    // cargo = new Cargo();
+    // Vision.initialize();
+
+    // if (RobotMap.DRIVETRAIN_ENABLED) {
+      drivetrain = new Drivetrain();
+    // } if (RobotMap.HATCH_PANEL_GRABBER_ENABLED) {
+      hatchPanelGrabber = new HatchPanelGrabber();
+    // } if (RobotMap.CLIMBER_ENABLED) {
+      // climber = new Climber();
+    // } if (RobotMap.CARGO_ENABLED) {
+      cargo = new Cargo();
+    // } if (RobotMap.VISION_ENABLED) {
+      //Vision.initialize();
+    // }
 
     // MAKE THIS LAST
     oi = new OI();
 
     // SMART_DASH_BOARD
-    SmartDashboard.putData("Drivetrain", drivetrain);
-    SmartDashboard.putData("Climber", climber);
-    SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
+    // SmartDashboard.putData("Drivetrain", drivetrain);
+    // SmartDashboard.putData("Climber", climber);
+    // SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
   }
 
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Gyro angle", drivetrain.getGyroAngle());
+    // SmartDashboard.putNumber("Gyro angle", drivetrain.getGyroAngle());
   }
 
   @Override

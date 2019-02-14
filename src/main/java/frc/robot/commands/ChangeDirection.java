@@ -14,24 +14,21 @@ public class ChangeDirection extends InstantCommand {
 
     @Override
     protected void initialize() {
-        DirectionState state = DirectionState.update();
-
-        System.out.println("State is " + state.toString());
-        SmartDashboard.putString("Direction State", state.toString());
-        if (state == DirectionState.FORWARD) {
-
+        SmartDashboard.putString("Direction State", DirectionState.get().toString());
+        if (DirectionState.check(DirectionState.FORWARD)) {
             Robot.drivetrain.faceBackwards();
             Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
             Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
 
-        } else if (state == DirectionState.BACKWARD) {
+        } else if (DirectionState.check(DirectionState.BACKWARD)) {
             System.out.println("Face forwards");
             Robot.drivetrain.faceForwards();
             Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
             Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
         } else {
             System.out.println("Invalid State");
-            Robot.drivetrain.faceForwards();;
+            Robot.drivetrain.faceForwards();
+            ;
         }
 
         DirectionState.update();
