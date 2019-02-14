@@ -13,13 +13,14 @@ public class DriveClimberMotor extends Command {
 
     @Override
     protected void execute() {
-        if (ClimberState.get() == ClimberState.READY)
-            return;
+        // if (ClimberState.get() == ClimberState.READY)
+        //     return;
 
         double forwardSpeed = Robot.oi.getDriverLeftTriggerAxis();
         double backwardSpeed = Robot.oi.getDriverRightTriggerAxis();
+        
 
-        Robot.climber.setClimberMotorSpeed(forwardSpeed + backwardSpeed);
+        Robot.climber.setClimberMotorSpeed(forwardSpeed - backwardSpeed);
     }
 
     @Override
