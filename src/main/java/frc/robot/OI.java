@@ -26,7 +26,7 @@ public class OI {
   // Driver One
   public static final int SHIFT_GEAR_BUTTON = 5; // Xbox Left Bumper
   public static final int SECOND_SHIFT_GEAR_BUTTON = 6; // Xbox Right Bumper
-  public static final int CHANGE_ROBOT_DIRECTION_BUTTON = 1; // Xbox A button
+  public static final int CHANGE_ROBOT_DIRECTION_BUTTON = 2; // Xbox B button
 
   public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
   public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
@@ -67,20 +67,24 @@ public class OI {
     // Bind button to command
 
     // Gear Shift (Driver One)
-    shiftGearButton.whenPressed(new ToggleGear());
-    secondShiftGearButton.whenPressed(new ToggleGear());
-    shiftGearButton.whenPressed(new ShiftToLow());
-    secondShiftGearButton.whenPressed(new ShiftToHigh());
+    if (RobotMap.ENABLE_TOGGLE_GEAR_SHIFT) {
+      shiftGearButton.whenPressed(new ToggleGear());
+      secondShiftGearButton.whenPressed(new ToggleGear());
+
+    } else {
+      // shiftGearButton.whenPressed(new ShiftToLow());
+      // secondShiftGearButton.whenPressed(new ShiftToHigh());
+    }
 
     // Change which direction is forward (Driver One)
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
-    // // Climber (Driver One)
+    // Climber (Driver One)
     // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
     // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
     // initializeClimberButton.whenPressed(new InitializeClimber());
 
-    // Hatch (Driver Two)    
+    // Hatch (Driver Two)
     toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchPanel());
 

@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.subsystems.HatchPanelGrabber.HatchPanelGrabberState;
 
@@ -17,7 +18,8 @@ public class ToggleHatch extends Command {
     protected void initialize() {
         // state = !state;
         // Robot.hatchPanelGrabber.toggleHatchPushSolenoid(state);
-
+        // SmartDashboard.putString("HatchPanelGrabberState", value)
+        HatchPanelGrabberState.update();
         if (HatchPanelGrabberState.check(HatchPanelGrabberState.OPENED)) {
             // Grab Solenoid out
             Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward);
