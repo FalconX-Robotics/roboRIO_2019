@@ -66,8 +66,4 @@ public class Vision {
         double camHeight = 95;
         return (double) (imageHeight * realHeight * focalLength) / (objectHeight * camHeight);
     }
-
-    public static Trajectory getTrajectory(Waypoint[] waypoints, Trajectory.FitMethod fit, int samples, double dt, double max_velocity, double max_acceleration, double max_jerk){
-        return getTrajectory(waypoints, fit, samples, dt, max_velocity, max_acceleration, max_jerk);
-    }
 }

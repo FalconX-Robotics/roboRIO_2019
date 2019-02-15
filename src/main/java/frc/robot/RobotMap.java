@@ -23,9 +23,9 @@ public class RobotMap {
   public static final int SHIFTER_FORWARD = 0;
   public static final int SHIFTER_REVERSE = 1;
 
-  public static final int HATCH_GRAB_FORWARD = 4;
-  public static final int HATCH_GRAB_REVERSE = 5;
-  public static final int HATCH_MOTOR = 999999999; //this number is correct
+  public static final int HATCH_GRAB_FORWARD = 0;
+  public static final int HATCH_GRAB_REVERSE = 1;
+  public static final int HATCH_MOTOR = 420; //this number is wrong
 
   public static final int HATCH_PUSH = 2;
 
