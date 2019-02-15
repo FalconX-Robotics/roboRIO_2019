@@ -10,7 +10,9 @@ import frc.robot.Robot;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.Trajectory.FitMethod;
 import jaci.pathfinder.followers.EncoderFollower;
+
 
 import java.util.Arrays;
 
@@ -30,9 +32,22 @@ public class Vision {
     private static EncoderFollower rightFollower;
     private static Notifier followerNotifier;
 
+    private static Trajectory.Config config;
+    private static Waypoint[] waypoint;
+    private static Trajectory path;
+
+    private static final double VELOCITY = 0, ACCELERATION = 0, JERK = 0; //get these values
+    private static final double xpos = 0, ypos = 0, angle = 0; //get these values
+
     public static void initialize() {
         obiWan = networkTableInstance.getTable("ObiWan");
+        smartDashboard = networkTableInstance.getTable("SmartDashboard");
+        NetworkTableEntry horizontal = smartDashboard.getEntry("horizontal");
+        NetworkTableEntry depth = smartDashboard.getEntry("depth");
+        NetworkTableEntry hatchAngle = smartDashboard.getEntry("hatchAngle");
 
+        config = new Trajectory.Config(FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, VELOCITY, ACCELERATION, JERK);
+        
         /*
          * ObiWan values: rectangle1: arrays with 8 intergers rectangle2: arrys with 8
          * intergers
@@ -50,6 +65,20 @@ public class Vision {
             if (doubleArrayOne.length + doubleArrayTwo.length < 16) {
                 SmartDashboard.putBoolean("Found rectangles", false);
                 return;
+            rectangleTwoAngles = rectangleTwoValue;
+            
+            if (rectangleOneAngles.getDoubleArray().length == 2) {
+                vectorUno = vectorize(rectangleOneAngles.getDoubleArray()[0], rectangleOneAngles.getDoubleArray()[1]);
+                vectorDos = vectorize(rectangleTwoAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[1]);
+                horizontal.setDouble((vectorUno[0] + vectorDos[0]) / 2);
+                depth.setDouble((vectorUno[2] + vectorDos[2]) / 2);
+                pathfinderAngle = findHatchAngle(rectangleOneAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[0]);
+                hatchAngle.setDouble(pathfinderAngle);
+
+                waypoint = new Waypoint[] {
+                    new Waypoint(xpos, ypos, angle)
+                };
+                //path = new Pathfinder.generate(waypoint, path);
             }
             SmartDashboard.putBoolean("Found rectangles", true);
 
