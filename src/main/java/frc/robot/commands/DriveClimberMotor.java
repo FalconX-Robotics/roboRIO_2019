@@ -18,8 +18,9 @@ public class DriveClimberMotor extends Command {
 
         double forwardSpeed = Robot.oi.getDriverLeftTriggerAxis();
         double backwardSpeed = Robot.oi.getDriverRightTriggerAxis();
+        
 
-        Robot.climber.setClimberMotorSpeed(forwardSpeed + backwardSpeed);
+        Robot.climber.setClimberMotorSpeed(forwardSpeed - backwardSpeed);
     }
 
     @Override

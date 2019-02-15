@@ -8,12 +8,14 @@ import frc.robot.RobotMap;
 import frc.robot.Robot;
 
 public class Cargo extends Subsystem {
-    private DoubleSolenoid cargoUpperSolenoid = new DoubleSolenoid(RobotMap.CARGO_UPPER_PISTON_IN, RobotMap.CARGO_UPPER_PISTON_OUT);
-    private DoubleSolenoid cargoLowerSolenoid = new DoubleSolenoid(RobotMap.CARGO_LOWER_PISTON_IN, RobotMap.CARGO_LOWER_PISTON_OUT);
+    private DoubleSolenoid cargoUpperSolenoid = new DoubleSolenoid(RobotMap.CARGO_UPPER_PISTON_IN,
+            RobotMap.CARGO_UPPER_PISTON_OUT);
+    private DoubleSolenoid cargoLowerSolenoid = new DoubleSolenoid(RobotMap.CARGO_LOWER_PISTON_IN,
+            RobotMap.CARGO_LOWER_PISTON_OUT);
 
     public Cargo() {
         super("Cargo Push");
-        cargoUpperSolenoid.set(Value.kOff);
+        cargoUpperSolenoid.set(Value.kReverse);
         cargoLowerSolenoid.set(Value.kForward);
     }
 
@@ -31,22 +33,18 @@ public class Cargo extends Subsystem {
         }
 
         public static CargoState update() {
-            if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward 
-            && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
+            if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward
+                    && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
                 set(TOPREADY);
-
-            } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kReverse 
-            && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
+            } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kReverse
+                    && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
                 set(BOTTOMREADY);
-
-            } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward 
-            && Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward) {
+            } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward
+                    && Robot.cargo.getCargoUpperSolenoidValue() == Value.kForward) {
                 set(TOPLAUNCH);
-
             } else {
                 set(INVALID);
             }
-
 
             SmartDashboard.putString("Cargo State", currentState.toString());
 
@@ -54,7 +52,7 @@ public class Cargo extends Subsystem {
         }
 
         public static boolean check(CargoState state) {
-            if (CargoState.get() == state) {
+            if (currentState == state) {
                 return true;
             }
             return false;
@@ -63,13 +61,11 @@ public class Cargo extends Subsystem {
 
     public void toggleCargoLowerSolenoid(Value value) {
         SmartDashboard.putString("PushLowerSolenoid", value.toString());
-        CargoState.update();
         cargoLowerSolenoid.set(value);
     }
 
     public void toggleCargoUpperSolenoid(Value value) {
         SmartDashboard.putString("PushUpperSolenoid", value.toString());
-        CargoState.update();
         cargoUpperSolenoid.set(value);
     }
 

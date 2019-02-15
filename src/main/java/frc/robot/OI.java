@@ -20,27 +20,28 @@ import frc.robot.commands.*;
  */
 
 public class OI {
-  public static final int DRIVER_PORT_ONE = 0;
-  public static final int DRIVER_PORT_TWO = 1;
+  private static final int DRIVER_PORT_ONE = 0;
+  private static final int DRIVER_PORT_TWO = 1;
 
   // Driver One
-  public static final int SHIFT_GEAR_BUTTON = 5; // Xbox Left Bumper
-  public static final int SECOND_SHIFT_GEAR_BUTTON = 6; // Xbox Right Bumper
-  public static final int CHANGE_ROBOT_DIRECTION_BUTTON = 2; // Xbox B button
+  private static final int SHIFT_GEAR_BUTTON = 5; // Xbox Left Bumper
+  private static final int SECOND_SHIFT_GEAR_BUTTON = 6; // Xbox Right Bumper
+  private static final int CHANGE_ROBOT_DIRECTION_BUTTON = 2; // Xbox B button
 
-  public static final double XBOX_LEFT_Y_THRESHOLD = 0.1;
-  public static final double XBOX_RIGHT_Y_THRESHOLD = 0.1;
-  public static final double TRIGGER_THRESHOLD = 0.1;
+  private static final double XBOX_LEFT_Y_THRESHOLD = 0.05;
+  private static final double XBOX_RIGHT_Y_THRESHOLD = 0.05;
+  private static final double TRIGGER_THRESHOLD = 0.05;
 
-  public static final int CLIMBER_INITIALIZE_BUTTON = 8; // Xbox Start button
-  public static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
-  public static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
+  // private static final int CLIMBER_INITIALIZE_BUTTON = 8; // Xbox Start button
+  // private static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
+  // private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
+  private static final int CLIMBER_BUTTON = 8;
   // Driver Two
-  public static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
-  public static final int TOGGLE_LOWER_CARGO_BUTTON = 1; // Xbox A Button
+  private static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
+  private static final int TOGGLE_LOWER_CARGO_BUTTON = 1; // Xbox A Button
 
-  public static final int TOGGLE_HATCH_PANEL_BUTTON = 4; // Xbox X button
-  public static final int LAUNCH_HATCH_PANEL_BUTTON = 3; // Xbox Y button
+  private static final int TOGGLE_HATCH_PANEL_BUTTON = 4; // Xbox X button
+  private static final int LAUNCH_HATCH_PANEL_BUTTON = 3; // Xbox Y button
 
   XboxController driverOne = new XboxController(DRIVER_PORT_ONE);
   XboxController driverTwo = new XboxController(DRIVER_PORT_TWO);
@@ -51,17 +52,18 @@ public class OI {
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
   // Climber (Driver One)
-  private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
-  private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
-  private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
+  // private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
+  // private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
+  // private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
+  private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
 
   // Hatch (Driver Two)
   private Button toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
 
   // Cargo (Driver Two)
-  private Button toggleLowerCargoButton = new JoystickButton(driverTwo, TOGGLE_UPPER_CARGO_BUTTON);
-  private Button toggleUpperCargoButton = new JoystickButton(driverTwo, TOGGLE_LOWER_CARGO_BUTTON);
+  private Button toggleLowerCargoButton = new JoystickButton(driverTwo, TOGGLE_LOWER_CARGO_BUTTON);
+  private Button toggleUpperCargoButton = new JoystickButton(driverTwo, TOGGLE_UPPER_CARGO_BUTTON);
 
   public OI() {
     // Bind button to command
@@ -80,6 +82,7 @@ public class OI {
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
     // Climber (Driver One)
+    climberButton.whenPressed(new Climb());
     // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
     // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
     // initializeClimberButton.whenPressed(new InitializeClimber());

@@ -19,7 +19,7 @@ public class RobotMap {
   public static final int FRONT_RIGHT_MOTOR = 5;
   public static final int REAR_RIGHT_MOTOR = 3;
 
-  public static final boolean ENABLE_TOGGLE_GEAR_SHIFT = false;
+  public static final boolean ENABLE_TOGGLE_GEAR_SHIFT = true;
   public static final int SHIFTER_FORWARD = 0;
   public static final int SHIFTER_REVERSE = 1;
 
@@ -28,14 +28,14 @@ public class RobotMap {
 
   public static final int HATCH_PUSH = 2;
 
-  public static final int FRONT_FORWARD_CLIMB_SOLENOID = 6;
-  public static final int FRONT_REVERSE_CLIMB_SOLENOID = 7;
+  public static final int FRONT_FORWARD_CLIMB_SOLENOID = 5;
+  public static final int FRONT_REVERSE_CLIMB_SOLENOID = 4;
 
-  public static final int BACK_FORWARD_CLIMB_SOLENOID = 8;
-  public static final int BACK_REVERSE_CLIMB_SOLENOID = 9;
+  public static final int BACK_FORWARD_CLIMB_SOLENOID = 5;
+  public static final int BACK_REVERSE_CLIMB_SOLENOID = 4;
 
-  public static final int CARGO_UPPER_PISTON_IN = 2;
-  public static final int CARGO_UPPER_PISTON_OUT = 3;
+  public static final int CARGO_UPPER_PISTON_IN = 3;
+  public static final int CARGO_UPPER_PISTON_OUT = 2;
   public static final int CARGO_LOWER_PISTON_IN = 6;
   public static final int CARGO_LOWER_PISTON_OUT = 7;
 
@@ -46,8 +46,8 @@ public class RobotMap {
   public static final int PRESSURE_SWITCH_DI = 0;
   public static final int LEFT_ENCODER_CHANNEL_A = 0;
   public static final int LEFT_ENCODER_CHANNEL_B = 1;
-  public static final int RIGHT_ENCODER_CHANNEL_A = 0;
-  public static final int RIGHT_ENCODER_CHANNEL_B = 1;
+  public static final int RIGHT_ENCODER_CHANNEL_A = 2;
+  public static final int RIGHT_ENCODER_CHANNEL_B = 3;
   public static final int ROBOT_GEAR_SHIFT_SPEED = 85; // This is a random value not suited for the drivetrain, in cm.
   public static final int COUNTS_PER_REVOLUTION = 4096; // SRX Magnetic Encoder
   // https://www.ctr-electronics.com/downloads/pdf/Magnetic%20Encoder%20User's%20Guide.pdf
