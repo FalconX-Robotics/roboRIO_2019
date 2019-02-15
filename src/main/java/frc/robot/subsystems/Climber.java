@@ -21,7 +21,7 @@ public class Climber extends Subsystem {
     public Climber() {
         super("Climber");
         frontSolenoid.set(Value.kReverse);
-        backSolenoid.set(Value.kReverse); //alright then
+        backSolenoid.set(Value.kReverse);
         climberMotor.setInverted(true);
     }
 
