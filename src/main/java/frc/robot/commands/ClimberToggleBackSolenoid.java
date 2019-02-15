@@ -9,6 +9,7 @@ public class ClimberToggleBackSolenoid extends InstantCommand {
 
     public ClimberToggleBackSolenoid(Value toValue) {
         super("Climber Toggle Back Solenoid");
+        requires(Robot.climber);
         this.toValue = toValue;
     }
 

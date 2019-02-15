@@ -32,10 +32,10 @@ public class OI {
   private static final double XBOX_RIGHT_Y_THRESHOLD = 0.05;
   private static final double TRIGGER_THRESHOLD = 0.05;
 
-  // private static final int CLIMBER_INITIALIZE_BUTTON = 8; // Xbox Start button
-  // private static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
-  // private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
-  private static final int CLIMBER_BUTTON = 8;
+  private static final int CLIMBER_INITIALIZE_BUTTON = 8; // Xbox Start button
+  private static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
+  private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
+  // private static final int CLIMBER_BUTTON = 8;
   // Driver Two
   private static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
   private static final int TOGGLE_LOWER_CARGO_BUTTON = 1; // Xbox A Button
@@ -52,10 +52,10 @@ public class OI {
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
   // Climber (Driver One)
-  // private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
-  // private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
-  // private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
-  private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
+  private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
+  private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
+  private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
+  // private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
 
   // Hatch (Driver Two)
   private Button toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
@@ -69,23 +69,17 @@ public class OI {
     // Bind button to command
 
     // Gear Shift (Driver One)
-    if (RobotMap.ENABLE_TOGGLE_GEAR_SHIFT) {
-      shiftGearButton.whenPressed(new ToggleGear());
-      secondShiftGearButton.whenPressed(new ToggleGear());
-
-    } else {
-      // shiftGearButton.whenPressed(new ShiftToLow());
-      // secondShiftGearButton.whenPressed(new ShiftToHigh());
-    }
+    shiftGearButton.whenPressed(new ToggleGear());
+    secondShiftGearButton.whenPressed(new ToggleGear());
 
     // Change which direction is forward (Driver One)
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
     // Climber (Driver One)
-    climberButton.whenPressed(new Climb());
-    // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
-    // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
-    // initializeClimberButton.whenPressed(new InitializeClimber());
+    // climberButton.whenPressed(new Climb());
+    climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
+    climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
+    initializeClimberButton.whenPressed(new InitializeClimber());
 
     // Hatch (Driver Two)
     toggleHatchButton.whenPressed(new ToggleHatch());

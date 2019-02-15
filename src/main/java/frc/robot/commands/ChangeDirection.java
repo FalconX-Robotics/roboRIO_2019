@@ -17,14 +17,14 @@ public class ChangeDirection extends InstantCommand {
         SmartDashboard.putString("Direction State", DirectionState.get().toString());
         if (DirectionState.check(DirectionState.FORWARD)) {
             Robot.drivetrain.faceBackwards();
-            Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
-            Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
+            // Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
+            // Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
 
         } else if (DirectionState.check(DirectionState.BACKWARD)) {
             System.out.println("Face forwards");
             Robot.drivetrain.faceForwards();
-            Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
-            Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
+            // Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
+            // Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
         } else {
             System.out.println("Invalid State");
             Robot.drivetrain.faceForwards();
