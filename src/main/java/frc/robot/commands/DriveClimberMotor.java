@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Climber.ClimberState;
-
+//get rekt mate
 public class DriveClimberMotor extends Command {
 
     public DriveClimberMotor() {
