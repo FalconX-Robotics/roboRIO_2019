@@ -53,10 +53,12 @@ public class Climber extends Subsystem {
 
     public void setFrontSolenoid(Value toValue) {
         frontSolenoid.set(toValue);
+        SmartDashboard.putString("Front Solenoid Value", toValue.toString());
     }
 
     public void setBackSolenoid(Value toValue) {
         backSolenoid.set(toValue);
+        SmartDashboard.putString("Back Solenoid Value", toValue.toString());
     }
 
     public Value getFrontSolenoidValue() {
