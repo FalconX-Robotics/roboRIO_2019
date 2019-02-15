@@ -8,37 +8,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class LowerHatch extends Command {
+
+  private final double timeLimit = 0; //set time based on speed
+  private final double speed = 0; //set speed of motor
+
   public LowerHatch() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    super("Lower Hatch");
+    requires(Robot.drivetrain);
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    setTimeout(timeLimit);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.hatchPanelGrabber.runHatchMotor(speed);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isTimedOut();
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.hatchPanelGrabber.runHatchMotor(0);
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }
