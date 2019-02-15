@@ -8,9 +8,9 @@ public class LaunchUpperCargo extends CommandGroup {
     public LaunchUpperCargo() {
         super("Launch Upper Cargo");
         // Push ball out and in with cargo upper solenoid
-        addSequential(new ToggleCargoLowerSolenoid(Value.kForward));
-        addSequential(new ToggleCargoUpperSolenoid(Value.kForward));
+        addSequential(new ToggleCargoLowerSolenoid(Value.kForward, true));
+        addSequential(new ToggleCargoUpperSolenoid(Value.kForward, false));
         addSequential(new WaitCommand(), 0.5); // A delay of 0.5 seconds
-        addSequential(new ToggleCargoUpperSolenoid(Value.kReverse));
+        addSequential(new ToggleCargoUpperSolenoid(Value.kReverse, false));
     }
 }

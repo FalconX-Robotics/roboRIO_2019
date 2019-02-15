@@ -65,7 +65,7 @@ public class Drivetrain extends Subsystem {
   // }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    drivetrain.tankDrive(leftSpeed, rightSpeed);
+    drivetrain.tankDrive(leftSpeed, rightSpeed, true);
   }
 
   public void setLeftSide(double speed) {

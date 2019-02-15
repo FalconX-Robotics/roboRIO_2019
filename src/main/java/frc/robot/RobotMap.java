@@ -19,7 +19,7 @@ public class RobotMap {
   public static final int FRONT_RIGHT_MOTOR = 5;
   public static final int REAR_RIGHT_MOTOR = 3;
 
-  public static final boolean ENABLE_TOGGLE_GEAR_SHIFT = false;
+  public static final boolean ENABLE_TOGGLE_GEAR_SHIFT = true;
   public static final int SHIFTER_FORWARD = 0;
   public static final int SHIFTER_REVERSE = 1;
 
@@ -34,8 +34,8 @@ public class RobotMap {
   public static final int BACK_FORWARD_CLIMB_SOLENOID = 5;
   public static final int BACK_REVERSE_CLIMB_SOLENOID = 4;
 
-  public static final int CARGO_UPPER_PISTON_IN = 2;
-  public static final int CARGO_UPPER_PISTON_OUT = 3;
+  public static final int CARGO_UPPER_PISTON_IN = 3;
+  public static final int CARGO_UPPER_PISTON_OUT = 2;
   public static final int CARGO_LOWER_PISTON_IN = 6;
   public static final int CARGO_LOWER_PISTON_OUT = 7;
 
