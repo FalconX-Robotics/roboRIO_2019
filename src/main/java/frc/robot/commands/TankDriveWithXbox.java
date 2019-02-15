@@ -19,8 +19,8 @@ public class TankDriveWithXbox extends Command {
         double leftSpeed = Robot.oi.getDriverLeftYAxis();
         double rightSpeed = Robot.oi.getDriverRightYAxis();
 
-        Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
-        Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
+        // Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
+        // Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
 
         if (DirectionState.check(DirectionState.FORWARD)) {
             Robot.drivetrain.tankDrive(rightSpeed, leftSpeed);
