@@ -8,6 +8,7 @@ public class ToggleFrontClimberSolenoid extends InstantCommand {
 
     public ToggleFrontClimberSolenoid() {
         super("Toggle Front Climber Solenoid");
+        requires(Robot.climber);
     }
 
     @Override
