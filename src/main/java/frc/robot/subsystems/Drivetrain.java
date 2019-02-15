@@ -29,7 +29,7 @@ public class Drivetrain extends Subsystem {
 
   private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  // private AnalogGyro gyro = new AnalogGyro(0);
+  private AnalogGyro gyro = new AnalogGyro(0);
   private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
       Encoder.EncodingType.k4X);
   private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
@@ -56,13 +56,13 @@ public class Drivetrain extends Subsystem {
     // rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
     // resetEncoders();
 
-    // GYRO
-    // gyro.calibrate();
+    //GYRO
+    gyro.calibrate();
   }
 
-  // public double getGyroAngle() {
-  //   return gyro.getAngle();
-  // }
+  public double getGyroAngle() {
+     return gyro.getAngle();
+  }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drivetrain.tankDrive(leftSpeed, rightSpeed, true);
