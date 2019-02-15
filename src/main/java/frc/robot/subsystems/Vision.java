@@ -4,40 +4,32 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.Trajectory.FitMethod;
 import jaci.pathfinder.followers.EncoderFollower;
-
 
 import java.util.Arrays;
 
 public class Vision {
 
-    private static final double TAPE_WIDTH = 8;
-    private static double theta, B, d, alpha, x, y;
+    private static final double TAPE_WIDTH = 28.5;
+    private static final double CAMERA_HEIGHT = 96.8;
+    private static double pathfinderAngle;
+    private static double[] vectorUno, vectorDos;
 
     private static NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
     private static NetworkTable obiWan;
+    private static NetworkTable smartDashboard;
 
     // private static double knownDistance = 1;
-    private static double knownHeight = 5.75;
-    private static NetworkTableValue rectangleOneValue;
-    private static double focalLength = 200; // change later //218; 202; 191
+    private static NetworkTableValue rectangleOneAngles;
+    private static NetworkTableValue rectangleTwoAngles;
     private static EncoderFollower leftFollower;
     private static EncoderFollower rightFollower;
     private static Notifier followerNotifier;
-
-    private static Trajectory.Config config;
-    private static Waypoint[] waypoint;
-    private static Trajectory path;
-
-    private static final double VELOCITY = 0, ACCELERATION = 0, JERK = 0; //get these values
-    private static final double xpos = 0, ypos = 0, angle = 0; //get these values
 
     public static void initialize() {
         obiWan = networkTableInstance.getTable("ObiWan");
@@ -45,28 +37,18 @@ public class Vision {
         NetworkTableEntry horizontal = smartDashboard.getEntry("horizontal");
         NetworkTableEntry depth = smartDashboard.getEntry("depth");
         NetworkTableEntry hatchAngle = smartDashboard.getEntry("hatchAngle");
-
-        config = new Trajectory.Config(FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, VELOCITY, ACCELERATION, JERK);
-        
         /*
          * ObiWan values: rectangle1: arrays with 8 intergers rectangle2: arrys with 8
          * intergers
          */
         obiWan.addEntryListener("rectangle1", (table, key, entry, value, flags) -> {
-            rectangleOneValue = value;
-        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
+        rectangleOneAngles = value;
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate |
+        EntryListenerFlags.kLocal);
 
         obiWan.addEntryListener("rectangle2", (table, key, entry, rectangleTwoValue, flags) -> {
-            // Values are:
-            // Left to right; and if x value is the same, it's up to down
-            double[] doubleArrayOne = rectangleOneValue.getDoubleArray(),
-                    doubleArrayTwo = rectangleTwoValue.getDoubleArray();
-
-            if (doubleArrayOne.length + doubleArrayTwo.length < 16) {
-                SmartDashboard.putBoolean("Found rectangles", false);
-                return;
             rectangleTwoAngles = rectangleTwoValue;
-            
+
             if (rectangleOneAngles.getDoubleArray().length == 2) {
                 vectorUno = vectorize(rectangleOneAngles.getDoubleArray()[0], rectangleOneAngles.getDoubleArray()[1]);
                 vectorDos = vectorize(rectangleTwoAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[1]);
@@ -74,25 +56,42 @@ public class Vision {
                 depth.setDouble((vectorUno[2] + vectorDos[2]) / 2);
                 pathfinderAngle = findHatchAngle(rectangleOneAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[0]);
                 hatchAngle.setDouble(pathfinderAngle);
-
-                waypoint = new Waypoint[] {
-                    new Waypoint(xpos, ypos, angle)
-                };
-                //path = new Pathfinder.generate(waypoint, path);
             }
-            SmartDashboard.putBoolean("Found rectangles", true);
+            // x = calculatedValues[0];
+            // y = calculatedValues[1];
 
-            SmartDashboard.putNumber("Calculated X", x);
-            SmartDashboard.putNumber("Calculated y", y);
-
-            //getTrajectory(waypoints, Trajectory.FitMethod.HERMITE_CUBIC, );
+            // SmartDashboard.putNumber("Calculated X", x);
+            // SmartDashboard.putNumber("Calculated y", y);
 
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
     }
 
-    public static double findDistanceToCamera(double objectHeight, double focalLength, double imageHeight) {
-        double realHeight = 73.5; // in cm because imperial is ew
-        double camHeight = 95;
-        return (double) (imageHeight * realHeight * focalLength) / (objectHeight * camHeight);
+    public static void followPath() {
+        if (leftFollower.isFinished() || rightFollower.isFinished()) {
+            followerNotifier.stop();
+        } else {
+            double leftSpeed = leftFollower.calculate((int) Robot.drivetrain.getLeftEncoderCount());
+            double rightSpeed = rightFollower.calculate((int) Robot.drivetrain.getRightEncoderCount());
+            double heading = Robot.drivetrain.getGyroAngle();
+            double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
+            double headingDifference = Pathfinder.boundHalfDegrees(desiredHeading - heading);
+            double turn = 0.8 * (-1.0 / 80.0) * headingDifference;
+            Robot.drivetrain.setLeftSide(leftSpeed + turn);
+            Robot.drivetrain.setRightSide(rightSpeed - turn);
+        }
+    }
+
+    public static double[] vectorize(double xAngle, double yAngle) {
+        double[] position = new double[3];
+        position[0] = (CAMERA_HEIGHT - 72.5) * Math.tan(Math.toRadians(xAngle)) / Math.tan(Math.toRadians(yAngle));
+        position[1] = CAMERA_HEIGHT - 72.5;
+        position[2] = (CAMERA_HEIGHT - 72.5) / Math.tan(Math.toRadians(yAngle));
+        return position;
+    }
+    public static double findHatchAngle(double xAngle, double yAngle) {
+        double[] vectorPos = vectorize(xAngle, yAngle);
+        double hypotenuse = Math.sqrt(Math.pow(vectorPos[0], 2)*Math.pow(vectorPos[2], 2));
+        double angleToHatch = Math.asin(hypotenuse*Math.sin(Math.toRadians(xAngle))/TAPE_WIDTH);
+        return Math.toDegrees(angleToHatch);
     }
 }
