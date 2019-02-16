@@ -86,8 +86,8 @@ public class Drivetrain extends Subsystem {
     rightEncoder.reset();
   }
 
-  public double findDistancePerPulse(double coutsPerRevolution) {
-    return (Math.PI * RobotMap.WHEEL_DIAMETER) / coutsPerRevolution;
+  public double findDistancePerPulse(double countsPerRevolution) {
+    return (Math.PI * RobotMap.WHEEL_DIAMETER) / countsPerRevolution;
   }
 
   // !

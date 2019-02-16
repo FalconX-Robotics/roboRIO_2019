@@ -42,9 +42,10 @@ public class Robot extends TimedRobot {
     climber = new Climber();
     cargo = new Cargo();
     //Vision.initialize();
-
+    
     // MAKE THIS LAST
     oi = new OI();
+    
 
     // SMART_DASH_BOARD
     // SmartDashboard.putData("Drivetrain", drivetrain);
