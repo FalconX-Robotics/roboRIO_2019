@@ -38,7 +38,7 @@ public class Drivetrain extends Subsystem
 		drivetrain.tankDrive(leftSpeed, rightSpeed);
     }
 
-    /*public void shifterForward()
+    public void shifterForward()
     {
         shifter.set(Value.kForward);
     }
@@ -47,7 +47,7 @@ public class Drivetrain extends Subsystem
     {
         shifter.set(Value.kReverse);
     }
-    */
+    
   
 
     @Override
