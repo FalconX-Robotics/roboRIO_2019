@@ -8,18 +8,13 @@ public class ClimberToggleFrontSolenoid extends InstantCommand {
     private Value toValue;
 
     public ClimberToggleFrontSolenoid(Value toValue) {
-        super("ClimberToggleFrontSolenoid");
+        super("Climber Toggle Front Solenoid");
+        requires(Robot.climber);
         this.toValue = toValue;
     }
 
     @Override
     public void initialize() {
         Robot.climber.setFrontSolenoid(toValue);
-
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return false;
     }
 }

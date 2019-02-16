@@ -8,7 +8,8 @@ public class ClimberToggleBackSolenoid extends InstantCommand {
     private Value toValue;
 
     public ClimberToggleBackSolenoid(Value toValue) {
-        super("ClimberToggleBackSolenoid");
+        super("Climber Toggle Back Solenoid");
+        requires(Robot.climber);
         this.toValue = toValue;
     }
 
@@ -17,8 +18,4 @@ public class ClimberToggleBackSolenoid extends InstantCommand {
         Robot.climber.setBackSolenoid(toValue);
     }
 
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
 }

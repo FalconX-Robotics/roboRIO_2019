@@ -7,7 +7,8 @@ import frc.robot.Robot;
 public class ToggleBackClimberSolenoid extends InstantCommand {
 
     public ToggleBackClimberSolenoid() {
-        super("ToggleBackClimberSolenoid");
+        super("Toggle Back Climber Solenoid");
+        requires(Robot.climber);
     }
 
     @Override

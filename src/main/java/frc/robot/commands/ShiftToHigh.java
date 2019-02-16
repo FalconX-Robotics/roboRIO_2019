@@ -4,15 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain.GearShiftState;
 
-public class ToggleGear extends Command {
+public class ShiftToHigh extends Command {
 
-    public ToggleGear() {
-        super("Toggle Gear");
+    public ShiftToHigh() {
+        super("Shift to High Gear");
         requires(Robot.drivetrain);
-        /*
-         * // super(Robot.drivetrain.getShifterValue() == Value.kForward ?
-         * Value.kReverse : // Value.kForward);
-         */
     }
 
     @Override
@@ -20,8 +16,9 @@ public class ToggleGear extends Command {
 
         if (GearShiftState.check(GearShiftState.LOW)) {
             Robot.drivetrain.shifterForward();
+
         } else if (GearShiftState.check(GearShiftState.HIGH)) {
-            Robot.drivetrain.shifterBackward();
+            Robot.drivetrain.shifterForward();
         }
     }
 
