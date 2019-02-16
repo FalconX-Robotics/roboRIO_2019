@@ -1,37 +1,78 @@
 package frc.robot.subsystems;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class HatchPanelGrabber extends Subsystem {
-    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(RobotMap.HATCH_GRAB_FORWARD, RobotMap.HATCH_GRAB_REVERSE); // Middle piston
-    private DoubleSolenoid hatchPushSolenoid = new DoubleSolenoid(RobotMap.HATCH_PUSH_FORWARD, RobotMap.HATCH_PUSH_REVERSE); // Outside pistons
+    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(1, RobotMap.HATCH_GRAB_FORWARD,
+            RobotMap.HATCH_GRAB_REVERSE); // Middle piston
+    private Solenoid hatchPushSolenoid = new Solenoid(1, RobotMap.HATCH_PUSH); // Outside pistons
+
+    private WPI_TalonSRX hatchMotor = new WPI_TalonSRX(RobotMap.HATCH_MOTOR);
 
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
-        //hatchGrabSolenoid.set(Value.kOff);
-        //hatchPushSolenoid.set(Value.kOff);
+        hatchGrabSolenoid.set(Value.kReverse);
+        hatchPushSolenoid.set(false);
     }
-    
-    public void toggleHatchGrabSolenoid(Value value) {
-        if (value == Value.kForward) {
-            SmartDashboard.putBoolean("GrabSoleniod", true);
-        } else {
-            SmartDashboard.putBoolean("GrabSoleniod", false);
+
+    public enum HatchPanelGrabberState {
+        OPENED, LAUNCHING, CLOSED, INVALID;
+
+        private static HatchPanelGrabberState currentState = CLOSED;
+
+        public static HatchPanelGrabberState get() {
+            SmartDashboard.putString("HatchPanelGrabberState", currentState.toString());
+            return currentState;
         }
-        hatchGrabSolenoid.set(Value.kOff);
+
+        public static void set(HatchPanelGrabberState state) {
+            currentState = state;
+        }
+
+        public static HatchPanelGrabberState update() {
+            if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kForward
+                    && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == false) {
+                set(CLOSED);
+            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
+                    && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == true) {
+                set(LAUNCHING);
+            } else if (Robot.hatchPanelGrabber.getHatchGrabSolenoidValue() == Value.kReverse
+                    && Robot.hatchPanelGrabber.getHatchPushSolenoidValue() == false) {
+                set(OPENED);
+            } else {
+                set(INVALID);
+            }
+
+            SmartDashboard.putString("Hatch Panel Grabber State", currentState.toString());
+
+            return currentState;
+        }
+
+        public static boolean check(HatchPanelGrabberState state) {
+            if (HatchPanelGrabberState.get() == state) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public void toggleHatchGrabSolenoid(Value value) {
+        SmartDashboard.putString("Grab Soleniod", value.toString());
+        HatchPanelGrabberState.update();
         hatchGrabSolenoid.set(value);
     }
 
-    public void toggleHatchPushSolenoid(Value value) {
-        if (value == Value.kForward) {
-            SmartDashboard.putBoolean("PushSolenoid", true);
-        } else {
-            SmartDashboard.putBoolean("PushSolenoid", false);
-        }
-        hatchGrabSolenoid.set(Value.kOff);
+    public void toggleHatchPushSolenoid(Boolean value) {
+        SmartDashboard.putBoolean("Push Soleniod", value);
+        HatchPanelGrabberState.update();
         hatchPushSolenoid.set(value);
     }
 
@@ -39,13 +80,15 @@ public class HatchPanelGrabber extends Subsystem {
         return hatchGrabSolenoid.get();
     }
 
-    public Value getHatchPushSolenoidValue() {
+    public boolean getHatchPushSolenoidValue() {
         return hatchPushSolenoid.get();
+    }
+
+    public void runHatchMotor(double speed){
+        hatchMotor.set(speed);
     }
 
     @Override
     protected void initDefaultCommand() {
-      //set useful default for later
     }
 }
-

@@ -1,14 +1,13 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
 public class ToggleHatchPushSolenoid extends InstantCommand {
-    private Value toggleValue;
+    private boolean toggleValue;
 
-    public ToggleHatchPushSolenoid(Value toggleValue) {
-        super("ToggleHatchPushSolenoid");
+    public ToggleHatchPushSolenoid(boolean toggleValue) {
+        super("Toggle Hatch Push Solenoid");
         this.toggleValue = toggleValue;
     }
 

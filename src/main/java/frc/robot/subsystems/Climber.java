@@ -1,57 +1,76 @@
-/*package frc.robot.subsystems;
+package frc.robot.subsystems;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
+import frc.robot.commands.DriveClimberMotor;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
 
-public class Climber extends Subsystem
-{
-    private DoubleSolenoid frontSolenoid = new DoubleSolenoid(RobotMap.FRONT_FORWARD_CLIMB_SOLENOID, RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
-    private DoubleSolenoid backSolenoid = new DoubleSolenoid(RobotMap.BACK_FORWARD_CLIMB_SOLENOID, RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+public class Climber extends Subsystem {
+
+    private DoubleSolenoid frontSolenoid = new DoubleSolenoid(1, RobotMap.FRONT_FORWARD_CLIMB_SOLENOID,
+            RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
+    private DoubleSolenoid backSolenoid = new DoubleSolenoid(RobotMap.BACK_FORWARD_CLIMB_SOLENOID,
+            RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+    private WPI_TalonSRX climberMotor = new WPI_TalonSRX(RobotMap.CLIMBER_MOTOR);
 
     public Climber() {
-      super("Climber");
+        super("Climber");
+        frontSolenoid.set(Value.kReverse);
+        backSolenoid.set(Value.kReverse);
+        climberMotor.setInverted(true);
     }
 
-    public void frontLeftForward() {
-        frontLeft.set(Value.kForward);
+    public enum ClimberState {
+        INITIALIZED, READY, INVALID;
+
+        private static ClimberState currentState = READY;
+
+        public static ClimberState get() {
+            return currentState;
+        }
+
+        public static void set(ClimberState state) {
+            currentState = state;
+            SmartDashboard.putString("Climber State", state.toString());
+        }
+
+        public static boolean check(ClimberState state) {
+            if (ClimberState.get() == state) {
+                return true;
+            }
+            return false;
+        }
     }
 
-    public void frontLeftReverse() {
-        frontLeft.set(Value.kReverse);
+    public void setClimberMotorSpeed(double speed) {
+        climberMotor.set(speed);
     }
 
-    public void frontRightForward() {
-        frontRight.set(Value.kForward);
+    public void setFrontSolenoid(Value toValue) {
+        frontSolenoid.set(toValue);
+        SmartDashboard.putString("Front Solenoid Value", toValue.toString());
     }
 
-    public void frontRightReverse() {
-        frontRight.set(Value.kReverse);
+    public void setBackSolenoid(Value toValue) {
+        backSolenoid.set(toValue);
+        SmartDashboard.putString("Back Solenoid Value", toValue.toString());
     }
 
-    public void backLeftForward() {
-        backLeft.set(Value.kForward);
+    public Value getFrontSolenoidValue() {
+        return frontSolenoid.get();
     }
 
-    public void backLeftReverse() {
-        backLeft.set(Value.kReverse);
+    public Value getBackSolenoidValue() {
+        return backSolenoid.get();
     }
-
-    public void backRightForward() {
-        backRight.set(Value.kForward);
-    }
-
-    public void backRighttReverse() {
-        backRight.set(Value.kReverse);
-    }
-
-
-  
 
     @Override
     protected void initDefaultCommand() {
+        setDefaultCommand(new DriveClimberMotor());
     }
-
 }
-*/
