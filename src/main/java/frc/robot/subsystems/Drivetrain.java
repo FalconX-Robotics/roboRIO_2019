@@ -52,9 +52,9 @@ public class Drivetrain extends Subsystem {
     // normalCompressor.setClosedLoopControl(true);
 
     // ENCODERS
-    // leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
-    // rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
-    // resetEncoders();
+    leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
+    resetEncoders();
 
     //GYRO
     gyro.calibrate();
