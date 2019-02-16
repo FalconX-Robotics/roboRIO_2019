@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     hatchPanelGrabber = new HatchPanelGrabber();
     climber = new Climber();
     cargo = new Cargo();
-    // Vision.initialize();
+    //Vision.initialize();
 
     // MAKE THIS LAST
     oi = new OI();
