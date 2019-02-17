@@ -15,9 +15,16 @@ public class Climb extends CommandGroup {
         addSequential(new SetClimberMotorSpeed(0.5));
         // Wait for _ seconds
         addSequential(new WaitCommand(), 3);
-        // Retract 2nd piston
-        addSequential(new ClimberToggleBackSolenoid(Value.kReverse));
         // Stop motor
         addSequential(new SetClimberMotorSpeed(0));
+        // Retract 2nd piston
+        addSequential(new ClimberToggleBackSolenoid(Value.kReverse));
+        // Motor drive
+        addSequential(new SetClimberMotorSpeed(0.5));
+        // Wait for _ seconds
+        addSequential(new WaitCommand(), 2);
+        // Stop motor
+        addSequential(new SetClimberMotorSpeed(0));  
+
     }
 }

@@ -21,6 +21,7 @@ public class HatchPanelGrabber extends Subsystem {
         super("Hatch Panel Grabber");
         hatchGrabSolenoid.set(Value.kReverse);
         hatchPushSolenoid.set(false);
+        HatchPanelPositionState.set(HatchPanelPositionState.UP);
     }
 
     public enum HatchPanelGrabberState {
@@ -64,6 +65,38 @@ public class HatchPanelGrabber extends Subsystem {
         }
     }
 
+    public enum HatchPanelPositionState {
+        UP, DOWN;
+
+        public static HatchPanelPositionState currentPositionState = UP;
+
+        public static HatchPanelPositionState get() {
+            return currentPositionState;
+        }
+
+        public static void set(HatchPanelPositionState state) {
+            currentPositionState = state;
+        }
+
+        public static boolean check(HatchPanelPositionState state) {
+            if (HatchPanelPositionState.get() == state) {
+                return true;
+            }
+            return false;
+        }
+
+        public static void update() {
+            if (get() == UP) {
+                set(DOWN);
+
+            } else if (get() == DOWN) {
+                set(UP);
+            }
+            SmartDashboard.putString("Hatch Position", get().toString());
+            
+        }
+    }
+
     public void toggleHatchGrabSolenoid(Value value) {
         SmartDashboard.putString("Grab Soleniod", value.toString());
         HatchPanelGrabberState.update();
@@ -84,7 +117,7 @@ public class HatchPanelGrabber extends Subsystem {
         return hatchPushSolenoid.get();
     }
 
-    public void runHatchMotor(double speed){
+    public void runHatchMotor(double speed) {
         hatchMotor.set(speed);
     }
 
