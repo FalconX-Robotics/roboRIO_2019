@@ -11,6 +11,7 @@ import time
 import sys
 import logging
 import numpy as np
+import math
 import cv2
 
 from grip import GripPipeline
@@ -178,58 +179,133 @@ if __name__ == "__main__":
     else:
         print("Setting up NetworkTables client for team {}".format(team))
         ntinst.startClientTeam(team)
-    
+        
     #### Initiate ####
+    pipeline = GripPipeline()
+    # start up cameras
     cameras = []
     for cameraConfig in cameraConfigs:
         cameras.append(startCamera(cameraConfig))
-    
-    img = np.zeros(shape=(480, 640, 3), dtype=np.uint8)
+    # start up the cv2 stream
+    img = np.zeros(shape=(360, 240, 3), dtype=np.uint8)
     cvSink = CameraServer.getInstance().getVideo()
-
+    cvStream = MjpegServer("Grip Stream", "", 8080)
+    gripVideo = CameraServer.getInstance().putVideo("GRIP stream", 360, 240)
+    cvStream.setSource(gripVideo)
+    # set up networktables
     sd = nt.getTable("SmartDashboard")
+    ow = nt.getTable("ObiWan")
     sd.addEntryListener(valueChanged)
-    gripVideo = CameraServer.getInstance().putVideo("GRIP stream", 640, 480)
     sd.putBoolean("testLines", False)
     sd.putBoolean("testContours", False)
+    sd.putNumber("lowPoint", 0)
+    sd.putNumber("ctrArea", 0)
 
-    ### Things to do with output grip information ###
+    laps = 0
+    lowPoint = 0
+
+    ### find some sexy rectangles (and contours) where format is either "color" or "binary"
+    def findRectanglePair(format):
+        img = None
+        if format == "color":
+            # make it c O l O r F u L
+            img = cv2.cvtColor(pipeline.hsv_threshold_output, cv2.COLOR_GRAY2RGB)
+        if format == "binary":
+            # made it d E p R e S s I n G
+            img = pipeline.hsv_threshold_output
+        # draw contours
+        contourImg = cv2.drawContours(img, pipeline.find_contours_output, -1, (100, 255, 100), 1)
+        ow.putNumberArray("rectangle1", [])
+        ow.putNumberArray("rectangle2", [])
+        rectImg = contourImg
+        # split everything into different lists of components
+        rectList = []
+        filteredRectList = []
+        rectSizeList = []
+        rectAngles = []
+        xAngles = []
+        yAngles = []
+        shunned = []
+        # add rectangles to image (one per matching contour)
+        # and filter out all but the most relevent hatch pair
+        for ctr in pipeline.filter_contours_output:
+            rect = cv2.minAreaRect(ctr)
+            box = np.int0(cv2.boxPoints(rect))
+            cv2.drawContours(rectImg,[box],0,(0,0,255),2)
+            '''find the difference between our observing angle and the object center'''
+            #find the ratio of angles to pixels (through the camera angle)
+            objxCenter = (box[0][0] + box[1][0] + box[2][0] + box[3][0])/4
+            objyCenter = (box[0][1] + box[1][1] + box[2][1] + box[3][1])/4
+            #quick maths
+            objXAngle = (objxCenter-160)/320*60
+            xAngles.append(objXAngle)
+            objYAngle = (objyCenter-120)/240*40
+            yAngles.append(objYAngle)
+            '''Filter out all but the two largest matching points'''
+            # create a list of similar rectangles
+            filteredRectList.append(box)
+            rectAngles.append(rect[2])
+            # add the values to the total
+            rectList.append(box)
+        # (try to) make sure we aren't scanning two different hatches
+        for i in filteredRectList:
+            objSize = math.sqrt((i[0][0]-i[2][0])**2+(i[0][1]-i[2][1])**2)
+            rectSizeList.append(objSize)
+        if len(rectSizeList) > 2:
+            minBox = min(rectSizeList)
+            maxBox = max(rectSizeList)
+            print(rectAngles)
+            for i in range(len(rectSizeList)):
+                if not 82 <= abs(rectAngles[i]) + abs(rectAngles[rectSizeList.index(maxBox)]) <= 98 and not rectAngles[i] == rectAngles[rectSizeList.index(maxBox)]:
+                    shunned.append(len(rectSizeList)-i-1)
+                elif minBox < rectSizeList[i] < maxBox:
+                    minBox = rectSizeList[i]
+                    shunned.append(len(rectSizeList)-i-1)
+            for i in shunned:
+                    filteredRectList.pop(i)
+                    rect
+        if len(filteredRectList) == 2:
+            cv2.drawContours(rectImg,[filteredRectList[0]],0,(200,0,200),2)
+            cv2.drawContours(rectImg,[filteredRectList[1]],0,(200,0,200),2)
+
+        # # builds a sendable list of points [x1, y1, x2, y2, x3, y3, x4, y4]
+        # def rawRect(box):
+        #     points = []
+        #     for point in box:
+        #         points.append(point[0])
+        #         points.append(point[1])
+        #     return points
+        # publish up to 2 network table entries
+        if len(filteredRectList) == 2:
+            ow.putNumberArray("rectangle1", [xAngles[0],yAngles[0]])
+            ow.putNumberArray("rectangle2", [xAngles[1],yAngles[1]])
+        return rectImg
+    
+    ## Things to do with output grip information ###
     def communicate(pipeline):
-        # Check for lines
-        if pipeline.filter_lines_output != []:
-            sd.putBoolean("testLines", True)
-        else:
-            sd.putBoolean("testLines", False)
-            # Check for contours
+        # Check" for lines
         if pipeline.filter_contours_output != []:
             sd.putBoolean("testContours", True)
         else:
             sd.putBoolean("testContours", False)
-
+    
     #### loop forever ####
     while True:
         # For console output
-        cDetection = False
-        lDetection = False
-        if sd.getEntry("testContours").value == True:
-            cDetection = True
-        if sd.getEntry("testLines").value == True:
-            lDetection = True
+        cDetection = sd.getBoolean("testContours", False)
+        lDetection = sd.getBoolean("testLines", False)
+        
         # Process images
         frameTime, frame = cvSink.grabFrame(img)
-        gripVideo.putFrame(frame)
-        try:
-            pipeline = GripPipeline()
-            pipeline.process(frame)
-
-            communicate(pipeline)
-        except:
-            sd.putBoolean("testLines", False)
-            sd.putBoolean("testContours", False)
-        
-        # Console output (test)
-        if sd.getEntry("testContours").value == True or sd.getEntry("testLines").value == True:
+        pipeline.process(frame)
+        gripVideo.putFrame(findRectanglePair("color"))
+        communicate(pipeline)
+        #Output
+        if cDetection == True or lDetection == True:
             print("I see something!")
+
         else:
             print("No object detected.")
-        time.sleep(0.25)
+        laps += 1
+        sd.putNumber("Laps", laps)
+        time.sleep(0.1)

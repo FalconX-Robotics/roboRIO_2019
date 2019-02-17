@@ -34,14 +34,21 @@ public class OI {
 
   private static final int CLIMBER_INITIALIZE_BUTTON = 8; // Xbox Start button
   private static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
+
   private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
   // private static final int CLIMBER_BUTTON = 8;
+
+  private static final int PANIC_BUTTON = 7;
+  
   // Driver Two
   private static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
   private static final int TOGGLE_LOWER_CARGO_BUTTON = 1; // Xbox A Button
 
   private static final int TOGGLE_HATCH_PANEL_BUTTON = 4; // Xbox X button
   private static final int LAUNCH_HATCH_PANEL_BUTTON = 3; // Xbox Y button
+
+  public static final int MOVE_HATCH_UP = 6; // Xbox right bumper
+  public static final int MOVE_HATCH_DOWN = 5; // Xbox left bumper
 
   XboxController driverOne = new XboxController(DRIVER_PORT_ONE);
   XboxController driverTwo = new XboxController(DRIVER_PORT_TWO);
@@ -57,13 +64,19 @@ public class OI {
   private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
   // private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
 
+  private Button PanicButton1 = new JoystickButton(driverOne, PANIC_BUTTON);
+
   // Hatch (Driver Two)
   private Button toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
+  private Button moveHatchUpButton = new JoystickButton(driverTwo, MOVE_HATCH_UP);
+  private Button moveHatchDownButton = new JoystickButton(driverTwo, MOVE_HATCH_DOWN);
 
   // Cargo (Driver Two)
   private Button toggleLowerCargoButton = new JoystickButton(driverTwo, TOGGLE_LOWER_CARGO_BUTTON);
   private Button toggleUpperCargoButton = new JoystickButton(driverTwo, TOGGLE_UPPER_CARGO_BUTTON);
+
+  private Button PanicButton2 = new JoystickButton(driverTwo, PANIC_BUTTON);
 
   public OI() {
     // Bind button to command
@@ -81,13 +94,20 @@ public class OI {
     climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
     initializeClimberButton.whenPressed(new InitializeClimber());
 
+    PanicButton1.whenPressed(new Panic());
+
     // Hatch (Driver Two)
     toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchPanel());
+    moveHatchUpButton.whenPressed(new RaiseHatch());
+    moveHatchDownButton.whenPressed(new LowerHatch());
 
     // Cargo (Driver Two)
     toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());
     toggleLowerCargoButton.whenPressed(new LaunchLowerCargo());
+
+    PanicButton2.whenPressed(new Panic());
+
   }
 
   public double getDriverLeftTriggerAxis() {

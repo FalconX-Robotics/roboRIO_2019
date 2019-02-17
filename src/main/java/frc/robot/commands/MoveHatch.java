@@ -7,27 +7,34 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.HatchPanelGrabber.HatchPanelPositionState;
 
-public class RaiseHatch extends Command {
+public class MoveHatch extends Command {
 
-  private final double timeout = 1; //set timeout for motor
-  private final double speed = 0.5; //set speed for motor
+  private double timeLimit = 1; //set time based on speed
+  private double speed = 1; //set speed of motor
 
-  public RaiseHatch() {
-    super("Raise Hatch");
+  public MoveHatch() {
+    super("Move Hatch");
     requires(Robot.hatchPanelGrabber);
   }
 
   @Override
   protected void initialize() {
-    setTimeout(timeout);
+    setTimeout(timeLimit);
   }
 
   @Override
   protected void execute() {
-    Robot.hatchPanelGrabber.runHatchMotor(speed);
+    if (HatchPanelPositionState.check(HatchPanelPositionState.UP))
+    {
+        Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
+    } else {
+        Robot.hatchPanelGrabber.runHatchMotor(speed);
+    }
   }
 
   @Override
@@ -38,6 +45,7 @@ public class RaiseHatch extends Command {
   @Override
   protected void end() {
     Robot.hatchPanelGrabber.runHatchMotor(0);
+    HatchPanelPositionState.update();
   }
 
   @Override

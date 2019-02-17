@@ -17,9 +17,10 @@ public class ToggleGear extends Command {
 
     @Override
     public void initialize() {
-
+        GearShiftState.update();
         if (GearShiftState.check(GearShiftState.LOW)) {
             Robot.drivetrain.shifterForward();
+
         } else if (GearShiftState.check(GearShiftState.HIGH)) {
             Robot.drivetrain.shifterBackward();
         }
