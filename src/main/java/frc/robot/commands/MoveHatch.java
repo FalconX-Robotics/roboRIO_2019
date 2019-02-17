@@ -14,8 +14,8 @@ import frc.robot.subsystems.HatchPanelGrabber.HatchPanelPositionState;
 
 public class MoveHatch extends Command {
 
-  private double timeLimit = .5; //set time based on speed
-  private double speed = 0.2; //set speed of motor
+  private double timeLimit = 1; //set time based on speed
+  private double speed = 1; //set speed of motor
 
   public MoveHatch() {
     super("Move Hatch");
@@ -25,7 +25,6 @@ public class MoveHatch extends Command {
   @Override
   protected void initialize() {
     setTimeout(timeLimit);
-    Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kForward);
   }
 
   @Override
@@ -46,7 +45,6 @@ public class MoveHatch extends Command {
   @Override
   protected void end() {
     Robot.hatchPanelGrabber.runHatchMotor(0);
-    Robot.hatchPanelGrabber.toggleHatchGrabSolenoid(Value.kReverse);
     HatchPanelPositionState.update();
   }
 

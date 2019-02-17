@@ -71,7 +71,6 @@ public class HatchPanelGrabber extends Subsystem {
         public static HatchPanelPositionState currentPositionState = UP;
 
         public static HatchPanelPositionState get() {
-            SmartDashboard.putString("Hatch Panel Position", currentPositionState.toString());
             return currentPositionState;
         }
 
@@ -93,6 +92,7 @@ public class HatchPanelGrabber extends Subsystem {
             } else if (get() == DOWN) {
                 set(UP);
             }
+            SmartDashboard.putString("Hatch Position", get().toString());
             
         }
     }

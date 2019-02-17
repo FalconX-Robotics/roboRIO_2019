@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
@@ -49,7 +48,7 @@ public class Drivetrain extends Subsystem {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
     shifterBackward();
-    // normalCompressor.setClosedLoopControl(true);
+    faceForwards();
 
     // ENCODERS
     leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
@@ -75,10 +74,6 @@ public class Drivetrain extends Subsystem {
   public void setRightSide(double speed) {
     rightSide.set(speed);
   }
-
-  // public void arcadeDrive(double speed, double rotation) {
-  // drivetrain.arcadeDrive(speed, rotation);
-  // }
 
   // ENCODERS
   public void resetEncoders() {
@@ -144,6 +139,19 @@ public class Drivetrain extends Subsystem {
       SmartDashboard.putString("Gear Shift State", currentState.toString());
     }
 
+    public static GearShiftState update() {
+      if (Robot.drivetrain.getShifterValue() == Value.kForward) {
+        set(HIGH);
+      }
+      else {
+        set(LOW);
+      }
+
+      return currentState;
+    }
+
+    
+
     public static boolean check(GearShiftState state) {
       if (GearShiftState.get() == state) {
         return true;
@@ -163,8 +171,8 @@ public class Drivetrain extends Subsystem {
     GearShiftState.set(GearShiftState.LOW);
   }
 
-  public GearShiftState getShifterValue() {
-    return GearShiftState.get();
+  public Value getShifterValue() {
+    return shifter.get();
   }
 
   // FACE
@@ -189,7 +197,7 @@ public class Drivetrain extends Subsystem {
       if (Robot.drivetrain.getLeftDirection() != Robot.drivetrain.getRightDirection()) {
         state = INVALID;
       } else {
-        if (Robot.drivetrain.getLeftDirection() == true) {
+        if (Robot.drivetrain.getLeftDirection() == false) {
           state = BACKWARD;
         } else {
           state = FORWARD;
@@ -209,14 +217,14 @@ public class Drivetrain extends Subsystem {
   }
 
   public void faceForwards() {
-    leftSide.setInverted(false);
-    rightSide.setInverted(false);
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
     DirectionState.update();
   }
 
   public void faceBackwards() {
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
+    leftSide.setInverted(false);
+    rightSide.setInverted(false);
     DirectionState.update();
   }
 

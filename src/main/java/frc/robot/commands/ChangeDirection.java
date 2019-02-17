@@ -28,7 +28,6 @@ public class ChangeDirection extends InstantCommand {
         } else {
             System.out.println("Invalid State");
             Robot.drivetrain.faceForwards();
-            ;
         }
 
         DirectionState.update();

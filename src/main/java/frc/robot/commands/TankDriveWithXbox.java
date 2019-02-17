@@ -38,17 +38,17 @@ public class TankDriveWithXbox extends Command {
 
         SmartDashboard.putNumber("Encoder Value", Robot.drivetrain.getEncodersCount());
 
-        if (System.nanoTime() - startTime > RobotMap.UPDATE_TIME) {
-            startTime = System.nanoTime();
-            SmartDashboard.putNumber("Encoder Angle", Robot.drivetrain.getEncodersCount());
-            SmartDashboard.putNumber("Robot Speed (cm/s)", Robot.drivetrain.getSpeed());
+        // if (System.nanoTime() - startTime > RobotMap.UPDATE_TIME) {
+        //     startTime = System.nanoTime();
+        //     SmartDashboard.putNumber("Encoder Angle", Robot.drivetrain.getEncodersCount());
+        //     SmartDashboard.putNumber("Robot Speed (cm/s)", Robot.drivetrain.getSpeed());
 
-            if (Robot.drivetrain.getSpeed() > (double) RobotMap.ROBOT_GEAR_SHIFT_SPEED) {
-                Robot.drivetrain.shifterForward();
-            } else {
-                Robot.drivetrain.shifterBackward();
-            }
-        }
+        //     if (Robot.drivetrain.getSpeed() > (double) RobotMap.ROBOT_GEAR_SHIFT_SPEED) {
+        //         Robot.drivetrain.shifterForward();
+        //     } else {
+        //         Robot.drivetrain.shifterBackward();
+        //     }
+        // }
 
     }
 

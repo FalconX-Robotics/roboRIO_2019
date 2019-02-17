@@ -34,6 +34,7 @@ public class OI {
 
   private static final int CLIMBER_INITIALIZE_BUTTON = 8; // Xbox Start button
   private static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
+  
   private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
   // private static final int CLIMBER_BUTTON = 8;
 
@@ -46,7 +47,8 @@ public class OI {
   private static final int TOGGLE_HATCH_PANEL_BUTTON = 4; // Xbox X button
   private static final int LAUNCH_HATCH_PANEL_BUTTON = 3; // Xbox Y button
 
-  public static final int MOVE_HATCH_BUTTON = 8; // Xbox start button
+  public static final int MOVE_HATCH_UP = 6; // Xbox start button
+  public static final int MOVE_HATCH_DOWN = 5;
 
   XboxController driverOne = new XboxController(DRIVER_PORT_ONE);
   XboxController driverTwo = new XboxController(DRIVER_PORT_TWO);
@@ -67,7 +69,8 @@ public class OI {
   // Hatch (Driver Two)
   private Button toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
-  private Button moveHatchButton = new JoystickButton(driverTwo, MOVE_HATCH_BUTTON);
+  private Button moveHatchUpButton = new JoystickButton(driverTwo, MOVE_HATCH_UP);
+  private Button moveHatchDownButton = new JoystickButton(driverTwo, MOVE_HATCH_DOWN);
 
   // Cargo (Driver Two)
   private Button toggleLowerCargoButton = new JoystickButton(driverTwo, TOGGLE_LOWER_CARGO_BUTTON);
@@ -96,7 +99,8 @@ public class OI {
     // Hatch (Driver Two)
     toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchPanel());
-    moveHatchButton.whenPressed(new MoveHatch());
+    moveHatchUpButton.whenPressed(new RaiseHatch());
+    moveHatchDownButton.whenPressed(new LowerHatch());
 
     // Cargo (Driver Two)
     toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());

@@ -12,7 +12,7 @@ import frc.robot.Robot;
 
 public class LowerHatch extends Command {
 
-  private double timeLimit = 0; //set time based on speed
+  private double timeLimit = 1; //set time based on speed
   private double speed = -0.5; //set speed of motor
 
   public LowerHatch() {

@@ -12,7 +12,7 @@ import frc.robot.Robot;
 
 public class RaiseHatch extends Command {
 
-  private final double timeout = 0; //set timeout for motor
+  private final double timeout = 1; //set timeout for motor
   private final double speed = 0.5; //set speed for motor
 
   public RaiseHatch() {
