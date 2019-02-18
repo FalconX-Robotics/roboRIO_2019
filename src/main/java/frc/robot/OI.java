@@ -83,7 +83,7 @@ public class OI {
   public OI() {
     // Bind button to command
     //Change Direction of camera
-    changeCameraDirection.whenPressed(new ChangeDirection());
+    changeCameraDirection.whenPressed(new ToggleCameraDirection());
 
     // Gear Shift (Driver One)
     toggleGearButton.whenPressed(new ToggleGear());
