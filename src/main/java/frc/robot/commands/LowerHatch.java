@@ -9,10 +9,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.HatchPanelGrabber;
 
 public class LowerHatch extends Command {
 
-  private double timeLimit = 1; //set time based on speed
   private double speed = -0.5; //set speed of motor
 
   public LowerHatch() {
@@ -22,7 +22,7 @@ public class LowerHatch extends Command {
 
   @Override
   protected void initialize() {
-    setTimeout(timeLimit);
+    Robot.hatchPanelGrabber.initializeCounter();
   }
 
   @Override
@@ -32,7 +32,7 @@ public class LowerHatch extends Command {
 
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return Robot.hatchPanelGrabber.isSwitchSet();
   }
 
   @Override

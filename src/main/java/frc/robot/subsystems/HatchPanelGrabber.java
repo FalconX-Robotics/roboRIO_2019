@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -15,7 +17,10 @@ public class HatchPanelGrabber extends Subsystem {
             RobotMap.HATCH_GRAB_REVERSE); // Middle piston
     private Solenoid hatchPushSolenoid = new Solenoid(1, RobotMap.HATCH_PUSH); // Outside pistons
 
+    DigitalInput limitSwitch = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH);
     private WPI_TalonSRX hatchMotor = new WPI_TalonSRX(RobotMap.HATCH_MOTOR);
+    Counter counter = new Counter(limitSwitch);
+
 
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
@@ -119,6 +124,15 @@ public class HatchPanelGrabber extends Subsystem {
 
     public void runHatchMotor(double speed) {
         hatchMotor.set(speed);
+    }
+
+
+    public boolean isSwitchSet() {
+        return counter.get() > 0;
+    }
+
+    public void initializeCounter() {
+        counter.reset();
     }
 
     @Override

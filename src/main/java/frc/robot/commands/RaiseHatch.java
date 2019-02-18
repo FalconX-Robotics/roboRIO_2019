@@ -12,7 +12,6 @@ import frc.robot.Robot;
 
 public class RaiseHatch extends Command {
 
-  private final double timeout = 1; //set timeout for motor
   private final double speed = 0.5; //set speed for motor
 
   public RaiseHatch() {
@@ -22,7 +21,7 @@ public class RaiseHatch extends Command {
 
   @Override
   protected void initialize() {
-    setTimeout(timeout);
+    Robot.hatchPanelGrabber.initializeCounter();
   }
 
   @Override
@@ -32,7 +31,7 @@ public class RaiseHatch extends Command {
 
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return Robot.hatchPanelGrabber.isSwitchSet();
   }
 
   @Override
