@@ -38,7 +38,9 @@ public class OI {
   private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
   // private static final int CLIMBER_BUTTON = 8;
 
-  private static final int PANIC_BUTTON = 7;
+  private static final int DIRECTION_STATE_BUTTON = 1; //Xbox A button
+
+  private static final int PANIC_BUTTON = 7; //"back" button
   
   // Driver Two
   private static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
@@ -66,6 +68,8 @@ public class OI {
 
   private Button PanicButton1 = new JoystickButton(driverOne, PANIC_BUTTON);
 
+  private Button changeCameraDirection = new JoystickButton(driverOne, DIRECTION_STATE_BUTTON);
+
   // Hatch (Driver Two)
   private Button toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
@@ -80,6 +84,9 @@ public class OI {
 
   public OI() {
     // Bind button to command
+
+    //Change Direction of camera
+    changeCameraDirection.whenPressed(new ChangeDirection());
 
     // Gear Shift (Driver One)
     shiftGearButton.whenPressed(new ToggleGear());
