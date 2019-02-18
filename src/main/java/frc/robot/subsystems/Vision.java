@@ -52,7 +52,7 @@ public class Vision {
         config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05,
             MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
         modifier = new TankModifier(trajectory).modify(WHEEL_BASE);
-        EncoderFollower leftSide
+        //EncoderFollower leftSide
 
         /*
          * ObiWan values: rectangle1: arrays with 8 intergers rectangle2: arrys with 8
