@@ -126,6 +126,10 @@ public class Drivetrain extends Subsystem {
     return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
   }
 
+  public double getDistanceTraveled() {
+    return getEncodersDistance() / 3;
+  }
+
   // SHIFTER
   public enum GearShiftState {
     LOW, HIGH;
