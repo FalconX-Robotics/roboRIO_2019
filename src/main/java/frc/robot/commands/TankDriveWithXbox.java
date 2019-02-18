@@ -35,7 +35,7 @@ public class TankDriveWithXbox extends Command {
         }
 
         long startTime = System.nanoTime();
-        double startDistance = Robot.drivetrain.getEncodersDistance();
+        double startDistance = Robot.drivetrain.getEncoderDistance();
 
         SmartDashboard.putNumber("Encoder Value", Robot.drivetrain.getEncodersCount());
 
