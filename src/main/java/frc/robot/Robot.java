@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Encoder Speed", drivetrain.getSpeed());
-    SmartDashboard.putNumber("Encoder Distance", drivetrain.getEncodersDistance());
+    SmartDashboard.putNumber("Encoder Distance", drivetrain.getEncoderDistance());
     SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
   }
 

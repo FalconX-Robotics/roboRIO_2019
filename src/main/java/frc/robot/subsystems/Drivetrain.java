@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.commands.TankDriveWithXbox;
@@ -29,10 +29,6 @@ public class Drivetrain extends Subsystem {
   private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
   private AnalogGyro gyro = new AnalogGyro(0);
-  private Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B, false,
-      Encoder.EncodingType.k4X);
-  private Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A, RobotMap.RIGHT_ENCODER_CHANNEL_B, false,
-      Encoder.EncodingType.k4X);
 
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
@@ -40,6 +36,8 @@ public class Drivetrain extends Subsystem {
   private static NetworkTableEntry directionStateEntry;
 
   private static DirectionState cameraDirection;
+
+  private static final double DISTANCE_PER_COUNT = (5.08 / 4096 * Math.PI);
 
   public Drivetrain() {
     super("Drivetrain");
@@ -53,16 +51,15 @@ public class Drivetrain extends Subsystem {
     faceForwards();
 
     // ENCODERS
-    leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
-    rightEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
-    resetEncoders();
+    leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
     //GYRO
     gyro.calibrate();
   }
 
   public double getGyroAngle() {
-     return gyro.getAngle() % 360; // read the documentation for getAngle() and decide whether we need the %360
+     return gyro.getAngle() % 360;
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -79,55 +76,51 @@ public class Drivetrain extends Subsystem {
 
   // ENCODERS
   public void resetEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
+    leftFront.setSelectedSensorPosition(0);
+    rightFront.setSelectedSensorPosition(0);
   }
 
   public double findDistancePerPulse(double countsPerRevolution) {
     return (Math.PI * RobotMap.WHEEL_DIAMETER) / countsPerRevolution;
   }
 
-  // !
+  //Raw Encoder counts
   public int getEncodersCount() {
-    return (leftEncoder.get() + rightEncoder.get() / 2);
+    return (getLeftEncoderCount() + getRightEncoderCount()) / 2;
   }
 
   public int getLeftEncoderCount() {
-    return leftEncoder.get();
+    return leftFront.getSelectedSensorPosition(); 
   }
 
   public int getRightEncoderCount() {
-    return rightEncoder.get();
+    return rightFront.getSelectedSensorPosition();
   }
-
-  // public <T extends Number> T average(T[] nums) {
-  // T sum = 0;
-  // for (T num : nums) {
-  // sum = sum + num;
-  // }
-  // return sum;
-  // }
-
+  
+  //Encoder distances in cm
   public double getLeftEncoderDistance() {
-    return leftEncoder.getDistance();
+    return getLeftEncoderCount() * DISTANCE_PER_COUNT;
   }
 
   public double getRightEncoderDistance() {
-    return rightEncoder.getDistance();
+    return getRightEncoderCount() * DISTANCE_PER_COUNT;
   }
 
-  // returns speed of drivetrain in cm/s
+  public double getEncoderDistance(){
+    return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
+  }
+
+  //Encoder speeds in cm/s
+  public double getLeftEncoderSpeed(){
+    return leftFront.getSelectedSensorVelocity();
+  }
+
+  public double getRightEncoderSpeed(){
+    return rightFront.getSelectedSensorVelocity() * 10;
+  }
+
   public double getSpeed() {
-    return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
-  }
-
-  // returns average of encoder distances
-  public double getEncodersDistance() {
-    return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
-  }
-
-  public double getDistanceTraveled() {
-    return getEncodersDistance() / 3;
+    return (getLeftEncoderSpeed() + getRightEncoderSpeed()) / 2;
   }
 
   // SHIFTER
