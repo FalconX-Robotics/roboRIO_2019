@@ -17,9 +17,11 @@ public class HatchPanelGrabber extends Subsystem {
             RobotMap.HATCH_GRAB_REVERSE); // Middle piston
     private Solenoid hatchPushSolenoid = new Solenoid(1, RobotMap.HATCH_PUSH); // Outside pistons
 
-    DigitalInput limitSwitch = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH);
+    DigitalInput limitSwitchTop = new DigitalInput(RobotMap.TOP_LIMIT_SWITCH);
+    DigitalInput limitSwitchBottom = new DigitalInput(RobotMap.BOTTOM_LIMIT_SWITCH);
     private WPI_TalonSRX hatchMotor = new WPI_TalonSRX(RobotMap.HATCH_MOTOR);
-    Counter counter = new Counter(limitSwitch);
+    // Counter counterTop = new Counter(limitSwitchTop);
+    // Counter counterBottom = new Counter(limitSwitchBottom);
 
 
     public HatchPanelGrabber() {
@@ -71,7 +73,7 @@ public class HatchPanelGrabber extends Subsystem {
     }
 
     public enum HatchPanelPositionState {
-        UP, DOWN;
+        UP, DOWN, IN_BETWEEN;
 
         public static HatchPanelPositionState currentPositionState = UP;
 
@@ -90,15 +92,15 @@ public class HatchPanelGrabber extends Subsystem {
             return false;
         }
 
-        public static void update() {
-            if (get() == UP) {
-                set(DOWN);
-
-            } else if (get() == DOWN) {
-                set(UP);
+        public static HatchPanelPositionState update() {
+            if (Robot.hatchPanelGrabber.getTopSwitch()) {
+                currentPositionState = UP;
+            } else if (Robot.hatchPanelGrabber.getTopSwitch()) {
+                currentPositionState = DOWN;
+            } else {
+                currentPositionState = IN_BETWEEN;
             }
-            SmartDashboard.putString("Hatch Position", get().toString());
-            
+            return currentPositionState;
         }
     }
 
@@ -126,13 +128,12 @@ public class HatchPanelGrabber extends Subsystem {
         hatchMotor.set(speed);
     }
 
-
-    public boolean isSwitchSet() {
-        return counter.get() > 0;
+    public boolean getTopSwitch() {
+        return limitSwitchTop.get();
     }
 
-    public void initializeCounter() {
-        counter.reset();
+    public boolean getBottomSwitch() {
+        return limitSwitchTop.get();
     }
 
     @Override

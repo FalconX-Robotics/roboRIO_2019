@@ -34,7 +34,8 @@ public class RobotMap {
   public static final int HATCH_PUSH = 2;
 
   public static final int HATCH_MOTOR = 2; 
-  public static final int HATCH_LIMIT_SWITCH = 0;
+  public static final int TOP_LIMIT_SWITCH = 0;
+  public static final int BOTTOM_LIMIT_SWITCH = 1;
 
   // Climb
   public static final int FRONT_FORWARD_CLIMB_SOLENOID = 5;

@@ -10,12 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.HatchPanelGrabber;
 import frc.robot.subsystems.HatchPanelGrabber.HatchPanelPositionState;
 
 public class MoveHatch extends Command {
-
-  private double timeLimit = 1; //set time based on speed
-  private double speed = 1; //set speed of motor
+  private static double speed = 1; // set speed of motorxd
+  private static HatchPanelPositionState state = HatchPanelPositionState.update();
 
   public MoveHatch() {
     super("Move Hatch");
@@ -24,22 +24,28 @@ public class MoveHatch extends Command {
 
   @Override
   protected void initialize() {
-    setTimeout(timeLimit);
+    state = HatchPanelPositionState.update();
+    if (state == HatchPanelPositionState.IN_BETWEEN) {
+      state = HatchPanelPositionState.DOWN;
+    }
   }
 
   @Override
   protected void execute() {
-    if (HatchPanelPositionState.check(HatchPanelPositionState.UP))
-    {
-        Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
+    if (state == HatchPanelPositionState.UP) {
+      Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
     } else {
-        Robot.hatchPanelGrabber.runHatchMotor(speed);
+      Robot.hatchPanelGrabber.runHatchMotor(speed);
     }
   }
 
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    if (state == HatchPanelPositionState.UP) {
+      return Robot.hatchPanelGrabber.getBottomSwitch();
+    } else {
+      return Robot.hatchPanelGrabber.getTopSwitch();
+    }
   }
 
   @Override
