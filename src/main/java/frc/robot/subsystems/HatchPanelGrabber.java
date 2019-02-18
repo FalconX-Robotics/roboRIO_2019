@@ -123,6 +123,5 @@ public class HatchPanelGrabber extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
     }
 }

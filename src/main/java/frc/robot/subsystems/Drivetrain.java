@@ -39,6 +39,8 @@ public class Drivetrain extends Subsystem {
   private static NetworkTable obiWan;
   private static NetworkTableEntry directionStateEntry;
 
+  private static DirectionState cameraDirection;
+
   public Drivetrain() {
     super("Drivetrain");
     SmartDashboard.putString("Drivetrain", "enabled");
@@ -190,8 +192,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public static void set(DirectionState state) {
-      currentState = state;
-      SmartDashboard.putString("Direction State", currentState.toString());
+      setCameraDirection(state);
       directionStateEntry.setString(state.toString());
     }
 
@@ -238,6 +239,15 @@ public class Drivetrain extends Subsystem {
 
   public boolean getRightDirection() {
     return rightSide.getInverted();
+  }
+
+  public static void setCameraDirection(DirectionState toCameraDirection){
+    cameraDirection = toCameraDirection;
+    SmartDashboard.putString("Camera State", cameraDirection.toString());
+  }
+
+  public DirectionState getCameraDirection(){
+    return cameraDirection;
   }
 
   @Override
