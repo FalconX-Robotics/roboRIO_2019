@@ -7,6 +7,7 @@ import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -26,16 +27,21 @@ public class Vision {
     private static final double MAX_JERK = 0;
     private static final double WHEEL_BASE = 23;
 
+    private static final double kp = 0, ki = 0, kd = 0, kv = 0, ka = 0; // '0' values are placeholders
+
     private static NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
     private static NetworkTable obiWan;
     private static NetworkTable smartDashboard;
+
+    private static NetworkTableEntry horizontal;
+    private static NetworkTableEntry depth;
+    private static NetworkTableEntry hatchAngle;
 
     // private static double knownDistance = 1;
     private static NetworkTableValue rectangleOneAngles;
     private static NetworkTableValue rectangleTwoAngles;
     private static EncoderFollower leftFollower;
     private static EncoderFollower rightFollower;
-    private static Notifier followerNotifier;
 
     private static Trajectory trajectory, leftPath, rightPath;
     private static Waypoint[] waypoints;
@@ -45,14 +51,20 @@ public class Vision {
     public static void initialize() {
         obiWan = networkTableInstance.getTable("ObiWan");
         smartDashboard = networkTableInstance.getTable("SmartDashboard");
-        NetworkTableEntry horizontal = smartDashboard.getEntry("horizontal");
-        NetworkTableEntry depth = smartDashboard.getEntry("depth");
-        NetworkTableEntry hatchAngle = smartDashboard.getEntry("hatchAngle");
+        horizontal = smartDashboard.getEntry("horizontal");
+        depth = smartDashboard.getEntry("depth");
+        hatchAngle = smartDashboard.getEntry("hatchAngle");
 
         config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05,
             MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
         modifier = new TankModifier(trajectory).modify(WHEEL_BASE);
-        //EncoderFollower leftSide
+        EncoderFollower leftFollower = new EncoderFollower(leftPath);
+        EncoderFollower rightFollower = new EncoderFollower(rightPath);
+        leftFollower.configureEncoder(Robot.drivetrain.getLeftEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
+            RobotMap.WHEEL_DIAMETER);
+        rightFollower.configureEncoder(Robot.drivetrain.getRightEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
+            RobotMap.WHEEL_DIAMETER);
+        leftFollower.configurePIDVA(kp, ki, kd, kv, ka);
 
         /*
          * ObiWan values: rectangle1: arrays with 8 intergers rectangle2: arrys with 8
@@ -74,38 +86,25 @@ public class Vision {
                 pathfinderAngle = findHatchAngle(rectangleOneAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[0]);
                 hatchAngle.setDouble(pathfinderAngle);
             }
-            
-            waypoints = new Waypoint[] {
-                new Waypoint(horizontal.getDouble(0), depth.getDouble(0), hatchAngle.getDouble(0))
-            };
-            trajectory = Pathfinder.generate(waypoints, config);
-            leftPath = modifier.getLeftTrajectory();
-            rightPath = modifier.getRightTrajectory();
-
-
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
     }
 
-    public static void followPath() {
-        if (leftFollower.isFinished() || rightFollower.isFinished()) {
-            followerNotifier.stop();
-        } else {
-            double leftSpeed = leftFollower.calculate((int) Robot.drivetrain.getLeftEncoderCount());
-            double rightSpeed = rightFollower.calculate((int) Robot.drivetrain.getRightEncoderCount());
-            double heading = Robot.drivetrain.getGyroAngle();
-            double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
-            double headingDifference = Pathfinder.boundHalfDegrees(desiredHeading - heading);
-            double turn = 0.8 * (-1.0 / 80.0) * headingDifference;
-            Robot.drivetrain.setLeftSide(leftSpeed + turn);
-            Robot.drivetrain.setRightSide(rightSpeed - turn);
-        }
-    }
+    public static void autoAlign(){
+        waypoints = new Waypoint[] {
+            new Waypoint(horizontal.getDouble(0), depth.getDouble(0), hatchAngle.getDouble(0))
+        };
+        trajectory = Pathfinder.generate(waypoints, config);
+        leftPath = modifier.getLeftTrajectory();
+        rightPath = modifier.getRightTrajectory();
 
-    public static void loopTrajectory(Trajectory trajectory){
-        Segment segment;
-        for(int i = 0; i < trajectory.length(); i++){
-            segment = trajectory.get(i);
-        }
+        double leftSpeed = leftFollower.calculate(Robot.drivetrain.getLeftEncoderCount());
+        double rightSpeed = rightFollower.calculate(Robot.drivetrain.getRightEncoderCount());
+        double headingDifference = Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading())
+         - Robot.drivetrain.getGyroAngle());
+        double turn = 0.8 * (-1.0 / 80.0) * headingDifference; //tbh i dunno what this lines does
+
+        Robot.drivetrain.setLeftSide(leftSpeed + turn);
+        Robot.drivetrain.setRightSide(rightSpeed - turn);
     }
 
     public static double[] vectorize(double xAngle, double yAngle) {

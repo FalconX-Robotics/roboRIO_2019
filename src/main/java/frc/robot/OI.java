@@ -24,8 +24,8 @@ public class OI {
   private static final int DRIVER_PORT_TWO = 1;
 
   // Driver One
-  private static final int SHIFT_GEAR_BUTTON = 5; // Xbox Left Bumper
-  private static final int SECOND_SHIFT_GEAR_BUTTON = 6; // Xbox Right Bumper
+  private static final int TOGGLE_GEAR_BUTTON = 5; //Xbox Left Bumper 
+  private static final int AUTO_ALIGN_BUTTON = 6; // Xbox Right Bumper
   private static final int CHANGE_ROBOT_DIRECTION_BUTTON = 2; // Xbox B button
 
   private static final double XBOX_LEFT_Y_THRESHOLD = 0.05;
@@ -56,8 +56,8 @@ public class OI {
   XboxController driverTwo = new XboxController(DRIVER_PORT_TWO);
 
   // Drivetrain (Driver One)
-  private Button shiftGearButton = new JoystickButton(driverOne, SHIFT_GEAR_BUTTON);
-  private Button secondShiftGearButton = new JoystickButton(driverOne, SECOND_SHIFT_GEAR_BUTTON);
+  private Button toggleGearButton = new JoystickButton(driverOne, TOGGLE_GEAR_BUTTON);
+  private Button autoAlignButton = new JoystickButton(driverOne, AUTO_ALIGN_BUTTON);
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
   // Climber (Driver One)
@@ -84,13 +84,11 @@ public class OI {
 
   public OI() {
     // Bind button to command
-
     //Change Direction of camera
     changeCameraDirection.whenPressed(new ChangeDirection());
 
     // Gear Shift (Driver One)
-    shiftGearButton.whenPressed(new ToggleGear());
-    secondShiftGearButton.whenPressed(new ToggleGear());
+    toggleGearButton.whenPressed(new ToggleGear());
 
     // Change which direction is forward (Driver One)
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
@@ -100,6 +98,9 @@ public class OI {
     climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
     climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
     initializeClimberButton.whenPressed(new InitializeClimber());
+
+    // Auto Align
+    autoAlignButton.whenPressed(new AutoAlign());
 
     PanicButton1.whenPressed(new Panic());
 

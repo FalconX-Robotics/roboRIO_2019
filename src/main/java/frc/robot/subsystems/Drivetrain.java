@@ -62,7 +62,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getGyroAngle() {
-     return gyro.getAngle();
+     return gyro.getAngle() % 360; // read the documentation for getAngle() and decide whether we need the %360
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -88,15 +88,15 @@ public class Drivetrain extends Subsystem {
   }
 
   // !
-  public double getEncodersCount() {
+  public int getEncodersCount() {
     return (leftEncoder.get() + rightEncoder.get() / 2);
   }
 
-  public double getLeftEncoderCount() {
+  public int getLeftEncoderCount() {
     return leftEncoder.get();
   }
 
-  public double getRightEncoderCount() {
+  public int getRightEncoderCount() {
     return rightEncoder.get();
   }
 
