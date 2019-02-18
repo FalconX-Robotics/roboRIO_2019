@@ -62,5 +62,5 @@ public class RobotMap {
   public static final boolean HATCH_PANEL_GRABBER_ENABLED = true;
   public static final boolean CLIMBER_ENABLED = false;
   public static final boolean CARGO_ENABLED = true;
-  public static final boolean VISION_ENABLED = false;
+  public static final boolean VISION_ENABLED = true;
 }

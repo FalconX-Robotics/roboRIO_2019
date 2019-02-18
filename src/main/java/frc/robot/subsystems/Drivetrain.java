@@ -39,6 +39,8 @@ public class Drivetrain extends Subsystem {
   private static NetworkTable obiWan;
   private static NetworkTableEntry directionStateEntry;
 
+  private static DirectionState cameraDirection;
+
   public Drivetrain() {
     super("Drivetrain");
     SmartDashboard.putString("Drivetrain", "enabled");
@@ -60,7 +62,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getGyroAngle() {
-     return gyro.getAngle();
+     return gyro.getAngle() % 360; // read the documentation for getAngle() and decide whether we need the %360
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -86,15 +88,15 @@ public class Drivetrain extends Subsystem {
   }
 
   // !
-  public double getEncodersCount() {
+  public int getEncodersCount() {
     return (leftEncoder.get() + rightEncoder.get() / 2);
   }
 
-  public double getLeftEncoderCount() {
+  public int getLeftEncoderCount() {
     return leftEncoder.get();
   }
 
-  public double getRightEncoderCount() {
+  public int getRightEncoderCount() {
     return rightEncoder.get();
   }
 
@@ -122,6 +124,10 @@ public class Drivetrain extends Subsystem {
   // returns average of encoder distances
   public double getEncodersDistance() {
     return (getLeftEncoderDistance() + getRightEncoderDistance() / 2);
+  }
+
+  public double getDistanceTraveled() {
+    return getEncodersDistance() / 3;
   }
 
   // SHIFTER
@@ -186,8 +192,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public static void set(DirectionState state) {
-      currentState = state;
-      SmartDashboard.putString("Direction State", currentState.toString());
+      setCameraDirection(state);
       directionStateEntry.setString(state.toString());
     }
 
@@ -234,6 +239,15 @@ public class Drivetrain extends Subsystem {
 
   public boolean getRightDirection() {
     return rightSide.getInverted();
+  }
+
+  public static void setCameraDirection(DirectionState toCameraDirection){
+    cameraDirection = toCameraDirection;
+    SmartDashboard.putString("Camera State", cameraDirection.toString());
+  }
+
+  public DirectionState getCameraDirection(){
+    return cameraDirection;
   }
 
   @Override

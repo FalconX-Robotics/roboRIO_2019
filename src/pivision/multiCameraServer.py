@@ -141,13 +141,18 @@ def readConfig():
 """listen to networktable"""
 def valueChanged(table, key, value, isNew):
     print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isNew))
-
+    if key == "Camera State":
+        if value.lower() == "forward" and len(cameras) >= 2:
+            cvSink = CameraServer.getInstance().getVideo(cameras[0])
+            dualServer.setSource(cameras[0])
+        elif value.lower() == "backward" and len(cameras) >= 2:
+            cvSink = CameraServer.getInstance().getVideo(cameras[1])
+            dualServer.setSource(cameras[1])
 
 def connectionListener(connected, info):
     print(info, "; Connected=%s" % connected)
 
 nt.addConnectionListener(connectionListener, immediateNotify=True)
-
 """Start running the camera."""
 def startCamera(config):
     print("Starting camera '{}' on {}".format(config.name, config.path))
@@ -160,7 +165,6 @@ def startCamera(config):
 
     if config.streamConfig is not None:
         server.setConfigJson(json.dumps(config.streamConfig))
-
     return camera
         
 if __name__ == "__main__":
@@ -186,16 +190,19 @@ if __name__ == "__main__":
     cameras = []
     for cameraConfig in cameraConfigs:
         cameras.append(startCamera(cameraConfig))
+    dualServer = MjpegServer("Dual Server", "", 1184)
+    dualServer.setSource(cameras[0])
     # start up the cv2 stream
     img = np.zeros(shape=(360, 240, 3), dtype=np.uint8)
     cvSink = CameraServer.getInstance().getVideo()
-    cvStream = MjpegServer("Grip Stream", "", 8080)
+    cvStream = MjpegServer("Grip Stream", "", 6969)
     gripVideo = CameraServer.getInstance().putVideo("GRIP stream", 360, 240)
     cvStream.setSource(gripVideo)
     # set up networktables
     sd = nt.getTable("SmartDashboard")
     ow = nt.getTable("ObiWan")
     sd.addEntryListener(valueChanged)
+    ow.addEntryListener(valueChanged)
     sd.putBoolean("testLines", False)
     sd.putBoolean("testContours", False)
     sd.putNumber("lowPoint", 0)
@@ -256,7 +263,7 @@ if __name__ == "__main__":
             maxBox = max(rectSizeList)
             print(rectAngles)
             for i in range(len(rectSizeList)):
-                if not 82 <= abs(rectAngles[i]) + abs(rectAngles[rectSizeList.index(maxBox)]) <= 98 and not rectAngles[i] == rectAngles[rectSizeList.index(maxBox)]:
+                if not 84 <= abs(rectAngles[i]) + abs(rectAngles[rectSizeList.index(maxBox)]) <= 96 and not rectAngles[i] == rectAngles[rectSizeList.index(maxBox)]:
                     shunned.append(len(rectSizeList)-i-1)
                 elif minBox < rectSizeList[i] < maxBox:
                     minBox = rectSizeList[i]
@@ -268,19 +275,11 @@ if __name__ == "__main__":
             cv2.drawContours(rectImg,[filteredRectList[0]],0,(200,0,200),2)
             cv2.drawContours(rectImg,[filteredRectList[1]],0,(200,0,200),2)
 
-        # # builds a sendable list of points [x1, y1, x2, y2, x3, y3, x4, y4]
-        # def rawRect(box):
-        #     points = []
-        #     for point in box:
-        #         points.append(point[0])
-        #         points.append(point[1])
-        #     return points
-        # publish up to 2 network table entries
         if len(filteredRectList) == 2:
             ow.putNumberArray("rectangle1", [xAngles[0],yAngles[0]])
             ow.putNumberArray("rectangle2", [xAngles[1],yAngles[1]])
         return rectImg
-    
+
     ## Things to do with output grip information ###
     def communicate(pipeline):
         # Check" for lines

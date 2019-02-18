@@ -6,12 +6,14 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.followers.EncoderFollower;
-
-import java.util.Arrays;
+import jaci.pathfinder.modifiers.TankModifier;
 
 public class Vision {
 
@@ -20,23 +22,50 @@ public class Vision {
     private static double pathfinderAngle;
     private static double[] vectorUno, vectorDos;
 
+    private static final double MAX_VELOCITY = 0; // '0' values are placeholders
+    private static final double MAX_ACCEL = 0;
+    private static final double MAX_JERK = 0;
+    private static final double WHEEL_BASE = 23;
+
+    private static final double kp = 0, ki = 0, kd = 0, kv = 0, ka = 0; // '0' values are placeholders
+
     private static NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
     private static NetworkTable obiWan;
     private static NetworkTable smartDashboard;
+
+    private static NetworkTableEntry horizontal;
+    private static NetworkTableEntry depth;
+    private static NetworkTableEntry hatchAngle;
 
     // private static double knownDistance = 1;
     private static NetworkTableValue rectangleOneAngles;
     private static NetworkTableValue rectangleTwoAngles;
     private static EncoderFollower leftFollower;
     private static EncoderFollower rightFollower;
-    private static Notifier followerNotifier;
+
+    private static Trajectory trajectory, leftPath, rightPath;
+    private static Waypoint[] waypoints;
+    private static Trajectory.Config config;
+    private static TankModifier modifier;
 
     public static void initialize() {
         obiWan = networkTableInstance.getTable("ObiWan");
         smartDashboard = networkTableInstance.getTable("SmartDashboard");
-        NetworkTableEntry horizontal = smartDashboard.getEntry("horizontal");
-        NetworkTableEntry depth = smartDashboard.getEntry("depth");
-        NetworkTableEntry hatchAngle = smartDashboard.getEntry("hatchAngle");
+        horizontal = smartDashboard.getEntry("horizontal");
+        depth = smartDashboard.getEntry("depth");
+        hatchAngle = smartDashboard.getEntry("hatchAngle");
+
+        config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05,
+            MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
+        modifier = new TankModifier(trajectory).modify(WHEEL_BASE);
+        EncoderFollower leftFollower = new EncoderFollower(leftPath);
+        EncoderFollower rightFollower = new EncoderFollower(rightPath);
+        leftFollower.configureEncoder(Robot.drivetrain.getLeftEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
+            RobotMap.WHEEL_DIAMETER);
+        rightFollower.configureEncoder(Robot.drivetrain.getRightEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
+            RobotMap.WHEEL_DIAMETER);
+        leftFollower.configurePIDVA(kp, ki, kd, kv, ka);
+
         /*
          * ObiWan values: rectangle1: arrays with 8 intergers rectangle2: arrys with 8
          * intergers
@@ -57,28 +86,25 @@ public class Vision {
                 pathfinderAngle = findHatchAngle(rectangleOneAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[0]);
                 hatchAngle.setDouble(pathfinderAngle);
             }
-            // x = calculatedValues[0];
-            // y = calculatedValues[1];
-
-            // SmartDashboard.putNumber("Calculated X", x);
-            // SmartDashboard.putNumber("Calculated y", y);
-
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
     }
 
-    public static void followPath() {
-        if (leftFollower.isFinished() || rightFollower.isFinished()) {
-            followerNotifier.stop();
-        } else {
-            double leftSpeed = leftFollower.calculate((int) Robot.drivetrain.getLeftEncoderCount());
-            double rightSpeed = rightFollower.calculate((int) Robot.drivetrain.getRightEncoderCount());
-            double heading = Robot.drivetrain.getGyroAngle();
-            double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
-            double headingDifference = Pathfinder.boundHalfDegrees(desiredHeading - heading);
-            double turn = 0.8 * (-1.0 / 80.0) * headingDifference;
-            Robot.drivetrain.setLeftSide(leftSpeed + turn);
-            Robot.drivetrain.setRightSide(rightSpeed - turn);
-        }
+    public static void autoAlign(){
+        waypoints = new Waypoint[] {
+            new Waypoint(horizontal.getDouble(0), depth.getDouble(0), hatchAngle.getDouble(0))
+        };
+        trajectory = Pathfinder.generate(waypoints, config);
+        leftPath = modifier.getLeftTrajectory();
+        rightPath = modifier.getRightTrajectory();
+
+        double leftSpeed = leftFollower.calculate(Robot.drivetrain.getLeftEncoderCount());
+        double rightSpeed = rightFollower.calculate(Robot.drivetrain.getRightEncoderCount());
+        double headingDifference = Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading())
+         - Robot.drivetrain.getGyroAngle());
+        double turn = 0.8 * (-1.0 / 80.0) * headingDifference; //tbh i dunno what this lines does
+
+        Robot.drivetrain.setLeftSide(leftSpeed + turn);
+        Robot.drivetrain.setRightSide(rightSpeed - turn);
     }
 
     public static double[] vectorize(double xAngle, double yAngle) {
@@ -90,7 +116,7 @@ public class Vision {
     }
     public static double findHatchAngle(double xAngle, double yAngle) {
         double[] vectorPos = vectorize(xAngle, yAngle);
-        double hypotenuse = Math.sqrt(Math.pow(vectorPos[0], 2)*Math.pow(vectorPos[2], 2));
+        double hypotenuse = Math.sqrt(Math.pow(vectorPos[0], 2)+Math.pow(vectorPos[2], 2));
         double angleToHatch = Math.asin(hypotenuse*Math.sin(Math.toRadians(xAngle))/TAPE_WIDTH);
         return Math.toDegrees(angleToHatch);
     }
