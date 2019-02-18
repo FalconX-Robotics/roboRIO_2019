@@ -57,11 +57,6 @@ public class Vision {
                 pathfinderAngle = findHatchAngle(rectangleOneAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[0]);
                 hatchAngle.setDouble(pathfinderAngle);
             }
-            // x = calculatedValues[0];
-            // y = calculatedValues[1];
-
-            // SmartDashboard.putNumber("Calculated X", x);
-            // SmartDashboard.putNumber("Calculated y", y);
 
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
     }
@@ -90,7 +85,7 @@ public class Vision {
     }
     public static double findHatchAngle(double xAngle, double yAngle) {
         double[] vectorPos = vectorize(xAngle, yAngle);
-        double hypotenuse = Math.sqrt(Math.pow(vectorPos[0], 2)*Math.pow(vectorPos[2], 2));
+        double hypotenuse = Math.sqrt(Math.pow(vectorPos[0], 2) + Math.pow(vectorPos[2], 2));
         double angleToHatch = Math.asin(hypotenuse*Math.sin(Math.toRadians(xAngle))/TAPE_WIDTH);
         return Math.toDegrees(angleToHatch);
     }
