@@ -2,9 +2,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;

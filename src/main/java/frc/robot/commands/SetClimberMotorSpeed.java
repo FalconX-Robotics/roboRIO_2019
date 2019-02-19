@@ -13,8 +13,18 @@ public class SetClimberMotorSpeed extends InstantCommand {
     }
 
     @Override
-    protected void execute() {
+    protected void initialize() {
         Robot.climber.setClimberMotorSpeed(speed);
+    }
+
+    @Override
+    protected void end() {
+        
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
     }
 
 }

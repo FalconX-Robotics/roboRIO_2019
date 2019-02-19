@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+//import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Drivetrain.DirectionState;
-import frc.robot.subsystems.Drivetrain.GearShiftState;
+//import frc.robot.subsystems.Drivetrain.GearShiftState;
 
 public class TankDriveWithXbox extends Command {
 
@@ -35,7 +35,7 @@ public class TankDriveWithXbox extends Command {
         }
 
         long startTime = System.nanoTime();
-        double startDistance = Robot.drivetrain.getEncodersDistance();
+        //double startDistance = Robot.drivetrain.getEncoderDistance();
 
         SmartDashboard.putNumber("Encoder Value", Robot.drivetrain.getEncodersCount());
 

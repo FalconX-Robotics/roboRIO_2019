@@ -2,9 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -15,7 +16,12 @@ public class HatchPanelGrabber extends Subsystem {
             RobotMap.HATCH_GRAB_REVERSE); // Middle piston
     private Solenoid hatchPushSolenoid = new Solenoid(1, RobotMap.HATCH_PUSH); // Outside pistons
 
+    DigitalInput limitSwitchTop = new DigitalInput(RobotMap.TOP_LIMIT_SWITCH);
+    DigitalInput limitSwitchBottom = new DigitalInput(RobotMap.BOTTOM_LIMIT_SWITCH);
     private WPI_TalonSRX hatchMotor = new WPI_TalonSRX(RobotMap.HATCH_MOTOR);
+    // Counter counterTop = new Counter(limitSwitchTop);
+    // Counter counterBottom = new Counter(limitSwitchBottom);
+
 
     public HatchPanelGrabber() {
         super("Hatch Panel Grabber");
@@ -66,7 +72,7 @@ public class HatchPanelGrabber extends Subsystem {
     }
 
     public enum HatchPanelPositionState {
-        UP, DOWN;
+        UP, DOWN, IN_BETWEEN;
 
         public static HatchPanelPositionState currentPositionState = UP;
 
@@ -85,15 +91,15 @@ public class HatchPanelGrabber extends Subsystem {
             return false;
         }
 
-        public static void update() {
-            if (get() == UP) {
-                set(DOWN);
-
-            } else if (get() == DOWN) {
-                set(UP);
+        public static HatchPanelPositionState update() {
+            if (Robot.hatchPanelGrabber.getTopSwitch()) {
+                currentPositionState = UP;
+            } else if (Robot.hatchPanelGrabber.getTopSwitch()) {
+                currentPositionState = DOWN;
+            } else {
+                currentPositionState = IN_BETWEEN;
             }
-            SmartDashboard.putString("Hatch Position", get().toString());
-            
+            return currentPositionState;
         }
     }
 
@@ -119,6 +125,14 @@ public class HatchPanelGrabber extends Subsystem {
 
     public void runHatchMotor(double speed) {
         hatchMotor.set(speed);
+    }
+
+    public boolean getTopSwitch() {
+        return limitSwitchTop.get();
+    }
+
+    public boolean getBottomSwitch() {
+        return limitSwitchTop.get();
     }
 
     @Override

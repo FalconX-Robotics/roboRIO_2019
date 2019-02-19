@@ -49,8 +49,7 @@ public class OI {
   private static final int TOGGLE_HATCH_PANEL_BUTTON = 4; // Xbox X button
   private static final int LAUNCH_HATCH_PANEL_BUTTON = 3; // Xbox Y button
 
-  public static final int MOVE_HATCH_UP = 6; // Xbox right bumper
-  public static final int MOVE_HATCH_DOWN = 5; // Xbox left bumper
+  public static final int MOVE_HATCH = 8; // Xbox start button
 
   XboxController driverOne = new XboxController(DRIVER_PORT_ONE);
   XboxController driverTwo = new XboxController(DRIVER_PORT_TWO);
@@ -73,8 +72,7 @@ public class OI {
   // Hatch (Driver Two)
   private Button toggleHatchButton = new JoystickButton(driverTwo, TOGGLE_HATCH_PANEL_BUTTON);
   private Button launchHatchButton = new JoystickButton(driverTwo, LAUNCH_HATCH_PANEL_BUTTON);
-  private Button moveHatchUpButton = new JoystickButton(driverTwo, MOVE_HATCH_UP);
-  private Button moveHatchDownButton = new JoystickButton(driverTwo, MOVE_HATCH_DOWN);
+  private Button moveHatchButton = new JoystickButton(driverTwo, MOVE_HATCH);
 
   // Cargo (Driver Two)
   private Button toggleLowerCargoButton = new JoystickButton(driverTwo, TOGGLE_LOWER_CARGO_BUTTON);
@@ -86,7 +84,6 @@ public class OI {
     // Bind button to command
     //Change Direction of camera
     changeCameraDirection.whenPressed(new ToggleCameraDirection());
- 
     // Gear Shift (Driver One)
     toggleGearButton.whenPressed(new ToggleGear());
 
@@ -107,8 +104,7 @@ public class OI {
     // Hatch (Driver Two)
     toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchPanel());
-    moveHatchUpButton.whenPressed(new RaiseHatch());
-    moveHatchDownButton.whenPressed(new LowerHatch());
+    moveHatchButton.whenPressed(new MoveHatch());
 
     // Cargo (Driver Two)
     toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());

@@ -33,5 +33,6 @@ public class AutoAlign extends Command {
   
   @Override
   protected void interrupted() {
+    end();
   }
 }
