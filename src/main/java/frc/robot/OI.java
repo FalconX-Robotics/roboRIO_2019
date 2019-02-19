@@ -46,8 +46,8 @@ public class OI {
   private static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
   private static final int TOGGLE_LOWER_CARGO_BUTTON = 1; // Xbox A Button
 
-  private static final int TOGGLE_HATCH_PANEL_BUTTON = 4; // Xbox X button
-  private static final int LAUNCH_HATCH_PANEL_BUTTON = 3; // Xbox Y button
+  private static final int TOGGLE_HATCH_PANEL_BUTTON = 3; // Xbox X button
+  private static final int LAUNCH_HATCH_PANEL_BUTTON = 4; // Xbox Y button
 
   public static final int MOVE_HATCH = 8; // Xbox start button
 
@@ -122,7 +122,7 @@ public class OI {
 
   public double getDriverRightTriggerAxis() {
     double triggerRightAxis = driverOne.getTriggerAxis(Hand.kRight);
-    System.out.println(triggerRightAxis);
+    //System.out.println(triggerRightAxis);
     return deadband(triggerRightAxis, TRIGGER_THRESHOLD);
   }
 

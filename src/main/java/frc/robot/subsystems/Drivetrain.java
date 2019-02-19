@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem {
 
   private static DirectionState cameraDirection;
 
-  private static final double DISTANCE_PER_COUNT = (5.08 / 4096 * Math.PI);
+  private static final double DISTANCE_PER_COUNT = (Math.PI * 45.72 / 4096);
 
   public Drivetrain() {
     super("Drivetrain");
@@ -47,12 +47,16 @@ public class Drivetrain extends Subsystem {
     directionStateEntry = obiWan.getEntry("DirectionState");
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
-    shifterBackward();
-    //faceForwards();
 
     // ENCODERS
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+    //Cap speed for testing and stuff
+    //leftFront.configNominalOutputForward(0.01);
+    //rightFront.configNominalOutputForward(0.01);
+    //leftFront.configNominalOutputReverse(0.01);
+    //rightFront.configNominalOutputReverse(0.01);
 
     //GYRO
     gyro.calibrate();

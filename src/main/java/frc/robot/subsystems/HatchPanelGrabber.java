@@ -105,14 +105,14 @@ public class HatchPanelGrabber extends Subsystem {
 
     public void toggleHatchGrabSolenoid(Value value) {
         SmartDashboard.putString("Grab Soleniod", value.toString());
-        HatchPanelGrabberState.update();
         hatchGrabSolenoid.set(value);
+        HatchPanelGrabberState.update();
     }
 
     public void toggleHatchPushSolenoid(Boolean value) {
         SmartDashboard.putBoolean("Push Soleniod", value);
-        HatchPanelGrabberState.update();
         hatchPushSolenoid.set(value);
+        HatchPanelGrabberState.update();
     }
 
     public Value getHatchGrabSolenoidValue() {
