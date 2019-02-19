@@ -5,13 +5,11 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
@@ -57,7 +55,6 @@ public class Vision {
 
         config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05,
             MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
-        modifier = new TankModifier(trajectory).modify(WHEEL_BASE);
         EncoderFollower leftFollower = new EncoderFollower(leftPath);
         EncoderFollower rightFollower = new EncoderFollower(rightPath);
         leftFollower.configureEncoder(Robot.drivetrain.getLeftEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
@@ -94,6 +91,7 @@ public class Vision {
             new Waypoint(horizontal.getDouble(0), depth.getDouble(0), hatchAngle.getDouble(0))
         };
         trajectory = Pathfinder.generate(waypoints, config);
+        modifier = new TankModifier(trajectory).modify(WHEEL_BASE);
         leftPath = modifier.getLeftTrajectory();
         rightPath = modifier.getRightTrajectory();
 

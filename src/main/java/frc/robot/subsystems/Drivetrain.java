@@ -50,7 +50,7 @@ public class Drivetrain extends Subsystem {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
     shifterBackward();
-    faceForwards();
+    //faceForwards();
 
     // ENCODERS
     leftEncoder.setDistancePerPulse(findDistancePerPulse(RobotMap.COUNTS_PER_REVOLUTION));
@@ -100,14 +100,6 @@ public class Drivetrain extends Subsystem {
     return rightEncoder.get();
   }
 
-  // public <T extends Number> T average(T[] nums) {
-  // T sum = 0;
-  // for (T num : nums) {
-  // sum = sum + num;
-  // }
-  // return sum;
-  // }
-
   public double getLeftEncoderDistance() {
     return leftEncoder.getDistance();
   }
@@ -155,8 +147,6 @@ public class Drivetrain extends Subsystem {
 
       return currentState;
     }
-
-    
 
     public static boolean check(GearShiftState state) {
       if (GearShiftState.get() == state) {

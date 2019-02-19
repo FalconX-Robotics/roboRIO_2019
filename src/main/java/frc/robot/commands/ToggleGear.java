@@ -14,7 +14,7 @@ public class ToggleGear extends Command {
          * Value.kReverse : // Value.kForward);
          */
     }
-
+    
     @Override
     public void initialize() {
         GearShiftState.update();
