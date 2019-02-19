@@ -48,7 +48,8 @@ public class Drivetrain extends Subsystem {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
     shifterBackward();
-    faceForwards();
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
 
     // ENCODERS
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);

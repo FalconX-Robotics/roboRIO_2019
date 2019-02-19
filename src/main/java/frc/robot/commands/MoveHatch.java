@@ -8,11 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.subsystems.HatchPanelGrabber.HatchPanelPositionState;
 
 public class MoveHatch extends Command {
-  private static double speed = 1; // set speed of motorxd
+  private static double speed = 0.1; // set speed of motorxd
   private static HatchPanelPositionState state = HatchPanelPositionState.update();
 
   public MoveHatch() {
@@ -33,22 +34,25 @@ public class MoveHatch extends Command {
     if (state == HatchPanelPositionState.UP) {
       Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
     } else {
-      Robot.hatchPanelGrabber.runHatchMotor(speed);
+       Robot.hatchPanelGrabber.runHatchMotor(speed);
     }
   }
 
   @Override
   protected boolean isFinished() {
+    SmartDashboard.putBoolean("Bottom Switch", Robot.hatchPanelGrabber.getBottomSwitch());
+    SmartDashboard.putBoolean("Top Switch", Robot.hatchPanelGrabber.getTopSwitch());
+
     if (state == HatchPanelPositionState.UP) {
-      return Robot.hatchPanelGrabber.getBottomSwitch();
+      return !Robot.hatchPanelGrabber.getBottomSwitch();
     } else {
-      return Robot.hatchPanelGrabber.getTopSwitch();
+      return !Robot.hatchPanelGrabber.getTopSwitch();
     }
   }
 
   @Override
   protected void end() {
-    Robot.hatchPanelGrabber.runHatchMotor(0);
+    // Robot.hatchPanelGrabber.runHatchMotor(0);
     HatchPanelPositionState.update();
   }
 

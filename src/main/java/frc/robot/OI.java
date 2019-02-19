@@ -98,7 +98,7 @@ public class OI {
     initializeClimberButton.whenPressed(new InitializeClimber());
 
     // Auto Align
-    autoAlignButton.whenPressed(new AutoAlign());
+    autoAlignButton.whileHeld(new AutoAlign());
 
     PanicButton1.whenPressed(new Panic());
 
