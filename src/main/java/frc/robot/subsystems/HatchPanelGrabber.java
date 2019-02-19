@@ -133,7 +133,6 @@ public class HatchPanelGrabber extends Subsystem {
     }
   
     public boolean getBottomSwitch() {
-        SmartDashboard.putBoolean("Bottom Switch", limitSwitchBottom.get());
         return limitSwitchBottom.get();
     }
 

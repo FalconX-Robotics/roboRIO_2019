@@ -54,6 +54,9 @@ public class Drivetrain extends Subsystem {
     directionStateEntry = obiWan.getEntry("DirectionState");
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
+    shifterBackward();
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
 
     // ENCODERS
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);

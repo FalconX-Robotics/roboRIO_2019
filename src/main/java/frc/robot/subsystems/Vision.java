@@ -53,9 +53,7 @@ public class Vision {
         horizontal = smartDashboard.getEntry("horizontal");
         depth = smartDashboard.getEntry("depth");
         hatchAngle = smartDashboard.getEntry("hatchAngle");
-
-        config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05,
-            MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
+        
         EncoderFollower leftFollower = new EncoderFollower(leftPath);
         EncoderFollower rightFollower = new EncoderFollower(rightPath);
         leftFollower.configureEncoder(Robot.drivetrain.getLeftEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
@@ -98,7 +96,7 @@ public class Vision {
         double leftSpeed = leftFollower.calculate(Robot.drivetrain.getLeftEncoderCount());
         double rightSpeed = rightFollower.calculate(Robot.drivetrain.getRightEncoderCount());
         double headingDifference = 
-            Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading()) - Robot.drivetrain.getYaw()); // index 0: yaw; 1: pitch; 2: roll
+            Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading()) - Robot.drivetrain.getGyroAngle());
         double turn = 0.8 * (-1.0 / 80.0) * headingDifference; // tbh i dunno what this lines does
 
         Robot.drivetrain.setLeftSide(leftSpeed + turn);

@@ -137,6 +137,8 @@ public class OI {
     // Auto Align
     // autoAlignButton.whileHeld(new AutoAlign());
 
+    PanicButton1.whenPressed(new Panic());
+
     // Hatch (Driver Two)
     toggleHatchButton.whenPressed(new ToggleHatch());
     launchHatchButton.whenPressed(new LaunchPanel());

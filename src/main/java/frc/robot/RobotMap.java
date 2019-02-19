@@ -51,6 +51,13 @@ public class RobotMap {
 
   public static final int CLIMBER_MOTOR = 6;
 
+  // Cargo
+  public static final int CARGO_UPPER_PISTON_IN = 3;
+  public static final int CARGO_UPPER_PISTON_OUT = 2;
+
+  public static final int CARGO_LOWER_PISTON_IN = 6;
+  public static final int CARGO_LOWER_PISTON_OUT = 7;
+
   // Encoders
   public static final int LEFT_ENCODER_CHANNEL_A = 0;
   public static final int LEFT_ENCODER_CHANNEL_B = 1;
