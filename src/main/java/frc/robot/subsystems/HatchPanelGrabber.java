@@ -132,7 +132,7 @@ public class HatchPanelGrabber extends Subsystem {
     }
 
     public boolean getBottomSwitch() {
-        return limitSwitchTop.get();
+        return limitSwitchBottom.get();
     }
 
     @Override

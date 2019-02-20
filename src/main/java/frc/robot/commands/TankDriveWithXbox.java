@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.ChangeDirection;
 import frc.robot.subsystems.Drivetrain.DirectionState;
 
 public class TankDriveWithXbox extends Command {
@@ -33,15 +34,15 @@ public class TankDriveWithXbox extends Command {
             Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
 
         } else if (DirectionState.check(DirectionState.BACKWARD)) {
-            Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
+            Robot.drivetrain.tankDrive(rightSpeed, leftSpeed);
 
         } else if (DirectionState.check(DirectionState.INVALID)) {
-            Robot.drivetrain.faceForwards();
+            new ChangeDirection().start();
             Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
         }
 
         long startTime = System.nanoTime();
-        //double startDistance = Robot.drivetrain.getEncoderDistance();
+        // double startDistance = Robot.drivetrain.getEncoderDistance();
 
         SmartDashboard.putNumber("Encoder Value", Robot.drivetrain.getEncodersCount());
 

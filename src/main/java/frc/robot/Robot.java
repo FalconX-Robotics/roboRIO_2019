@@ -45,7 +45,9 @@ public class Robot extends TimedRobot {
 
     // MAKE THIS LAST
     oi = new OI();
-    
+
+    drivetrain.faceForwards();
+    drivetrain.shifterBackward();
 
     // SMART_DASH_BOARD
     // SmartDashboard.putData("Drivetrain", drivetrain);

@@ -36,7 +36,7 @@ public class OI {
   private static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
 
   private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
-  // private static final int CLIMBER_BUTTON = 8;
+  private static final int CLIMBER_BUTTON = 8;
 
   private static final int DIRECTION_STATE_BUTTON = 1; //Xbox A button
 
@@ -60,10 +60,10 @@ public class OI {
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
   // Climber (Driver One)
-  private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
-  private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
-  private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
-  // private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
+  //private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
+  //private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
+  //private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
+  private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
 
   private Button PanicButton1 = new JoystickButton(driverOne, PANIC_BUTTON);
 
@@ -91,13 +91,13 @@ public class OI {
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
     // Climber (Driver One)
-    // climberButton.whenPressed(new Climb());
-    climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
-    climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
-    initializeClimberButton.whenPressed(new InitializeClimber());
+    climberButton.whenPressed(new Climb());
+    //climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
+    //climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
+    //initializeClimberButton.whenPressed(new InitializeClimber());
 
     // Auto Align
-    autoAlignButton.whenPressed(new AutoAlign());
+    autoAlignButton.whileHeld(new AutoAlign());
 
     PanicButton1.whenPressed(new Panic());
 

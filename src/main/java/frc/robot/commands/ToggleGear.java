@@ -14,7 +14,7 @@ public class ToggleGear extends Command {
          * Value.kReverse : // Value.kForward);
          */
     }
-    
+
     @Override
     public void initialize() {
         GearShiftState.update();
@@ -24,6 +24,11 @@ public class ToggleGear extends Command {
         } else if (GearShiftState.check(GearShiftState.HIGH)) {
             Robot.drivetrain.shifterBackward();
         }
+    }
+
+    @Override
+    protected void end() {
+        GearShiftState.update();
     }
 
     @Override
