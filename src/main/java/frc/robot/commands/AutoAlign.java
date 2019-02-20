@@ -30,7 +30,7 @@ public class AutoAlign extends Command {
 
   protected void end() {
   }
-  
+
   @Override
   protected void interrupted() {
     end();

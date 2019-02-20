@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem {
 
   private static DirectionState cameraDirection;
 
-  private static final double DISTANCE_PER_COUNT = (5.08 / 4096 * Math.PI);
+  private static final double DISTANCE_PER_COUNT = (Math.PI * 45.72 / 4096);
 
   public Drivetrain() {
     super("Drivetrain");
@@ -47,20 +47,23 @@ public class Drivetrain extends Subsystem {
     directionStateEntry = obiWan.getEntry("DirectionState");
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
-    shifterBackward();
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
 
     // ENCODERS
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
-    //GYRO
+    // Cap speed for testing and stuff
+    // leftFront.configNominalOutputForward(0.01);
+    // rightFront.configNominalOutputForward(0.01);
+    // leftFront.configNominalOutputReverse(0.01);
+    // rightFront.configNominalOutputReverse(0.01);
+
+    // GYRO
     gyro.calibrate();
   }
 
   public double getGyroAngle() {
-     return gyro.getAngle() % 360;
+    return gyro.getAngle() % 360;
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -85,20 +88,20 @@ public class Drivetrain extends Subsystem {
     return (Math.PI * RobotMap.WHEEL_DIAMETER) / countsPerRevolution;
   }
 
-  //Raw Encoder counts
+  // Raw Encoder counts
   public int getEncodersCount() {
     return (getLeftEncoderCount() + getRightEncoderCount()) / 2;
   }
 
   public int getLeftEncoderCount() {
-    return leftFront.getSelectedSensorPosition(); 
+    return leftFront.getSelectedSensorPosition();
   }
 
   public int getRightEncoderCount() {
     return rightFront.getSelectedSensorPosition();
   }
-  
-  //Encoder distances in cm
+
+  // Encoder distances in cm
   public double getLeftEncoderDistance() {
     return getLeftEncoderCount() * DISTANCE_PER_COUNT;
   }
@@ -107,16 +110,16 @@ public class Drivetrain extends Subsystem {
     return getRightEncoderCount() * DISTANCE_PER_COUNT;
   }
 
-  public double getEncoderDistance(){
+  public double getEncoderDistance() {
     return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
   }
 
-  //Encoder speeds in cm/s
-  public double getLeftEncoderSpeed(){
+  // Encoder speeds in cm/s
+  public double getLeftEncoderSpeed() {
     return leftFront.getSelectedSensorVelocity();
   }
 
-  public double getRightEncoderSpeed(){
+  public double getRightEncoderSpeed() {
     return rightFront.getSelectedSensorVelocity() * 10;
   }
 
@@ -142,15 +145,12 @@ public class Drivetrain extends Subsystem {
     public static GearShiftState update() {
       if (Robot.drivetrain.getShifterValue() == Value.kForward) {
         set(HIGH);
-      }
-      else {
+      } else {
         set(LOW);
       }
-      
+
       return currentState;
     }
-
-    
 
     public static boolean check(GearShiftState state) {
       if (GearShiftState.get() == state) {
@@ -164,11 +164,13 @@ public class Drivetrain extends Subsystem {
   public void shifterForward() {
     shifter.set(Value.kForward);
     GearShiftState.set(GearShiftState.HIGH);
+    GearShiftState.update();
   }
 
   public void shifterBackward() {
     shifter.set(Value.kReverse);
     GearShiftState.set(GearShiftState.LOW);
+    GearShiftState.update();
   }
 
   public Value getShifterValue() {
@@ -187,6 +189,7 @@ public class Drivetrain extends Subsystem {
 
     public static void set(DirectionState state) {
       setCameraDirection(state);
+      SmartDashboard.putString("Direction State", DirectionState.get().toString());
       directionStateEntry.setString(state.toString());
     }
 
@@ -235,12 +238,12 @@ public class Drivetrain extends Subsystem {
     return rightSide.getInverted();
   }
 
-  public static void setCameraDirection(DirectionState toCameraDirection){
+  public static void setCameraDirection(DirectionState toCameraDirection) {
     cameraDirection = toCameraDirection;
     SmartDashboard.putString("Camera State", cameraDirection.toString());
   }
 
-  public DirectionState getCameraDirection(){
+  public DirectionState getCameraDirection() {
     return cameraDirection;
   }
 

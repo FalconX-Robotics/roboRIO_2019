@@ -54,7 +54,7 @@ public class MoveHatch extends Command {
   @Override
   protected void end() {
     SmartDashboard.putBoolean("Move hatch running", false);
-    // Robot.hatchPanelGrabber.runHatchMotor(0);
+    Robot.hatchPanelGrabber.runHatchMotor(0);
     HatchPanelPositionState.update();
   }
 

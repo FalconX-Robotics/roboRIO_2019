@@ -14,7 +14,6 @@ public class ChangeDirection extends InstantCommand {
 
     @Override
     protected void initialize() {
-        SmartDashboard.putString("Direction State", DirectionState.get().toString());
         if (DirectionState.check(DirectionState.FORWARD)) {
             Robot.drivetrain.faceBackwards();
             // Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
@@ -31,6 +30,5 @@ public class ChangeDirection extends InstantCommand {
         }
 
         DirectionState.update();
-
     }
 }

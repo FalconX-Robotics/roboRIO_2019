@@ -53,7 +53,9 @@ public class Vision {
         horizontal = smartDashboard.getEntry("horizontal");
         depth = smartDashboard.getEntry("depth");
         hatchAngle = smartDashboard.getEntry("hatchAngle");
-        
+
+        config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05,
+            MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
         EncoderFollower leftFollower = new EncoderFollower(leftPath);
         EncoderFollower rightFollower = new EncoderFollower(rightPath);
         leftFollower.configureEncoder(Robot.drivetrain.getLeftEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,

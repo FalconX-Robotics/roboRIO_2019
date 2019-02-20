@@ -36,7 +36,7 @@ public class OI {
   private static final int CLIMBER_FRONT_BUTTON = 3; // Xbox X button
 
   private static final int CLIMBER_BACK_BUTTON = 4; // Xbox Y button
-  // private static final int CLIMBER_BUTTON = 8;
+  private static final int CLIMBER_BUTTON = 8;
 
   private static final int DIRECTION_STATE_BUTTON = 1; //Xbox A button
 
@@ -46,8 +46,8 @@ public class OI {
   private static final int TOGGLE_UPPER_CARGO_BUTTON = 2; // Xbox B Button
   private static final int TOGGLE_LOWER_CARGO_BUTTON = 1; // Xbox A Button
 
-  private static final int TOGGLE_HATCH_PANEL_BUTTON = 4; // Xbox X button
-  private static final int LAUNCH_HATCH_PANEL_BUTTON = 3; // Xbox Y button
+  private static final int TOGGLE_HATCH_PANEL_BUTTON = 3; // Xbox X button
+  private static final int LAUNCH_HATCH_PANEL_BUTTON = 4; // Xbox Y button
 
   public static final int MOVE_HATCH = 8; // Xbox start button
 
@@ -60,10 +60,10 @@ public class OI {
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
   // Climber (Driver One)
-  private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
-  private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
-  private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
-  // private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
+  //private Button initializeClimberButton = new JoystickButton(driverOne, CLIMBER_INITIALIZE_BUTTON);
+  //private Button climberFrontButton = new JoystickButton(driverOne, CLIMBER_FRONT_BUTTON);
+  //private Button climberBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
+  private Button climberButton = new JoystickButton(driverOne, CLIMBER_BUTTON);
 
   private Button PanicButton1 = new JoystickButton(driverOne, PANIC_BUTTON);
 
@@ -84,7 +84,6 @@ public class OI {
     // Bind button to command
     //Change Direction of camera
     changeCameraDirection.whenPressed(new ToggleCameraDirection());
-
     // Gear Shift (Driver One)
     toggleGearButton.whenPressed(new ToggleGear());
 
@@ -92,10 +91,10 @@ public class OI {
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
 
     // Climber (Driver One)
-    // climberButton.whenPressed(new Climb());
-    climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
-    climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
-    initializeClimberButton.whenPressed(new InitializeClimber());
+    climberButton.whenPressed(new Climb());
+    //climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
+    //climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
+    //initializeClimberButton.whenPressed(new InitializeClimber());
 
     // Auto Align
     autoAlignButton.whileHeld(new AutoAlign());
@@ -123,7 +122,7 @@ public class OI {
 
   public double getDriverRightTriggerAxis() {
     double triggerRightAxis = driverOne.getTriggerAxis(Hand.kRight);
-    System.out.println(triggerRightAxis);
+    //System.out.println(triggerRightAxis);
     return deadband(triggerRightAxis, TRIGGER_THRESHOLD);
   }
 

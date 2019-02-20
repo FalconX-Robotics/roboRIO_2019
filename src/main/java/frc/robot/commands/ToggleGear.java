@@ -27,6 +27,11 @@ public class ToggleGear extends Command {
     }
 
     @Override
+    protected void end() {
+        GearShiftState.update();
+    }
+
+    @Override
     protected boolean isFinished() {
         return true;
     }
