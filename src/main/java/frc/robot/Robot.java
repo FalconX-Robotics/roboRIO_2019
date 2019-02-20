@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Cargo cargo;
   public static ToggleGear toggleGearCommand;
+  private double[] ypr = new double[3];
 
   // MAKE THIS LAST
   public static OI oi;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Encoder Speed", drivetrain.getSpeed());
     SmartDashboard.putNumber("Encoder Distance", drivetrain.getEncoderDistance());
-    SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
+    SmartDashboard.putNumber("Gyro Angle", drivetrain.getYawAngle());
   }
 
   @Override

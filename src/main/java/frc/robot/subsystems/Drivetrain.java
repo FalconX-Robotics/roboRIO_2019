@@ -1,7 +1,11 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.CalibrationMode;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -28,8 +32,9 @@ public class Drivetrain extends Subsystem {
 
   private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  private AnalogGyro gyro = new AnalogGyro(0);
-
+  //private AnalogGyro gyro = new AnalogGyro(0);
+  private PigeonIMU gyro = new PigeonIMU(0);
+  private double[] ypr = new double[3];
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
 
   private static NetworkTable obiWan;
@@ -59,11 +64,18 @@ public class Drivetrain extends Subsystem {
     //rightFront.configNominalOutputReverse(0.01);
 
     //GYRO
-    gyro.calibrate();
+    gyro.enterCalibrationMode(CalibrationMode.Temperature);
   }
 
-  public double getGyroAngle() {
-     return gyro.getAngle() % 360;
+  
+  public ErrorCode getGyroAngle() {
+     return gyro.getYawPitchRoll(ypr);
+    //return gyro.getGyroAngle() % 360;
+  }
+
+  public double getYawAngle()
+  {
+    return ypr[0];
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
