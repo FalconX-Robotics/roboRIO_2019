@@ -229,7 +229,6 @@ public class Drivetrain extends Subsystem {
   }
 
   private boolean getLeftInverted() {
-    SmartDashboard.putBoolean("inverted of left", leftSide.getInverted());
     return leftSide.getInverted();
   }
 
