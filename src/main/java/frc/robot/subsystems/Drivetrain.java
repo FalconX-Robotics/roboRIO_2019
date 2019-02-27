@@ -60,6 +60,11 @@ public class Drivetrain extends Subsystem {
 
     // GYRO
     gyro.calibrate();
+
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
+    leftFront.setSelectedSensorPosition(0);
+    rightFront.setSelectedSensorPosition(0);
   }
 
   public double getGyroAngle() {
@@ -177,64 +182,58 @@ public class Drivetrain extends Subsystem {
     return shifter.get();
   }
 
-  // FACE
-  public enum DirectionState {
+  // DIRECTION
+
+  public static enum DirectionState {
     FORWARD, BACKWARD, INVALID;
 
-    private static DirectionState currentState = DirectionState.FORWARD;
+    private static DirectionState currentState = Robot.drivetrain.getLeftInverted() == true ? BACKWARD : FORWARD;
 
     public static DirectionState get() {
+      update();
       return currentState;
     }
 
-    public static void set(DirectionState state) {
-      setCameraDirection(state);
-      SmartDashboard.putString("Direction State", DirectionState.get().toString());
-      directionStateEntry.setString(state.toString());
+    private static DirectionState set(DirectionState state) {
+      SmartDashboard.putString("Direction State", currentState.toString());
+      return currentState = state;
     }
 
-    public static DirectionState update() {
-      DirectionState state;
+    private static DirectionState update() {
+      DirectionState state = INVALID;
 
-      if (Robot.drivetrain.getLeftDirection() != Robot.drivetrain.getRightDirection()) {
-        state = INVALID;
-      } else {
-        if (Robot.drivetrain.getLeftDirection() == false) {
-          state = BACKWARD;
-        } else {
+      if (Robot.drivetrain.getLeftInverted() == Robot.drivetrain.getRightInverted()) {
+        if (Robot.drivetrain.getLeftInverted()) {
           state = FORWARD;
+        } else {
+          state = BACKWARD;
         }
       }
 
-      set(state);
-      return state;
+      return set(state);
     }
 
     public static boolean check(DirectionState state) {
-      if (DirectionState.get() == state) {
-        return true;
-      }
-      return false;
+      return get() == state;
     }
   }
 
-  public void faceForwards() {
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
-    DirectionState.update();
-  }
-
-  public void faceBackwards() {
+  public void faceForward() {
     leftSide.setInverted(false);
     rightSide.setInverted(false);
-    DirectionState.update();
   }
 
-  public boolean getLeftDirection() {
+  public void faceBackward() {
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
+  }
+
+  private boolean getLeftInverted() {
+    SmartDashboard.putBoolean("inverted of left", leftSide.getInverted());
     return leftSide.getInverted();
   }
 
-  public boolean getRightDirection() {
+  private boolean getRightInverted() {
     return rightSide.getInverted();
   }
 
