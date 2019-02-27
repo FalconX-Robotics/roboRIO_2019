@@ -120,11 +120,13 @@ public class Drivetrain extends Subsystem {
     pigeon.enterCalibrationMode(CalibrationMode.BootTareGyroAccel);
   }
 
-  public boolean calibrationFinished(){
-    if (pigeon.getState() == PigeonState.Ready){
-      return true;
-    }
-    return false;
+    // GYRO
+    gyro.calibrate();
+
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
+    leftFront.setSelectedSensorPosition(0);
+    rightFront.setSelectedSensorPosition(0);
   }
 
   public double getTilt(){
@@ -257,7 +259,7 @@ public class Drivetrain extends Subsystem {
     }
 
     private static DirectionState set(DirectionState state) {
-      // SmartDashboard.putString("Direction State", currentState.toString());
+      SmartDashboard.putString("Direction State", currentState.toString());
       return currentState = state;
     }
 
@@ -291,6 +293,7 @@ public class Drivetrain extends Subsystem {
   }
 
   private boolean getLeftInverted() {
+    SmartDashboard.putBoolean("inverted of left", leftSide.getInverted());
     return leftSide.getInverted();
   }
 

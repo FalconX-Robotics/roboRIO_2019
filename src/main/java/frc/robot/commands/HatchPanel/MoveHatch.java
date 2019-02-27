@@ -35,9 +35,9 @@ public class MoveHatch extends Command {
   @Override
   protected void execute() {
     if (state == HatchPanelPositionState.UP) {
-      // Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
+      Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
     } else {
-      //  Robot.hatchPanelGrabber.runHatchMotor(speed);
+      Robot.hatchPanelGrabber.runHatchMotor(speed);
     }
   }
 
