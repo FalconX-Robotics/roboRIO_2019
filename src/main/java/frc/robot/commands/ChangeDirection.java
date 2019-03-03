@@ -1,34 +1,25 @@
 package frc.robot.commands;
 
-//import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Drivetrain.DirectionState;
 
 public class ChangeDirection extends InstantCommand {
+
     public ChangeDirection() {
-        super("Change Robot Direction");
+        super("ChangeDirection");
         requires(Robot.drivetrain);
     }
 
     @Override
     protected void initialize() {
-        if (DirectionState.check(DirectionState.FORWARD)) {
-            Robot.drivetrain.faceBackwards();
-            // Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
-            // Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
-
-        } else if (DirectionState.check(DirectionState.BACKWARD)) {
-            System.out.println("Face forwards");
-            Robot.drivetrain.faceForwards();
-            // Robot.oi.rumble(RumbleType.kRightRumble, 0.5);
-            // Robot.oi.rumble(RumbleType.kLeftRumble, 0.5);
+        if (Drivetrain.DirectionState.check(DirectionState.FORWARD)) {
+            Robot.drivetrain.faceForward();
+        } else if (Drivetrain.DirectionState.check(DirectionState.BACKWARD)) {
+            Robot.drivetrain.faceBackward();
         } else {
-            System.out.println("Invalid State");
-            Robot.drivetrain.faceForwards();
+            Robot.drivetrain.faceForward();
         }
-
-        DirectionState.update();
     }
 }

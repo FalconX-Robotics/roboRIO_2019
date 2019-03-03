@@ -13,8 +13,8 @@ import frc.robot.Robot;
 import frc.robot.subsystems.HatchPanelGrabber.HatchPanelPositionState;
 
 public class MoveHatch extends Command {
-  private static double speed = 0.1; // set speed of motorxd
-  private static HatchPanelPositionState state = HatchPanelPositionState.update();
+  private static double speed = 0.5; // set speed of motorxd
+  private HatchPanelPositionState state = HatchPanelPositionState.update();
 
   public MoveHatch() {
     super("Move Hatch");
@@ -26,16 +26,18 @@ public class MoveHatch extends Command {
     SmartDashboard.putBoolean("Move hatch running", true);
     state = HatchPanelPositionState.update();
     if (state == HatchPanelPositionState.IN_BETWEEN) {
-      state = HatchPanelPositionState.DOWN;
+      SmartDashboard.putString("Was in between", state.toString());
+      state = HatchPanelPositionState.DOWN;  
     }
+    SmartDashboard.putString("Move hatch state", state.toString());
   }
 
   @Override
   protected void execute() {
     if (state == HatchPanelPositionState.UP) {
-      // Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
+      Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
     } else {
-      //  Robot.hatchPanelGrabber.runHatchMotor(speed);
+      Robot.hatchPanelGrabber.runHatchMotor(speed);
     }
   }
 

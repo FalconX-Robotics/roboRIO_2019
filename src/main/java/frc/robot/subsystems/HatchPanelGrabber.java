@@ -92,9 +92,9 @@ public class HatchPanelGrabber extends Subsystem {
         }
 
         public static HatchPanelPositionState update() {
-            if (Robot.hatchPanelGrabber.getTopSwitch()) {
+            if (!Robot.hatchPanelGrabber.getTopSwitch()) {
                 currentPositionState = UP;
-            } else if (Robot.hatchPanelGrabber.getTopSwitch()) {
+            } else if (!Robot.hatchPanelGrabber.getBottomSwitch()) {
                 currentPositionState = DOWN;
             } else {
                 currentPositionState = IN_BETWEEN;

@@ -17,9 +17,6 @@ public class TankDriveWithXbox extends Command {
         requires(Robot.drivetrain);
         // notifier = new Notifier(this::putEncoderValue);
         // notifier.startPeriodic(1); //display encoder values to sdb
-        Robot.drivetrain.shifterBackward();
-        Robot.drivetrain.faceForwards();
-        Robot.drivetrain.resetEncoders();
     }
 
     @Override
@@ -30,16 +27,7 @@ public class TankDriveWithXbox extends Command {
         // Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
         // Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
 
-        if (DirectionState.check(DirectionState.FORWARD)) {
-            Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
-
-        } else if (DirectionState.check(DirectionState.BACKWARD)) {
-            Robot.drivetrain.tankDrive(rightSpeed, leftSpeed);
-
-        } else if (DirectionState.check(DirectionState.INVALID)) {
-            new ChangeDirection().start();
-            Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
-        }
+        Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
 
         long startTime = System.nanoTime();
         // double startDistance = Robot.drivetrain.getEncoderDistance();
