@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -13,10 +13,10 @@ public class ToggleFrontClimberSolenoid extends InstantCommand {
 
     @Override
     public void initialize() {
-        if (Robot.climber.getFrontSolenoidValue() == Value.kForward) {
-            Robot.climber.setFrontSolenoid(Value.kReverse);
+        if (Robot.climber.getFrontSolenoidForwardValue() == true && Robot.climber.getFrontSolenoidReverseValue() == false) {
+            Robot.climber.setFrontSolenoid(false, true);
         } else {
-            Robot.climber.setFrontSolenoid(Value.kForward);
+            Robot.climber.setFrontSolenoid(true, false);
         }
     }
 }

@@ -8,15 +8,17 @@ import frc.robot.RobotMap;
 import frc.robot.Robot;
 
 public class Cargo extends Subsystem {
-    private DoubleSolenoid cargoUpperSolenoid = new DoubleSolenoid(RobotMap.CARGO_UPPER_PISTON_IN,
-            RobotMap.CARGO_UPPER_PISTON_OUT);
-    private DoubleSolenoid cargoLowerSolenoid = new DoubleSolenoid(RobotMap.CARGO_LOWER_PISTON_IN,
-            RobotMap.CARGO_LOWER_PISTON_OUT);
+    private DoubleSolenoid cargoUpperSolenoid = new DoubleSolenoid(RobotMap.REAR_MODULE, 
+        RobotMap.CARGO_UPPER_PISTON_IN, RobotMap.CARGO_UPPER_PISTON_OUT);
+    private DoubleSolenoid cargoLowerSolenoid = new DoubleSolenoid(RobotMap.REAR_MODULE,
+        RobotMap.CARGO_LOWER_PISTON_IN, RobotMap.CARGO_LOWER_PISTON_OUT);
+    private DoubleSolenoid openCloseCargo = new DoubleSolenoid(RobotMap.FRONT_MODULE,
+        RobotMap.CARGO_OPEN, RobotMap.CARGO_CLOSE);
 
     public Cargo() {
         super("Cargo Push");
         cargoUpperSolenoid.set(Value.kReverse);
-        cargoLowerSolenoid.set(Value.kForward);
+        cargoLowerSolenoid.set(Value.kReverse);
     }
 
     public enum CargoState {
@@ -34,7 +36,7 @@ public class Cargo extends Subsystem {
 
         public static CargoState update() {
             if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kForward
-                    && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
+                    && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse ) {
                 set(TOPREADY);
             } else if (Robot.cargo.getCargoLowerSolenoidValue() == Value.kReverse
                     && Robot.cargo.getCargoUpperSolenoidValue() == Value.kReverse) {
@@ -75,6 +77,22 @@ public class Cargo extends Subsystem {
 
     public Value getCargoUpperSolenoidValue() {
         return cargoUpperSolenoid.get();
+    }
+
+    public void setOpenCloseCargo(Value value){
+        openCloseCargo.set(value);
+    }
+
+    public Value getOpenCloseCargo(){
+        return openCloseCargo.get();
+    }
+
+    public void openCargo(){
+        openCloseCargo.set(Value.kReverse);
+    }
+
+    public void closeCargo(){
+        openCloseCargo.set(Value.kForward);
     }
 
     @Override

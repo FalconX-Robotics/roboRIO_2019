@@ -5,51 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.HatchPanel;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.subsystems.HatchPanelGrabber.HatchPanelPositionState;
+import frc.robot.subsystems.HatchPanelGrabber;
 
-public class MoveHatch extends Command {
-  private static double speed = 1; // set speed of motorxd
-  private static HatchPanelPositionState state = HatchPanelPositionState.update();
+public class LowerHatch extends Command {
 
-  public MoveHatch() {
-    super("Move Hatch");
+  private double speed = -0.4; //set speed of motor
+
+  public LowerHatch() {
+    super("Lower Hatch");
     requires(Robot.hatchPanelGrabber);
   }
 
   @Override
   protected void initialize() {
-    state = HatchPanelPositionState.update();
-    if (state == HatchPanelPositionState.IN_BETWEEN) {
-      state = HatchPanelPositionState.DOWN;
-    }
+
   }
 
   @Override
   protected void execute() {
-    if (state == HatchPanelPositionState.UP) {
-      Robot.hatchPanelGrabber.runHatchMotor(speed * -1);
-    } else {
-      Robot.hatchPanelGrabber.runHatchMotor(speed);
-    }
+    Robot.hatchPanelGrabber.runHatchMotor(speed);
   }
 
   @Override
   protected boolean isFinished() {
-    if (state == HatchPanelPositionState.UP) {
-      return Robot.hatchPanelGrabber.getBottomSwitch();
-    } else {
-      return Robot.hatchPanelGrabber.getTopSwitch();
-    }
+    return !Robot.hatchPanelGrabber.getBottomSwitch();
   }
 
   @Override
   protected void end() {
     Robot.hatchPanelGrabber.runHatchMotor(0);
-    HatchPanelPositionState.update();
   }
 
   @Override

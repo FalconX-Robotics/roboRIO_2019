@@ -2,71 +2,100 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.DriveClimberMotor;
+import frc.robot.commands.Climber.DriveClimberMotor;
+// import frc.robot.commands.Climber.HoldSolenoid;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Climber extends Subsystem {
 
-    private DoubleSolenoid frontSolenoid = new DoubleSolenoid(1, RobotMap.FRONT_FORWARD_CLIMB_SOLENOID,
-            RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
-    private DoubleSolenoid backSolenoid = new DoubleSolenoid(RobotMap.BACK_FORWARD_CLIMB_SOLENOID,
-            RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+    private Solenoid frontSolenoidForward = new Solenoid(RobotMap.FRONT_MODULE, 
+        RobotMap.FRONT_FORWARD_CLIMB_SOLENOID);
+    private Solenoid frontSolenoidReverse = new Solenoid(RobotMap.FRONT_MODULE, 
+        RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
+
+    private Solenoid backSolenoidForward = new Solenoid(RobotMap.REAR_MODULE,
+        RobotMap.BACK_FORWARD_CLIMB_SOLENOID);
+    private Solenoid backSolenoidReverse = new Solenoid(RobotMap.REAR_MODULE,
+        RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+
     private WPI_TalonSRX climberMotor = new WPI_TalonSRX(RobotMap.CLIMBER_MOTOR);
 
     public Climber() {
         super("Climber");
-        frontSolenoid.set(Value.kReverse);
-        backSolenoid.set(Value.kReverse);
+        frontSolenoidForward.set(false);
+        frontSolenoidReverse.set(true);
+
+        backSolenoidForward.set(false);
+        backSolenoidReverse.set(true);
+
         climberMotor.setInverted(true);
-    }
-
-    public enum ClimberState {
-        INITIALIZED, READY, INVALID;
-
-        private static ClimberState currentState = READY;
-
-        public static ClimberState get() {
-            return currentState;
-        }
-
-        public static void set(ClimberState state) {
-            currentState = state;
-            SmartDashboard.putString("Climber State", state.toString());
-        }
-
-        public static boolean check(ClimberState state) {
-            if (ClimberState.get() == state) {
-                return true;
-            }
-            return false;
-        }
-    }
+}
 
     public void setClimberMotorSpeed(double speed) {
-        climberMotor.set(speed);
+        climberMotor.set(speed * 0.6);
+    }
+    
+    public void setFrontSolenoid(Boolean forwardValue, Boolean reverseValue) {
+        frontSolenoidForward.set(forwardValue);
+        frontSolenoidReverse.set(reverseValue);
     }
 
-    public void setFrontSolenoid(Value toValue) {
-        frontSolenoid.set(toValue);
-        SmartDashboard.putString("Front Solenoid Value", toValue.toString());
+    public void setBackSolenoid(Boolean forwardValue, Boolean reverseValue) {
+        backSolenoidForward.set(forwardValue);
+        backSolenoidReverse.set(reverseValue);
     }
 
-    public void setBackSolenoid(Value toValue) {
-        backSolenoid.set(toValue);
-        SmartDashboard.putString("Back Solenoid Value", toValue.toString());
+    public boolean getFrontSolenoidForwardValue() {
+        return frontSolenoidForward.get();
     }
 
-    public Value getFrontSolenoidValue() {
-        return frontSolenoid.get();
+    public boolean getFrontSolenoidReverseValue() {
+        return frontSolenoidReverse.get();
     }
 
-    public Value getBackSolenoidValue() {
-        return backSolenoid.get();
+    public boolean getBackSolenoidForwardValue() {
+        return backSolenoidForward.get();
+    }
+
+    public boolean getBackSolenoidReverseValue() {
+        return backSolenoidReverse.get();
+    }
+
+    public void forwardFrontSolenoid() {
+        frontSolenoidForward.set(true);
+        frontSolenoidReverse.set(false);
+    }
+
+    public void reverseFrontSolenoid() {
+        frontSolenoidForward.set(false);
+        frontSolenoidReverse.set(true);
+    }
+
+    public void pauseFrontSolenoid() {
+        frontSolenoidForward.set(false);
+        frontSolenoidReverse.set(false);
+    }
+
+    public void forwardBackSolenoid() {
+        backSolenoidForward.set(true);
+        backSolenoidReverse.set(false);
+    }
+
+    public void reverseBackSolenoid() {
+        backSolenoidForward.set(false);
+        backSolenoidReverse.set(true);
+    }
+
+    public void pauseBackSolenoid() {
+        backSolenoidForward.set(false);
+        backSolenoidReverse.set(false);
     }
 
     @Override

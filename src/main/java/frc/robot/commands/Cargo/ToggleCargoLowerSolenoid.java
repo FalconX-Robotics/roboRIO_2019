@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Cargo;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -16,9 +16,7 @@ public class ToggleCargoLowerSolenoid extends InstantCommand {
     }
 
     public void initialize() {
-        if (update)
-            CargoState.update();
-        CargoState.update();
+        if (update) CargoState.update();
         if (CargoState.check(CargoState.INVALID) && update) {
             Robot.cargo.toggleCargoUpperSolenoid(Value.kReverse);
             Robot.cargo.toggleCargoLowerSolenoid(Value.kForward);

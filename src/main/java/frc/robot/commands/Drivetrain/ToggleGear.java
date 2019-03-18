@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -9,12 +9,8 @@ public class ToggleGear extends Command {
     public ToggleGear() {
         super("Toggle Gear");
         requires(Robot.drivetrain);
-        /*
-         * // super(Robot.drivetrain.getShifterValue() == Value.kForward ?
-         * Value.kReverse : // Value.kForward);
-         */
     }
-    
+
     @Override
     public void initialize() {
         GearShiftState.update();
@@ -24,6 +20,11 @@ public class ToggleGear extends Command {
         } else if (GearShiftState.check(GearShiftState.HIGH)) {
             Robot.drivetrain.shifterBackward();
         }
+    }
+
+    @Override
+    protected void end() {
+        GearShiftState.update();
     }
 
     @Override

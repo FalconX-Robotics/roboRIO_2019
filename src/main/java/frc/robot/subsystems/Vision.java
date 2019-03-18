@@ -43,7 +43,8 @@ public class Vision {
 
     private static Trajectory trajectory, leftPath, rightPath;
     private static Waypoint[] waypoints;
-    private static Trajectory.Config config;
+    private static Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+        Trajectory.Config.SAMPLES_HIGH, 0.05, MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
     private static TankModifier modifier;
 
     public static void initialize() {
@@ -58,9 +59,9 @@ public class Vision {
         EncoderFollower leftFollower = new EncoderFollower(leftPath);
         EncoderFollower rightFollower = new EncoderFollower(rightPath);
         leftFollower.configureEncoder(Robot.drivetrain.getLeftEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
-            RobotMap.WHEEL_DIAMETER);
+                RobotMap.WHEEL_DIAMETER);
         rightFollower.configureEncoder(Robot.drivetrain.getRightEncoderCount(), RobotMap.COUNTS_PER_REVOLUTION,
-            RobotMap.WHEEL_DIAMETER);
+                RobotMap.WHEEL_DIAMETER);
         leftFollower.configurePIDVA(kp, ki, kd, kv, ka);
 
         /*
@@ -68,9 +69,8 @@ public class Vision {
          * intergers
          */
         obiWan.addEntryListener("rectangle1", (table, key, entry, value, flags) -> {
-        rectangleOneAngles = value;
-        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate |
-        EntryListenerFlags.kLocal);
+            rectangleOneAngles = value;
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
 
         obiWan.addEntryListener("rectangle2", (table, key, entry, rectangleTwoValue, flags) -> {
             rectangleTwoAngles = rectangleTwoValue;
@@ -80,16 +80,16 @@ public class Vision {
                 vectorDos = vectorize(rectangleTwoAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[1]);
                 horizontal.setDouble((vectorUno[0] + vectorDos[0]) / 2);
                 depth.setDouble((vectorUno[2] + vectorDos[2]) / 2);
-                pathfinderAngle = findHatchAngle(rectangleOneAngles.getDoubleArray()[0], rectangleTwoAngles.getDoubleArray()[0]);
+                pathfinderAngle = findHatchAngle(rectangleOneAngles.getDoubleArray()[0],
+                        rectangleTwoAngles.getDoubleArray()[0]);
                 hatchAngle.setDouble(pathfinderAngle);
             }
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate | EntryListenerFlags.kLocal);
     }
 
-    public static void autoAlign(){
+    public static void autoAlign() {
         waypoints = new Waypoint[] {
-            new Waypoint(horizontal.getDouble(0), depth.getDouble(0), hatchAngle.getDouble(0))
-        };
+                new Waypoint(horizontal.getDouble(0), depth.getDouble(0), hatchAngle.getDouble(0)) };
         trajectory = Pathfinder.generate(waypoints, config);
         modifier = new TankModifier(trajectory).modify(WHEEL_BASE);
         leftPath = modifier.getLeftTrajectory();
@@ -97,9 +97,9 @@ public class Vision {
 
         double leftSpeed = leftFollower.calculate(Robot.drivetrain.getLeftEncoderCount());
         double rightSpeed = rightFollower.calculate(Robot.drivetrain.getRightEncoderCount());
-        double headingDifference = Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading())
-         - Robot.drivetrain.getGyroAngle());
-        double turn = 0.8 * (-1.0 / 80.0) * headingDifference; //tbh i dunno what this lines does
+        double headingDifference = 
+            Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading()) - Robot.drivetrain.getYaw()); // index 0: yaw; 1: pitch; 2: roll
+        double turn = 0.8 * (-1.0 / 80.0) * headingDifference; // tbh i dunno what this lines does
 
         Robot.drivetrain.setLeftSide(leftSpeed + turn);
         Robot.drivetrain.setRightSide(rightSpeed - turn);
@@ -112,10 +112,11 @@ public class Vision {
         position[2] = (CAMERA_HEIGHT - 72.5) / Math.tan(Math.toRadians(yAngle));
         return position;
     }
+
     public static double findHatchAngle(double xAngle, double yAngle) {
         double[] vectorPos = vectorize(xAngle, yAngle);
-        double hypotenuse = Math.sqrt(Math.pow(vectorPos[0], 2)+Math.pow(vectorPos[2], 2));
-        double angleToHatch = Math.asin(hypotenuse*Math.sin(Math.toRadians(xAngle))/TAPE_WIDTH);
+        double hypotenuse = Math.sqrt(Math.pow(vectorPos[0], 2) + Math.pow(vectorPos[2], 2));
+        double angleToHatch = Math.asin(hypotenuse * Math.sin(Math.toRadians(xAngle)) / TAPE_WIDTH);
         return Math.toDegrees(angleToHatch);
     }
 }

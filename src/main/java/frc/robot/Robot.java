@@ -9,32 +9,25 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.*;
+import frc.robot.commands.Climber.InitializeClimber;
+import frc.robot.commands.Drivetrain.*;
 import frc.robot.subsystems.*;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
+
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static HatchPanelGrabber hatchPanelGrabber;
   public static Climber climber;
   public static Cargo cargo;
   public static ToggleGear toggleGearCommand;
-  private double[] ypr = new double[3];
 
   // MAKE THIS LAST
   public static OI oi;
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private CalibrateGyro calibrationCommand = null;
 
   @Override
   public void robotInit() {
@@ -42,39 +35,62 @@ public class Robot extends TimedRobot {
     hatchPanelGrabber = new HatchPanelGrabber();
     climber = new Climber();
     cargo = new Cargo();
-    Vision.initialize();
+    // Vision.initialize();
 
     // MAKE THIS LAST
     oi = new OI();
-    
+
+    // drivetrain.faceForwards();
+    drivetrain.shifterBackward();
 
     // SMART_DASH_BOARD
-    // SmartDashboard.putData("Drivetrain", drivetrain);
+    SmartDashboard.putData("Drivetrain", drivetrain);
     SmartDashboard.putData("Climber", climber);
-    // SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
+    SmartDashboard.putData("Cargo", cargo);
+    SmartDashboard.putData("Hatch", hatchPanelGrabber);
+    SmartDashboard.putData("InitalizeClimber", new InitializeClimber());
+    SmartDashboard.putData("ResetGyro", new ResetGyro());
+    SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
   }
 
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Encoder Speed", drivetrain.getSpeed());
     SmartDashboard.putNumber("Encoder Distance", drivetrain.getEncoderDistance());
-    SmartDashboard.putNumber("Gyro Angle", drivetrain.getYawAngle());
+    
+    SmartDashboard.putNumber("Gyro Yaw: ", drivetrain.getYaw());
+    SmartDashboard.putNumber("Gyro Pitch: ", drivetrain.getPitch());
+    SmartDashboard.putNumber("Gyro Roll: ", drivetrain.getRoll());
+
+    SmartDashboard.putNumber("Raw Yaw", drivetrain.getGyroData()[0]);
+    SmartDashboard.putNumber("Raw Pitch", drivetrain.getGyroData()[1]);
+    SmartDashboard.putNumber("Raw Roll", drivetrain.getGyroData()[2]);
   }
 
   @Override
   public void disabledInit() {
+
   }
 
   @Override
   public void disabledPeriodic() {
+    if (calibrationCommand == null && oi.calibrateGyro.get()) {
+      calibrationCommand = new CalibrateGyro();
+    } else if (calibrationCommand != null && !calibrationCommand.isRunning()) {
+      SmartDashboard.putString("Gyro Calibration Status", "Ready");
+      calibrationCommand = null;
+    }
+    climber.reverseBackSolenoid();
+    climber.reverseFrontSolenoid();
+
     Scheduler.getInstance().run();
   }
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
+    if (calibrationCommand != null) { 
+      calibrationCommand.cancel();
+      calibrationCommand = null;
     }
   }
 
@@ -85,6 +101,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    if (calibrationCommand != null) { 
+      calibrationCommand.cancel();
+      calibrationCommand = null;
+    }
+    drivetrain.resetGyro();
     Scheduler.getInstance().run();
   }
 
@@ -97,3 +118,4 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 }
+

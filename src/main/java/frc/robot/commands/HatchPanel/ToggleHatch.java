@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.HatchPanel;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,9 +15,6 @@ public class ToggleHatch extends Command {
 
     @Override
     protected void initialize() {
-        // state = !state;
-        // Robot.hatchPanelGrabber.toggleHatchPushSolenoid(state);
-        // SmartDashboard.putString("HatchPanelGrabberState", value)
         HatchPanelGrabberState.update();
         if (HatchPanelGrabberState.check(HatchPanelGrabberState.OPENED)) {
             // Grab Solenoid out
@@ -29,6 +26,16 @@ public class ToggleHatch extends Command {
             // Push Solenoid in (So it unbreaks)
             Robot.hatchPanelGrabber.toggleHatchPushSolenoid(false);
         }
+    }
+
+    @Override
+    protected void end() {
+        HatchPanelGrabberState.update();
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
     }
 
     @Override
