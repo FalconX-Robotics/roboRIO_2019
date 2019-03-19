@@ -1,20 +1,22 @@
 package frc.robot.commands.Drivetrain;
 
-import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.Drivetrain.DirectionState;
 
 public class TankDriveWithXbox extends Command {
-    private Notifier notifier;
+
+    private static final int SPEED_TO_SHIFT_UP = 0; // 0's are placeholders
+    private static final int SPEED_TO_SHIFT_DOWN = 0;
+
+    private boolean canShift = true;
+    Timer timer = new Timer();
 
     public TankDriveWithXbox() {
         super("Tank Drive with Xbox Controller");
         requires(Robot.drivetrain);
-        // notifier = new Notifier(this::putEncoderValue);
-        // notifier.startPeriodic(1); //display encoder values to sdb
     }
 
     @Override
@@ -22,10 +24,30 @@ public class TankDriveWithXbox extends Command {
         double leftSpeed = Robot.oi.getDriverLeftYAxis();
         double rightSpeed = Robot.oi.getDriverRightYAxis();
 
-        // Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
-        // Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
+        double actualLeftSpeed = Robot.drivetrain.getLeftEncoderSpeed();
+        double actualRightSpeed = Robot.drivetrain.getRightEncoderSpeed();
+
+        if(canShift) {
+            if(actualLeftSpeed < SPEED_TO_SHIFT_DOWN && actualRightSpeed < SPEED_TO_SHIFT_DOWN) {
+                Robot.drivetrain.shifterBackward();
+            }
+            else if((actualLeftSpeed > SPEED_TO_SHIFT_UP && actualRightSpeed > SPEED_TO_SHIFT_UP)) {
+                Robot.drivetrain.shifterForward();
+            }
+            timer.start();
+            canShift = false;
+        }
+        else if (timer.get() > 2.0){
+            timer.stop();
+            timer.reset();
+            canShift = true;
+        }
+
+        Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
+        Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
 
         Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
+
 
         // long startTime = System.nanoTime();
         // double startDistance = Robot.drivetrain.getEncoderDistance();
