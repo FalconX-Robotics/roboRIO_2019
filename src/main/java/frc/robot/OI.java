@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Drivetrain.*;
+import frc.robot.commands.Cargo.*;
 import frc.robot.commands.HatchPanel.*;
 
 /**
@@ -26,7 +27,7 @@ import frc.robot.commands.HatchPanel.*;
 public class OI {
 
   private static class Buttons {
-    // BUTTTONS
+    //BUTTTONS
     private static final int A = 1;
     private static final int B = 2;
     private static final int X = 3;
@@ -35,7 +36,7 @@ public class OI {
     private static final int RIGHT_BUMPER = 6;
     private static final int BACK = 7;
     private static final int START = 8;
-  }
+}
 
   private static final double XBOX_LEFT_Y_THRESHOLD = 0.05;
   private static final double XBOX_RIGHT_Y_THRESHOLD = 0.05;
@@ -51,25 +52,22 @@ public class OI {
 
   /* Drivetrain */
 
-  private static final int TOGGLE_GEAR_BUTTON = Buttons.LEFT_BUMPER; // Xbox Left Bumper
+  private static final int TOGGLE_GEAR_BUTTON = Buttons.LEFT_BUMPER; //Xbox Left Bumper 
   private Button toggleGearButton = new JoystickButton(driverOne, TOGGLE_GEAR_BUTTON);
 
-  // private static final int AUTO_ALIGN_BUTTON = Buttons.RIGHT_BUMPER; // Xbox
-  // Right Bumper
-  // private Button autoAlignButton = new JoystickButton(driverOne,
-  // AUTO_ALIGN_BUTTON);
+  // private static final int AUTO_ALIGN_BUTTON = Buttons.RIGHT_BUMPER; // Xbox Right Bumper
+  // private Button autoAlignButton = new JoystickButton(driverOne, AUTO_ALIGN_BUTTON);
 
-  // private static final int HOLD_CLIMB = Buttons.LEFT_BUMPER; //Xbox Right
-  // Bumper
+  // private static final int HOLD_CLIMB = Buttons.LEFT_BUMPER; //Xbox Right Bumper
   // private Button holdClimb = new JoystickButton(driverOne, HOLD_CLIMB);
 
   private static final int CHANGE_ROBOT_DIRECTION_BUTTON = Buttons.B; // Xbox B button
   private Button changeRobotDirectionButton = new JoystickButton(driverOne, CHANGE_ROBOT_DIRECTION_BUTTON);
 
-  private static final int DIRECTION_STATE_BUTTON = Buttons.A; // Xbox A button
+  private static final int DIRECTION_STATE_BUTTON = Buttons.A; //Xbox A button
   private Button changeCameraDirection = new JoystickButton(driverOne, DIRECTION_STATE_BUTTON);
 
-  private static final int PANIC_BUTTON = Buttons.BACK; // "back" button
+  private static final int PANIC_BUTTON = Buttons.BACK; //"back" button
   private Button PanicButton1 = new JoystickButton(driverOne, PANIC_BUTTON);
   private Button PanicButton2 = new JoystickButton(driverTwo, PANIC_BUTTON);
 
@@ -86,8 +84,19 @@ public class OI {
 
   private static final int CLIMBER_BACK_BUTTON = Buttons.Y; // Xbox Y button
   private Button climberRetractBackButton = new JoystickButton(driverOne, CLIMBER_BACK_BUTTON);
-
+  
   // Driver Two
+
+  /* Cargo */
+
+  // private static final int TOGGLE_UPPER_CARGO_BUTTON = Buttons.B; // Xbox B Button
+  // private Button toggleUpperCargoButton = new JoystickButton(driverTwo, TOGGLE_UPPER_CARGO_BUTTON);
+
+  // private static final int TOGGLE_LOWER_CARGO_BUTTON = Buttons.A; // Xbox A Button
+  // private Button toggleLowerCargoButton = new JoystickButton(driverTwo, TOGGLE_LOWER_CARGO_BUTTON);
+
+  // private static final int TOGGLE_CARGO_OPEN_CLOSE = Buttons.LEFT_BUMPER; //Xbox left bumper
+  // private Button toggleOpenCloseCargo = new JoystickButton(driverTwo, TOGGLE_CARGO_OPEN_CLOSE);
 
   /* Hatch */
 
@@ -108,7 +117,7 @@ public class OI {
     // changeCameraDirection.whenPressed(new ToggleCameraDirection());
 
     // Gear Shift (Driver One)
-    // toggleGearButton.whenPressed(new ToggleGear());
+    toggleGearButton.whenPressed(new ToggleGear());
 
     // Change which direction is forward (Driver One)
     changeRobotDirectionButton.whenPressed(new ChangeDirection());
@@ -117,10 +126,10 @@ public class OI {
     // climberFrontButton.whenPressed(new ToggleFrontClimberSolenoid());
     // climberBackButton.whenPressed(new ToggleBackClimberSolenoid());
 
-    // initializeClimberButton.whileHeld(new InitializeClimber());
-    // climberRetractFrontButton.whileHeld(new RetractFrontClimb());
-    // climberRetractBackButton.whileHeld(new RetractRearClimb());
-
+    initializeClimberButton.whileHeld(new InitializeClimber());
+    climberRetractFrontButton.whileHeld(new RetractFrontClimb());
+    climberRetractBackButton.whileHeld(new RetractRearClimb());
+  
     // initializeClimberButton.whenPressed(new InitializeClimber());
     // climberButton.whenPressed(new Climb());
 
@@ -128,10 +137,16 @@ public class OI {
     // autoAlignButton.whileHeld(new AutoAlign());
 
     // Hatch (Driver Two)
-    // toggleHatchButton.whenPressed(new ToggleHatch());
-    // launchHatchButton.whenPressed(new LaunchPanel());
-    // raiseHatch.whileHeld(new RaiseHatch());
-    // lowerHatch.whileHeld(new LowerHatch());
+    toggleHatchButton.whenPressed(new ToggleHatch());
+    launchHatchButton.whenPressed(new LaunchPanel());
+    raiseHatch.whileHeld(new RaiseHatch());
+    lowerHatch.whileHeld(new LowerHatch());
+
+
+    // Cargo (Driver Two)
+    // toggleUpperCargoButton.whenPressed(new LaunchUpperCargo());
+    // toggleLowerCargoButton.whenPressed(new LaunchLowerCargo());
+    // toggleOpenCloseCargo.whenPressed(new ToggleOpenClose());
 
     // Stop all commands
     PanicButton1.whenPressed(new Panic());
@@ -155,7 +170,7 @@ public class OI {
 
   public double getDriverRightYAxis() {
     double rawRightYAxis = driverOne.getY(Hand.kRight);
-    Robot.log("Drivetrain speed", rawRightYAxis);
+    SmartDashboard.putNumber("Drivetrain speed", rawRightYAxis);
 
     return deadband(rawRightYAxis, XBOX_RIGHT_Y_THRESHOLD);
   }

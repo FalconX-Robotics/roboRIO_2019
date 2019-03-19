@@ -12,8 +12,8 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class HatchPanelGrabber extends Subsystem {
-    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(RobotMap.FRONT_MODULE, RobotMap.HATCH_GRAB_FORWARD,
-            RobotMap.HATCH_GRAB_REVERSE); // Middle piston
+    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(RobotMap.FRONT_MODULE,
+     RobotMap.HATCH_GRAB_FORWARD, RobotMap.HATCH_GRAB_REVERSE); // Middle piston
     private Solenoid hatchPushSolenoid = new Solenoid(RobotMap.FRONT_MODULE, RobotMap.HATCH_PUSH); // Outside pistons
 
     DigitalInput limitSwitchTop = new DigitalInput(RobotMap.TOP_LIMIT_SWITCH);
@@ -103,13 +103,13 @@ public class HatchPanelGrabber extends Subsystem {
     }
 
     public void toggleHatchGrabSolenoid(Value value) {
-        Robot.log("Grab Soleniod", value.toString());
+        SmartDashboard.putString("Grab Soleniod", value.toString());
         hatchGrabSolenoid.set(value);
         HatchPanelGrabberState.update();
     }
 
     public void toggleHatchPushSolenoid(Boolean value) {
-        Robot.log("Push Soleniod", value);
+        SmartDashboard.putBoolean("Push Soleniod", value);
         hatchPushSolenoid.set(value);
         HatchPanelGrabberState.update();
     }
@@ -127,12 +127,12 @@ public class HatchPanelGrabber extends Subsystem {
     }
 
     public boolean getTopSwitch() {
-        Robot.log("Bottom Switch", limitSwitchTop.get());
+        SmartDashboard.putBoolean("Bottom Switch", limitSwitchTop.get());
         return limitSwitchTop.get();
     }
   
     public boolean getBottomSwitch() {
-        Robot.log("Bottom Switch", limitSwitchBottom.get());
+        SmartDashboard.putBoolean("Bottom Switch", limitSwitchBottom.get());
         return limitSwitchBottom.get();
     }
 

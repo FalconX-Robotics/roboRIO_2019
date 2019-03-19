@@ -44,7 +44,7 @@ public class Drivetrain extends Subsystem {
 
   private static DirectionState cameraDirection;
 
-  private static final double DISTANCE_PER_COUNT = (Math.PI * 35.48 / 4096);
+  private static final double DISTANCE_PER_COUNT = (Math.PI * 45.72 / 4096);
 
   public Drivetrain() {
     super("Drivetrain");
@@ -54,16 +54,13 @@ public class Drivetrain extends Subsystem {
     directionStateEntry = obiWan.getEntry("DirectionState");
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
-    shifterBackward();
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
 
     // ENCODERS
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
-    leftSide.setInverted(false);
-    rightSide.setInverted(false);
+    leftSide.setInverted(true);
+    rightSide.setInverted(true);
     leftFront.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);
 
@@ -175,7 +172,7 @@ public class Drivetrain extends Subsystem {
 
   // Encoder speeds in cm/s
   public double getLeftEncoderSpeed() {
-    return leftFront.getSelectedSensorVelocity() * 10;
+    return leftFront.getSelectedSensorVelocity();
   }
 
   public double getRightEncoderSpeed() {
@@ -207,7 +204,6 @@ public class Drivetrain extends Subsystem {
       } else {
         set(LOW);
       }
-      
       return currentState;
     }
 

@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +20,7 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static HatchPanelGrabber hatchPanelGrabber;
   public static Climber climber;
+  // public static Cargo cargo;
   public static ToggleGear toggleGearCommand;
 
   // MAKE THIS LAST
@@ -28,58 +28,44 @@ public class Robot extends TimedRobot {
 
   private CalibrateGyro calibrationCommand = null;
 
-  public static void log(String key, Object value) {
-    if (!RobotMap.loggable)
-      System.out.println(value);
-    else if (value instanceof Number) {
-      SmartDashboard.putNumber(key, Double.parseDouble(value.toString()));
-    } else if (value instanceof String) {
-      SmartDashboard.putString(key, (String) value);
-    } else if (value instanceof Boolean) {
-      SmartDashboard.putBoolean(key, (boolean) value);
-    } else if (value instanceof SendableBase) {
-      SmartDashboard.putData(key, (SendableBase) value);
-    } else if (value != null) {
-      SmartDashboard.putString(key, value.toString());
-    }
-  }
-
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
-    //hatchPanelGrabber = new HatchPanelGrabber();
-    //climber = new Climber();
+    hatchPanelGrabber = new HatchPanelGrabber();
+    climber = new Climber();
+    // cargo = new Cargo();
     // Vision.initialize();
 
     // MAKE THIS LAST
     oi = new OI();
 
     // drivetrain.faceForwards();
-    // drivetrain.shifterBackward();
-    // climber.reverseBackSolenoid();
-    // climber.reverseFrontSolenoid();
+    drivetrain.shifterBackward();
+    climber.reverseBackSolenoid();
+    climber.reverseFrontSolenoid();
 
     // SMART_DASH_BOARD
     SmartDashboard.putData("Drivetrain", drivetrain);
-    // SmartDashboard.putData("Climber", climber);
-    // SmartDashboard.putData("Hatch", hatchPanelGrabber);
-    // SmartDashboard.putData("InitalizeClimber", new InitializeClimber());
-    // SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
-    Robot.log("ResetGyro", new ResetGyro());
+    SmartDashboard.putData("Climber", climber);
+    // SmartDashboard.putData("Cargo", cargo);
+    SmartDashboard.putData("Hatch", hatchPanelGrabber);
+    SmartDashboard.putData("InitalizeClimber", new InitializeClimber());
+    SmartDashboard.putData("ResetGyro", new ResetGyro());
+    SmartDashboard.putData("HatchPanelGrabber", hatchPanelGrabber);
   }
 
   @Override
   public void robotPeriodic() {
-    Robot.log("Encoder Speed", drivetrain.getSpeed());
-    Robot.log("Encoder Distance", drivetrain.getEncoderDistance());
+    SmartDashboard.putNumber("Encoder Speed", drivetrain.getSpeed());
+    SmartDashboard.putNumber("Encoder Distance", drivetrain.getEncoderDistance());
+    
+    SmartDashboard.putNumber("Gyro Yaw: ", drivetrain.getYaw());
+    SmartDashboard.putNumber("Gyro Pitch: ", drivetrain.getPitch());
+    SmartDashboard.putNumber("Gyro Roll: ", drivetrain.getRoll());
 
-    Robot.log("Gyro Yaw: ", drivetrain.getYaw());
-    Robot.log("Gyro Pitch: ", drivetrain.getPitch());
-    Robot.log("Gyro Roll: ", drivetrain.getRoll());
-
-    Robot.log("Raw Yaw", drivetrain.getGyroData()[0]);
-    Robot.log("Raw Pitch", drivetrain.getGyroData()[1]);
-    Robot.log("Raw Roll", drivetrain.getGyroData()[2]);
+    SmartDashboard.putNumber("Raw Yaw", drivetrain.getGyroData()[0]);
+    SmartDashboard.putNumber("Raw Pitch", drivetrain.getGyroData()[1]);
+    SmartDashboard.putNumber("Raw Roll", drivetrain.getGyroData()[2]);
   }
 
   @Override
@@ -92,18 +78,18 @@ public class Robot extends TimedRobot {
     if (calibrationCommand == null && oi.calibrateGyro.get()) {
       calibrationCommand = new CalibrateGyro();
     } else if (calibrationCommand != null && !calibrationCommand.isRunning()) {
-      Robot.log("Gyro Calibration Status", "Ready");
+      SmartDashboard.putString("Gyro Calibration Status", "Ready");
       calibrationCommand = null;
     }
-    // climber.reverseBackSolenoid();
-    // climber.reverseFrontSolenoid();
+    climber.reverseBackSolenoid();
+    climber.reverseFrontSolenoid();
 
     Scheduler.getInstance().run();
   }
 
   @Override
   public void autonomousInit() {
-    if (calibrationCommand != null) {
+    if (calibrationCommand != null) { 
       calibrationCommand.cancel();
       calibrationCommand = null;
     }
@@ -116,7 +102,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    if (calibrationCommand != null) {
+    if (calibrationCommand != null) { 
       calibrationCommand.cancel();
       calibrationCommand = null;
     }
