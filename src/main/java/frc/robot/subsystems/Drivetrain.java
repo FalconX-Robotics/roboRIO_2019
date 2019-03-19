@@ -44,7 +44,7 @@ public class Drivetrain extends Subsystem {
 
   private static DirectionState cameraDirection;
 
-  private static final double DISTANCE_PER_COUNT = (Math.PI * 45.72 / 4096);
+  private static final double DISTANCE_PER_COUNT = (Math.PI * 35.48 / 4096);
 
   public Drivetrain() {
     super("Drivetrain");
@@ -62,8 +62,8 @@ public class Drivetrain extends Subsystem {
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
+    leftSide.setInverted(false);
+    rightSide.setInverted(false);
     leftFront.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);
 
@@ -120,13 +120,11 @@ public class Drivetrain extends Subsystem {
     pigeon.enterCalibrationMode(CalibrationMode.BootTareGyroAccel);
   }
 
-    // GYRO
-    gyro.calibrate();
-
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
-    leftFront.setSelectedSensorPosition(0);
-    rightFront.setSelectedSensorPosition(0);
+  public boolean calibrationFinished(){
+    if (pigeon.getState() == PigeonState.Ready){
+      return true;
+    }
+    return false;
   }
 
   public double getTilt(){
@@ -137,14 +135,6 @@ public class Drivetrain extends Subsystem {
   //Drivetrain
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drivetrain.tankDrive(leftSpeed, rightSpeed, true);
-  }
-
-  public void setLeftSide(double speed) {
-    leftSide.set(speed);
-  }
-
-  public void setRightSide(double speed) {
-    rightSide.set(speed);
   }
 
   // ENCODERS
@@ -185,7 +175,7 @@ public class Drivetrain extends Subsystem {
 
   // Encoder speeds in cm/s
   public double getLeftEncoderSpeed() {
-    return leftFront.getSelectedSensorVelocity();
+    return leftFront.getSelectedSensorVelocity() * 10;
   }
 
   public double getRightEncoderSpeed() {
@@ -259,7 +249,7 @@ public class Drivetrain extends Subsystem {
     }
 
     private static DirectionState set(DirectionState state) {
-      SmartDashboard.putString("Direction State", currentState.toString());
+      // SmartDashboard.putString("Direction State", currentState.toString());
       return currentState = state;
     }
 

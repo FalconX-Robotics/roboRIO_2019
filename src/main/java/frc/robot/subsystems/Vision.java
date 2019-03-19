@@ -96,11 +96,11 @@ public class Vision {
         double leftSpeed = leftFollower.calculate(Robot.drivetrain.getLeftEncoderCount());
         double rightSpeed = rightFollower.calculate(Robot.drivetrain.getRightEncoderCount());
         double headingDifference = 
-            Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading()) - Robot.drivetrain.getGyroAngle());
+            Pathfinder.boundHalfDegrees(Pathfinder.r2d(leftFollower.getHeading()) - Robot.drivetrain.getYaw()); // index 0: yaw; 1: pitch; 2: roll
         double turn = 0.8 * (-1.0 / 80.0) * headingDifference; // tbh i dunno what this lines does
 
-        Robot.drivetrain.setLeftSide(leftSpeed + turn);
-        Robot.drivetrain.setRightSide(rightSpeed - turn);
+        // Robot.drivetrain.setLeftSide(leftSpeed + turn);
+        // Robot.drivetrain.setRightSide(rightSpeed - turn);
     }
 
     public static double[] vectorize(double xAngle, double yAngle) {

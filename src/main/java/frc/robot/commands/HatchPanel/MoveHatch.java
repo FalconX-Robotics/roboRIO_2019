@@ -23,13 +23,13 @@ public class MoveHatch extends Command {
 
   @Override
   protected void initialize() {
-    SmartDashboard.putBoolean("Move hatch running", true);
+    Robot.log("Move hatch running", true);
     state = HatchPanelPositionState.update();
     if (state == HatchPanelPositionState.IN_BETWEEN) {
-      SmartDashboard.putString("Was in between", state.toString());
-      state = HatchPanelPositionState.DOWN;  
+      Robot.log("Was in between", state.toString());
+      state = HatchPanelPositionState.DOWN;
     }
-    SmartDashboard.putString("Move hatch state", state.toString());
+    Robot.log("Move hatch state", state.toString());
   }
 
   @Override
@@ -56,7 +56,7 @@ public class MoveHatch extends Command {
   @Override
   protected void end() {
     SmartDashboard.putBoolean("Move hatch running", false);
-    // Robot.hatchPanelGrabber.runHatchMotor(0);
+    Robot.hatchPanelGrabber.runHatchMotor(0);
     HatchPanelPositionState.update();
   }
 

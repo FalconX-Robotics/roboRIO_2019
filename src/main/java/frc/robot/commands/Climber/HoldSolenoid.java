@@ -1,12 +1,11 @@
 package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class RetractFrontClimb extends Command {
-  public RetractFrontClimb() {
-    super("Retract Front Climb");
+public class HoldSolenoid extends Command {
+  public HoldSolenoid() {
+    super("Hold Solenoid");
     requires(Robot.climber);
   }
 
@@ -16,8 +15,8 @@ public class RetractFrontClimb extends Command {
 
   @Override
   protected void execute() {
-    Robot.climber.reverseFrontSolenoid();
-    Robot.log("I ran froht clib", true);
+    Robot.climber.setFrontSolenoid(false, false);
+    Robot.climber.setBackSolenoid(false, false);
   }
 
   @Override

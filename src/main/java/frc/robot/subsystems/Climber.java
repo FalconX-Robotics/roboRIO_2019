@@ -1,39 +1,26 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.Climber.DriveClimberMotor;
 // import frc.robot.commands.Climber.HoldSolenoid;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Climber extends Subsystem {
 
-    private Solenoid frontSolenoidForward = new Solenoid(RobotMap.FRONT_MODULE, 
-        RobotMap.FRONT_FORWARD_CLIMB_SOLENOID);
-    private Solenoid frontSolenoidReverse = new Solenoid(RobotMap.FRONT_MODULE, 
-        RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
+    private Solenoid frontSolenoidForward = new Solenoid(RobotMap.FRONT_MODULE, RobotMap.FRONT_FORWARD_CLIMB_SOLENOID);
+    private Solenoid frontSolenoidReverse = new Solenoid(RobotMap.FRONT_MODULE, RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
 
-    private Solenoid backSolenoidForward = new Solenoid(RobotMap.REAR_MODULE,
-        RobotMap.BACK_FORWARD_CLIMB_SOLENOID);
-    private Solenoid backSolenoidReverse = new Solenoid(RobotMap.REAR_MODULE,
-        RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+    private Solenoid backSolenoidForward = new Solenoid(RobotMap.REAR_MODULE, RobotMap.BACK_FORWARD_CLIMB_SOLENOID);
+    private Solenoid backSolenoidReverse = new Solenoid(RobotMap.REAR_MODULE, RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
 
     private WPI_TalonSRX climberMotor = new WPI_TalonSRX(RobotMap.CLIMBER_MOTOR);
 
     public Climber() {
         super("Climber");
-        frontSolenoidForward.set(false);
-        frontSolenoidReverse.set(true);
-
-        backSolenoidForward.set(false);
-        backSolenoidReverse.set(true);
 
         climberMotor.setInverted(true);
 }
@@ -41,7 +28,7 @@ public class Climber extends Subsystem {
     public void setClimberMotorSpeed(double speed) {
         climberMotor.set(speed * 0.6);
     }
-    
+
     public void setFrontSolenoid(Boolean forwardValue, Boolean reverseValue) {
         frontSolenoidForward.set(forwardValue);
         frontSolenoidReverse.set(reverseValue);

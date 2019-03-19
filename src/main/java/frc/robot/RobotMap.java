@@ -14,6 +14,7 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
+  public static boolean loggable = true;
 
   public static final int FRONT_MODULE = 1;
   public static final int REAR_MODULE = 0;
@@ -21,7 +22,7 @@ public class RobotMap {
   // Drivetrain
   public static final int FRONT_LEFT_MOTOR = 3;
   public static final int REAR_LEFT_MOTOR = 2;
-  public static final int FRONT_RIGHT_MOTOR = 5;
+  public static final int FRONT_RIGHT_MOTOR = 1;
   public static final int REAR_RIGHT_MOTOR = 4;
 
   public static final int GYRO_PORT = 0;
@@ -38,7 +39,7 @@ public class RobotMap {
 
   public static final int HATCH_PUSH = 2;
 
-  public static final int HATCH_MOTOR = 1; 
+  public static final int HATCH_MOTOR = 1;
   public static final int TOP_LIMIT_SWITCH = 9;
   public static final int BOTTOM_LIMIT_SWITCH = 8;
 
@@ -48,15 +49,6 @@ public class RobotMap {
 
   public static final int BACK_FORWARD_CLIMB_SOLENOID = 4;
   public static final int BACK_REVERSE_CLIMB_SOLENOID = 5;
-
-  public static final int CLIMBER_MOTOR = 6;
-
-  // Cargo
-  public static final int CARGO_UPPER_PISTON_IN = 3;
-  public static final int CARGO_UPPER_PISTON_OUT = 2;
-
-  public static final int CARGO_LOWER_PISTON_IN = 6;
-  public static final int CARGO_LOWER_PISTON_OUT = 7;
 
   // Encoders
   public static final int LEFT_ENCODER_CHANNEL_A = 0;

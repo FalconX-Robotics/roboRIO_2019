@@ -26,13 +26,13 @@ public class CalibrateGyro extends Command {
   @Override
   protected void initialize() {
     Robot.drivetrain.calibrate();
-    SmartDashboard.putString("Gyro Calibration Status", "Calibrating");
+    Robot.log("Gyro Calibration Status", "Calibrating");
   }
 
   @Override
   protected boolean isFinished() {
-    if(Robot.drivetrain.calibrationFinished()) {
-      //SmartDashboard.putString("Gyro Calibration Status", "Ready");
+    if (Robot.drivetrain.calibrationFinished()) {
+      // Robot.log("Gyro Calibration Status", "Ready");
       return true;
     }
     return false;
