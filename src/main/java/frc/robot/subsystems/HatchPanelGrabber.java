@@ -12,9 +12,9 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class HatchPanelGrabber extends Subsystem {
-    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(1, RobotMap.HATCH_GRAB_FORWARD,
-            RobotMap.HATCH_GRAB_REVERSE); // Middle piston
-    private Solenoid hatchPushSolenoid = new Solenoid(1, RobotMap.HATCH_PUSH); // Outside pistons
+    private DoubleSolenoid hatchGrabSolenoid = new DoubleSolenoid(RobotMap.FRONT_MODULE,
+     RobotMap.HATCH_GRAB_FORWARD, RobotMap.HATCH_GRAB_REVERSE); // Middle piston
+    private Solenoid hatchPushSolenoid = new Solenoid(RobotMap.FRONT_MODULE, RobotMap.HATCH_PUSH); // Outside pistons
 
     DigitalInput limitSwitchTop = new DigitalInput(RobotMap.TOP_LIMIT_SWITCH);
     DigitalInput limitSwitchBottom = new DigitalInput(RobotMap.BOTTOM_LIMIT_SWITCH);
@@ -128,10 +128,12 @@ public class HatchPanelGrabber extends Subsystem {
     }
 
     public boolean getTopSwitch() {
+        SmartDashboard.putBoolean("Bottom Switch", limitSwitchTop.get());
         return limitSwitchTop.get();
     }
-
+  
     public boolean getBottomSwitch() {
+        SmartDashboard.putBoolean("Bottom Switch", limitSwitchBottom.get());
         return limitSwitchBottom.get();
     }
 
