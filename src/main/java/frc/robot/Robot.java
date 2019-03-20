@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +28,19 @@ public class Robot extends TimedRobot {
   public static OI oi;
 
   private CalibrateGyro calibrationCommand = null;
+
+  public static void log(String key, Object value) {
+    if (!RobotMap.loggable) return;
+    if (value instanceof Number) {
+      SmartDashboard.putNumber(key, Double.parseDouble(value.toString()));
+    } else if (value instanceof String) {
+      SmartDashboard.putString(key, (String) value);
+    } else if (value instanceof Boolean) {
+      SmartDashboard.putBoolean(key, (boolean) value);
+    } else if (value instanceof SendableBase) {
+      SmartDashboard.putData(key, (SendableBase) value);
+    }
+  }
 
   @Override
   public void robotInit() {
