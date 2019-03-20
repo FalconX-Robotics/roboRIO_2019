@@ -14,6 +14,7 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
+  public static boolean loggable = true;
 
   public static final int FRONT_MODULE = 1;
   public static final int REAR_MODULE = 0;
