@@ -44,7 +44,7 @@ public class Drivetrain extends Subsystem {
 
   private static DirectionState cameraDirection;
 
-  private static final double DISTANCE_PER_COUNT = (Math.PI * 45.72 / 4096);
+  private static final double DISTANCE_PER_COUNT = (Math.PI * 35.48 / 4096);
 
   public Drivetrain() {
     super("Drivetrain");
@@ -59,8 +59,8 @@ public class Drivetrain extends Subsystem {
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
-    leftSide.setInverted(true);
-    rightSide.setInverted(true);
+    leftSide.setInverted(false);
+    rightSide.setInverted(false);
     leftFront.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);
 
@@ -172,7 +172,7 @@ public class Drivetrain extends Subsystem {
 
   // Encoder speeds in cm/s
   public double getLeftEncoderSpeed() {
-    return leftFront.getSelectedSensorVelocity();
+    return leftFront.getSelectedSensorVelocity() * 10;
   }
 
   public double getRightEncoderSpeed() {

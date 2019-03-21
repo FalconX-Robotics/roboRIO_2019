@@ -8,13 +8,11 @@
 package frc.robot.commands.HatchPanel;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.subsystems.HatchPanelGrabber;
 
 public class LowerHatch extends Command {
 
-  private double speed = -0.4; //set speed of motor
+  private double speed = -0.4; // set speed of motor
 
   public LowerHatch() {
     super("Lower Hatch");
