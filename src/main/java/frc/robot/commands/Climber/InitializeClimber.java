@@ -41,33 +41,30 @@ public class InitializeClimber extends Command {
     protected void execute() {
         double pitch = Robot.drivetrain.getTilt();
 
+    if(!checkState(ClimberUpState.WAITING)) {
         if (pitch <= -OFF_ANGLE_THRESHOLD) {
             setState(ClimberUpState.FRONT_LOW);
-            timer.start();
 
         } else if (pitch >= OFF_ANGLE_THRESHOLD) {
             setState(ClimberUpState.BACK_LOW);
-            timer.start();
 
         } else if (checkState(ClimberUpState.FRONT_LOW)) {
-            if (pitch > ON_ANGLE_THRESHOLD && timer.get() > 1.0) {
-                setState(ClimberUpState.WAITING);
+            if (pitch > ON_ANGLE_THRESHOLD) {
                 timer.start();
-                if (timer.get() == 1)
+                setState(ClimberUpState.WAITING);
+                if (timer.get() >= 1)
                 {
                     setState(ClimberUpState.BALANCED);
                     timer.stop();
                     timer.reset();
                 }
-                   
-                
             }
 
         } else if (checkState(ClimberUpState.BACK_LOW)) {
-            if (pitch < ON_ANGLE_THRESHOLD && timer.get() > 1.0) {
-                setState(ClimberUpState.WAITING);
+            if (pitch < ON_ANGLE_THRESHOLD) {
                 timer.start();
-                if (timer.get() == 1)
+                setState(ClimberUpState.WAITING);
+                if (timer.get() >= 1)
                 {
                     setState(ClimberUpState.BALANCED);
                     timer.stop();
@@ -77,6 +74,7 @@ public class InitializeClimber extends Command {
         } else {
             setState(ClimberUpState.BALANCED);
         }
+    }
 
         SmartDashboard.putString("ClimberUpState", currentState.toString());
         if (checkState(ClimberUpState.BALANCED)) {
@@ -112,7 +110,3 @@ public class InitializeClimber extends Command {
     }
 
 }
-
-/*
- * TODO: WHERE TO START THE TIMER AND WHERE TO END IT
- */
