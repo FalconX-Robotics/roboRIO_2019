@@ -44,7 +44,7 @@ public class TankDriveWithXbox extends Command {
         Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
         Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
 
-        Robot.drivetrain.tankDrive(rightSpeed, leftSpeed);
+        Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
 
         // long startTime = System.nanoTime();
         // double startDistance = Robot.drivetrain.getEncoderDistance();
