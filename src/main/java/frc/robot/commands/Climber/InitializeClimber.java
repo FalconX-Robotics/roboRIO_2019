@@ -7,9 +7,9 @@ import frc.robot.Robot;
 
 public class InitializeClimber extends Command {
     // threshold to turn off solenoid in degrees (can change)
-    public final double OFF_ANGLE_THRESHOLD = 8;
+    public final double OFF_ANGLE_THRESHOLD = 5;
     // threshold to turn both solenoids back on in degrees (can change)
-    public final double ON_ANGLE_THRESHOLD = 0;
+    public final double ON_ANGLE_THRESHOLD = 3;
 
     private static Timer timer = new Timer();
 
@@ -49,30 +49,25 @@ public class InitializeClimber extends Command {
             setState(ClimberUpState.BACK_LOW);
 
         } else if (checkState(ClimberUpState.FRONT_LOW)) {
-            if (pitch > ON_ANGLE_THRESHOLD) {
+            if (pitch > -ON_ANGLE_THRESHOLD) {
                 timer.start();
                 setState(ClimberUpState.WAITING);
-                if (timer.get() >= 1)
-                {
-                    setState(ClimberUpState.BALANCED);
-                    timer.stop();
-                    timer.reset();
-                }
             }
 
         } else if (checkState(ClimberUpState.BACK_LOW)) {
             if (pitch < ON_ANGLE_THRESHOLD) {
                 timer.start();
                 setState(ClimberUpState.WAITING);
-                if (timer.get() >= 1)
-                {
-                    setState(ClimberUpState.BALANCED);
-                    timer.stop();
-                    timer.reset();
-                }
             }
         } else {
             setState(ClimberUpState.BALANCED);
+        }
+    }
+    else {
+        if(timer.get() > 1){
+            setState(ClimberUpState.BALANCED);
+            timer.stop();
+            timer.reset();
         }
     }
 
@@ -86,6 +81,9 @@ public class InitializeClimber extends Command {
         } else if (checkState(ClimberUpState.BACK_LOW)) {
             Robot.climber.pauseFrontSolenoid();
             Robot.climber.forwardBackSolenoid();
+        } else if (checkState(ClimberUpState.WAITING)) { 
+            Robot.climber.pauseBackSolenoid();
+            Robot.climber.pauseFrontSolenoid();
         }
     }
 
