@@ -1,7 +1,8 @@
-package frc.robot.commands;
+package frc.robot.commands.HatchPanel;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.WaitCommand;
 
 public class LaunchPanel extends CommandGroup {
     private static DoubleSolenoid.Value in = DoubleSolenoid.Value.kReverse;

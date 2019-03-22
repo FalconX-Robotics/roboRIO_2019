@@ -7,19 +7,18 @@
 
 package frc.robot;
 
-/**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into
- * to a variable name. This provides flexibility changing wiring, makes checking
- * the wiring easier and significantly reduces the number of magic numbers
- * floating around.
- */
 public class RobotMap {
+
+  public static final int FRONT_MODULE = 1;
+  public static final int REAR_MODULE = 0;
 
   // Drivetrain
   public static final int FRONT_LEFT_MOTOR = 3;
   public static final int REAR_LEFT_MOTOR = 2;
   public static final int FRONT_RIGHT_MOTOR = 5;
   public static final int REAR_RIGHT_MOTOR = 4;
+
+  public static final int GYRO_PORT = 0;
 
   // Gear shift
   public static final boolean ENABLE_TOGGLE_GEAR_SHIFT = true;
@@ -38,20 +37,13 @@ public class RobotMap {
   public static final int BOTTOM_LIMIT_SWITCH = 8;
 
   // Climb
-  public static final int FRONT_FORWARD_CLIMB_SOLENOID = 5;
-  public static final int FRONT_REVERSE_CLIMB_SOLENOID = 4;
+  public static final int FRONT_FORWARD_CLIMB_SOLENOID = 4;
+  public static final int FRONT_REVERSE_CLIMB_SOLENOID = 5;
 
-  public static final int BACK_FORWARD_CLIMB_SOLENOID = 5;
-  public static final int BACK_REVERSE_CLIMB_SOLENOID = 4;
+  public static final int BACK_FORWARD_CLIMB_SOLENOID = 4;
+  public static final int BACK_REVERSE_CLIMB_SOLENOID = 5;
 
   public static final int CLIMBER_MOTOR = 6;
-
-  // Cargo
-  public static final int CARGO_UPPER_PISTON_IN = 3;
-  public static final int CARGO_UPPER_PISTON_OUT = 2;
-
-  public static final int CARGO_LOWER_PISTON_IN = 6;
-  public static final int CARGO_LOWER_PISTON_OUT = 7;
 
   // Encoders
   public static final int LEFT_ENCODER_CHANNEL_A = 0;

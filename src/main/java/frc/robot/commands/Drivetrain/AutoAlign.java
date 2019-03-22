@@ -5,38 +5,30 @@
 // /* the project.                                                               */
 // /*----------------------------------------------------------------------------*/
 
-// package frc.robot.commands;
+// package frc.robot.commands.Drivetrain;
 
 // import edu.wpi.first.wpilibj.command.Command;
 // import frc.robot.Robot;
+// import frc.robot.subsystems.Vision;
 
-// public class RaiseHatch extends Command {
-
-//   private final double speed = 0.5; //set speed for motor
-
-//   public RaiseHatch() {
-//     super("Raise Hatch");
-//     requires(Robot.hatchPanelGrabber);
+// public class AutoAlign extends Command {
+//   public AutoAlign() {
+//     super("Auto Align");
+//     requires(Robot.drivetrain);
 //   }
 
-//   @Override
 //   protected void initialize() {
-//     Robot.hatchPanelGrabber.initializeTopCounter();
 //   }
 
-//   @Override
 //   protected void execute() {
-//     Robot.hatchPanelGrabber.runHatchMotor(speed);
+//     Vision.autoAlign();
 //   }
 
-//   @Override
 //   protected boolean isFinished() {
-//     return Robot.hatchPanelGrabber.isTopSwitchSet();
+//     return false;
 //   }
 
-//   @Override
 //   protected void end() {
-//     Robot.hatchPanelGrabber.runHatchMotor(0);
 //   }
 
 //   @Override

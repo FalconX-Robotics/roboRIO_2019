@@ -1,16 +1,14 @@
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.ChangeDirection;
 import frc.robot.subsystems.Drivetrain.DirectionState;
 
 public class TankDriveWithXbox extends Command {
-    Notifier notifier;
+    private Notifier notifier;
 
     public TankDriveWithXbox() {
         super("Tank Drive with Xbox Controller");
@@ -20,7 +18,7 @@ public class TankDriveWithXbox extends Command {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         double leftSpeed = Robot.oi.getDriverLeftYAxis();
         double rightSpeed = Robot.oi.getDriverRightYAxis();
 
@@ -29,21 +27,21 @@ public class TankDriveWithXbox extends Command {
 
         Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
 
-        long startTime = System.nanoTime();
+        // long startTime = System.nanoTime();
         // double startDistance = Robot.drivetrain.getEncoderDistance();
 
-        SmartDashboard.putNumber("Encoder Value", Robot.drivetrain.getEncodersCount());
+        // SmartDashboard.putNumber("Encoder Value", Robot.drivetrain.getEncodersCount());
 
-        if (System.nanoTime() - startTime > RobotMap.UPDATE_TIME) {
-            startTime = System.nanoTime();
-            SmartDashboard.putNumber("Encoder Angle", Robot.drivetrain.getEncodersCount());
-            SmartDashboard.putNumber("Robot Speed (cm/s)", Robot.drivetrain.getSpeed());
-            if (Robot.drivetrain.getSpeed() > RobotMap.ROBOT_GEAR_SHIFT_SPEED) {
-                Robot.drivetrain.shifterForward();
-            } else {
-                Robot.drivetrain.shifterBackward();
-            }
-        }
+        // if (System.nanoTime() - startTime > RobotMap.UPDATE_TIME) {
+        //     startTime = System.nanoTime();
+        //     SmartDashboard.putNumber("Encoder Angle", Robot.drivetrain.getEncodersCount());
+        //     SmartDashboard.putNumber("Robot Speed (cm/s)", Robot.drivetrain.getSpeed());
+        //     if (Robot.drivetrain.getSpeed() > RobotMap.ROBOT_GEAR_SHIFT_SPEED) {
+        //         Robot.drivetrain.shifterForward();
+        //     } else {
+        //         Robot.drivetrain.shifterBackward();
+        //     }
+        // }
     }
 
     private void putEncoderValue() {

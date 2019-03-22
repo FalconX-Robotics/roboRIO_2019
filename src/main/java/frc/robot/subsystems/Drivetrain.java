@@ -2,16 +2,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.CalibrationMode;
+import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import frc.robot.commands.TankDriveWithXbox;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.Drivetrain.TankDriveWithXbox;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -28,12 +31,16 @@ public class Drivetrain extends Subsystem {
 
   private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
-  private AnalogGyro gyro = new AnalogGyro(0);
+  public PigeonIMU pigeon;
 
-  private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, RobotMap.SHIFTER_REVERSE);
+  private double[] gyroOffset;
+
+  private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.REAR_MODULE, RobotMap.SHIFTER_FORWARD,
+    RobotMap.SHIFTER_REVERSE);
 
   private static NetworkTable obiWan;
   private static NetworkTableEntry directionStateEntry;
+  private double[] lastGyroInfo = new double[3];
 
   private static DirectionState cameraDirection;
 
@@ -41,7 +48,7 @@ public class Drivetrain extends Subsystem {
 
   public Drivetrain() {
     super("Drivetrain");
-    SmartDashboard.putString("Drivetrain", "enabled");
+    pigeon = new PigeonIMU(RobotMap.GYRO_PORT);
     // INITIALIZE
     obiWan = NetworkTableInstance.getDefault().getTable("ObiWan");
     directionStateEntry = obiWan.getEntry("DirectionState");
@@ -52,35 +59,79 @@ public class Drivetrain extends Subsystem {
     leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
-    // Cap speed for testing and stuff
-    // leftFront.configNominalOutputForward(0.01);
-    // rightFront.configNominalOutputForward(0.01);
-    // leftFront.configNominalOutputReverse(0.01);
-    // rightFront.configNominalOutputReverse(0.01);
-
-    // GYRO
-    gyro.calibrate();
-
     leftSide.setInverted(true);
     rightSide.setInverted(true);
     leftFront.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);
+
+    leftFront.setSafetyEnabled(true);
+    leftRear.setSafetyEnabled(true);
+    rightFront.setSafetyEnabled(true);
+    rightRear.setSafetyEnabled(true);
+
+    gyroOffset = getGyroData();
   }
 
-  public double getGyroAngle() {
-    return gyro.getAngle() % 360;
+  // GYRO
+
+  public double[] getGyroData() {
+    double data[] = new double[3];
+    //pigeon.getAccumGyro(data); /* if using this line, remember to change
+    pigeon.getYawPitchRoll(data);/* index of yaw, pitch, and roll */ 
+    return data;
   }
 
+  public double getYaw(){
+    double yaw = getGyroData()[0];
+    double smdYaw = Math.floor(yaw);
+    SmartDashboard.putNumber("Yaw", smdYaw);
+    return yaw;
+  }
+
+  public double getPitch(){
+    double pitch = getGyroData()[1] - gyroOffset[1];
+    double smdPitch = Math.floor(pitch);
+    SmartDashboard.putNumber("Pitch", smdPitch);
+    return pitch;
+  }
+
+  public double getRoll(){
+    double roll = getGyroData()[2] - gyroOffset[2];
+    double smdRoll = Math.floor(roll);
+    SmartDashboard.putNumber("Roll", smdRoll);
+    return roll;
+  }
+
+  public void resetGyro(){
+    gyroOffset = getGyroData();
+    SmartDashboard.putNumber("Pitch offset", gyroOffset[1]);
+    SmartDashboard.putNumber("Roll offset", gyroOffset[2]);
+    pigeon.setYaw(0);
+  }
+
+  public PigeonIMU.PigeonState getPigeonState() {
+    return pigeon.getState();
+  }
+
+  public void calibrate (){
+    pigeon.enterCalibrationMode(CalibrationMode.BootTareGyroAccel);
+  }
+
+  public boolean calibrationFinished(){
+    if (pigeon.getState() == PigeonState.Ready){
+      return true;
+    }
+    return false;
+  }
+
+  public double getTilt(){
+    return getRoll();
+  }
+
+
+  //Drivetrain
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drivetrain.tankDrive(leftSpeed, rightSpeed, true);
-  }
-
-  public void setLeftSide(double speed) {
-    leftSide.set(speed);
-  }
-
-  public void setRightSide(double speed) {
-    rightSide.set(speed);
   }
 
   // ENCODERS
@@ -195,7 +246,7 @@ public class Drivetrain extends Subsystem {
     }
 
     private static DirectionState set(DirectionState state) {
-      SmartDashboard.putString("Direction State", currentState.toString());
+      // SmartDashboard.putString("Direction State", currentState.toString());
       return currentState = state;
     }
 
