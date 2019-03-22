@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.Climber.DriveClimberMotor;
 // import frc.robot.commands.Climber.HoldSolenoid;
@@ -13,15 +11,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Climber extends Subsystem {
 
-    private Solenoid frontSolenoidForward = new Solenoid(RobotMap.FRONT_MODULE, 
-        RobotMap.FRONT_FORWARD_CLIMB_SOLENOID);
-    private Solenoid frontSolenoidReverse = new Solenoid(RobotMap.FRONT_MODULE, 
-        RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
+    private Solenoid frontSolenoidForward = new Solenoid(RobotMap.FRONT_MODULE, RobotMap.FRONT_FORWARD_CLIMB_SOLENOID);
+    private Solenoid frontSolenoidReverse = new Solenoid(RobotMap.FRONT_MODULE, RobotMap.FRONT_REVERSE_CLIMB_SOLENOID);
 
-    private Solenoid backSolenoidForward = new Solenoid(RobotMap.REAR_MODULE,
-        RobotMap.BACK_FORWARD_CLIMB_SOLENOID);
-    private Solenoid backSolenoidReverse = new Solenoid(RobotMap.REAR_MODULE,
-        RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
+    private Solenoid backSolenoidForward = new Solenoid(RobotMap.REAR_MODULE, RobotMap.BACK_FORWARD_CLIMB_SOLENOID);
+    private Solenoid backSolenoidReverse = new Solenoid(RobotMap.REAR_MODULE, RobotMap.BACK_REVERSE_CLIMB_SOLENOID);
 
     private WPI_TalonSRX climberMotor = new WPI_TalonSRX(RobotMap.CLIMBER_MOTOR);
 
@@ -35,6 +29,15 @@ public class Climber extends Subsystem {
         climberMotor.set(speed * 0.6);
     }
     
+    public void setFrontSolenoid(Boolean forwardValue, Boolean reverseValue) {
+        frontSolenoidForward.set(forwardValue);
+        frontSolenoidReverse.set(reverseValue);
+    }
+
+    public void setClimberMotorSpeed(double speed) {
+        climberMotor.set(speed * 0.6);
+    }
+
     public void setFrontSolenoid(Boolean forwardValue, Boolean reverseValue) {
         frontSolenoidForward.set(forwardValue);
         frontSolenoidReverse.set(reverseValue);

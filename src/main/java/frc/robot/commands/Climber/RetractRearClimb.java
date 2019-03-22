@@ -17,7 +17,7 @@ public class RetractRearClimb extends Command {
   @Override
   protected void execute() {
     Robot.climber.reverseBackSolenoid();
-    SmartDashboard.putBoolean("I ran retract rear clib", true);
+    Robot.log("I ran retract rear clib", true);
   }
 
   @Override

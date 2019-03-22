@@ -172,7 +172,7 @@ public class Drivetrain extends Subsystem {
 
   // Encoder speeds in cm/s
   public double getLeftEncoderSpeed() {
-    return leftFront.getSelectedSensorVelocity();
+    return leftFront.getSelectedSensorVelocity() * 10;
   }
 
   public double getRightEncoderSpeed() {

@@ -17,7 +17,7 @@ public class RetractFrontClimb extends Command {
   @Override
   protected void execute() {
     Robot.climber.reverseFrontSolenoid();
-    SmartDashboard.putBoolean("I ran froht clib", true);
+    Robot.log("I ran froht clib", true);
   }
 
   @Override
