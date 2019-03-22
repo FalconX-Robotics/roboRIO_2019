@@ -13,9 +13,6 @@ public class RobotMap {
   public static final int FRONT_MODULE = 1;
   public static final int REAR_MODULE = 0;
 
-  public static final int FRONT_MODULE = 1;
-  public static final int REAR_MODULE = 0;
-
   // Drivetrain
   public static final int FRONT_LEFT_MOTOR = 3;
   public static final int REAR_LEFT_MOTOR = 2;

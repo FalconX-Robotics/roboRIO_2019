@@ -24,16 +24,6 @@ public class Climber extends Subsystem {
 
         climberMotor.setInverted(true);
 }
-
-    public void setClimberMotorSpeed(double speed) {
-        climberMotor.set(speed * 0.6);
-    }
-    
-    public void setFrontSolenoid(Boolean forwardValue, Boolean reverseValue) {
-        frontSolenoidForward.set(forwardValue);
-        frontSolenoidReverse.set(reverseValue);
-    }
-
     public void setClimberMotorSpeed(double speed) {
         climberMotor.set(speed * 0.6);
     }
