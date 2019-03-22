@@ -9,11 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.commands.*;
-import frc.robot.commands.Climber.InitializeClimber;
 import frc.robot.commands.Drivetrain.*;
 import frc.robot.subsystems.*;
 
@@ -47,15 +44,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
-    //hatchPanelGrabber = new HatchPanelGrabber();
-    //climber = new Climber();
+    hatchPanelGrabber = new HatchPanelGrabber();
+    climber = new Climber();
     // Vision.initialize();
 
     // MAKE THIS LAST
     oi = new OI();
 
     // drivetrain.faceForwards();
-    // drivetrain.shifterBackward();
+    drivetrain.shifterBackward();
     // climber.reverseBackSolenoid();
     // climber.reverseFrontSolenoid();
 

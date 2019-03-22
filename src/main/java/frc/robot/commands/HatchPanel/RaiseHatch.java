@@ -18,7 +18,7 @@ public class RaiseHatch extends Command {
   public RaiseHatch() {
     super("Raise Hatch");
   }
-  
+
   @Override
   protected void initialize() {
 
@@ -31,8 +31,7 @@ public class RaiseHatch extends Command {
 
   @Override
   protected boolean isFinished() {
-
-    return !Robot.hatchPanelGrabber.getBottomSwitch();
+    return !Robot.hatchPanelGrabber.getTopSwitch();
 
   }
 

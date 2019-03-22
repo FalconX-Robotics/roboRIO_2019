@@ -64,7 +64,7 @@ public class InitializeClimber extends Command {
         }
     }
     else {
-        if(timer.get() > 1){
+        if(timer.get() > 0.6){
             setState(ClimberUpState.BALANCED);
             timer.stop();
             timer.reset();
@@ -82,8 +82,8 @@ public class InitializeClimber extends Command {
             Robot.climber.pauseFrontSolenoid();
             Robot.climber.forwardBackSolenoid();
         } else if (checkState(ClimberUpState.WAITING)) { 
-            Robot.climber.pauseBackSolenoid();
             Robot.climber.pauseFrontSolenoid();
+            Robot.climber.pauseBackSolenoid();
         }
     }
 
