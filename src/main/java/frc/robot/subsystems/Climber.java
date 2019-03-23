@@ -23,8 +23,7 @@ public class Climber extends Subsystem {
         super("Climber");
 
         climberMotor.setInverted(true);
-    }
-
+}
     public void setClimberMotorSpeed(double speed) {
         climberMotor.set(speed * 0.6);
     }

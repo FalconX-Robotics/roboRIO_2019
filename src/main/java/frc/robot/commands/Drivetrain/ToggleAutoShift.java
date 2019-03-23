@@ -5,41 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.HatchPanel;
+package frc.robot.commands.Drivetrain;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-public class LowerHatch extends Command {
 
-  private double speed = -0.4; // set speed of motor
-
-  public LowerHatch() {
-    super("Lower Hatch");
-    requires(Robot.hatchPanelGrabber);
+public class ToggleAutoShift extends InstantCommand {
+  public ToggleAutoShift() {
+    super("Toggle Auto Shift");
+    requires(Robot.drivetrain);
   }
 
   @Override
   protected void initialize() {
-
-  }
-
-  @Override
-  protected void execute() {
-    Robot.hatchPanelGrabber.runHatchMotor(speed);
+    if(!Robot.drivetrain.getAutoShift()){
+      Robot.drivetrain.tankDrive(0, 0);
+      Robot.drivetrain.setAutoShift(true);
+      Robot.drivetrain.tankDrive(0, 0);
+    }
+    else {
+      Robot.drivetrain.tankDrive(0, 0);
+      Robot.drivetrain.setAutoShift(false);
+      Robot.drivetrain.tankDrive(0, 0);
+    }
   }
 
   @Override
   protected boolean isFinished() {
-    return !Robot.hatchPanelGrabber.getBottomSwitch();
+    return true;
   }
 
   @Override
   protected void end() {
-    Robot.hatchPanelGrabber.runHatchMotor(0);
   }
 
   @Override
   protected void interrupted() {
-    end();
   }
 }

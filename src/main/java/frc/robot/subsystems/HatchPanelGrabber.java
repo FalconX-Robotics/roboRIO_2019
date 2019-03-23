@@ -130,7 +130,7 @@ public class HatchPanelGrabber extends Subsystem {
         Robot.log("Bottom Switch", limitSwitchTop.get());
         return limitSwitchTop.get();
     }
-
+  
     public boolean getBottomSwitch() {
         Robot.log("Bottom Switch", limitSwitchBottom.get());
         return limitSwitchBottom.get();

@@ -1,18 +1,18 @@
 package frc.robot.commands.Drivetrain;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.subsystems.Drivetrain;
 
 public class TankDriveWithXbox extends Command {
-
-    private static final int SPEED_TO_SHIFT_UP = 0; // 0's are placeholders
-    private static final int SPEED_TO_SHIFT_DOWN = 0;
-
     private boolean canShift = true;
     Timer timer = new Timer();
+    private final static int SPEED_TO_SHIFT_DOWN = 7; // previously 13 
+    private final static int SPEED_TO_SHIFT_UP = 8; // previously 14
 
     public TankDriveWithXbox() {
         super("Tank Drive with Xbox Controller");
@@ -27,47 +27,42 @@ public class TankDriveWithXbox extends Command {
         double actualLeftSpeed = Robot.drivetrain.getLeftEncoderSpeed();
         double actualRightSpeed = Robot.drivetrain.getRightEncoderSpeed();
 
-        if (canShift) {
-            if (actualLeftSpeed < SPEED_TO_SHIFT_DOWN && actualRightSpeed < SPEED_TO_SHIFT_DOWN) {
+        if(canShift && Robot.drivetrain.getAutoShift())
+        {
+            // SmartDashboard.putString("Auto shift", "Is running");
+            if((actualLeftSpeed < SPEED_TO_SHIFT_DOWN || actualRightSpeed < SPEED_TO_SHIFT_DOWN) && 
+                Robot.drivetrain.getShifterValue() == Value.kForward)
+            {
                 Robot.drivetrain.shifterBackward();
-            } else if ((actualLeftSpeed > SPEED_TO_SHIFT_UP && actualRightSpeed > SPEED_TO_SHIFT_UP)) {
-                Robot.drivetrain.shifterForward();
+                SmartDashboard.putString("Gear Shift State", "LOW");
+                timer.start();
+                canShift = false;
             }
-            timer.start();
-            canShift = false;
-        } else if (timer.get() > 2.0) {
+            else if(actualLeftSpeed > SPEED_TO_SHIFT_UP && actualRightSpeed > SPEED_TO_SHIFT_UP && 
+                Robot.drivetrain.getShifterValue() == Value.kReverse)
+            {
+                Robot.drivetrain.shifterForward();
+                SmartDashboard.putString("Gear Shift State", "HIGH");
+                timer.start();
+                canShift = false;
+            }
+        }
+        else if(timer.get() > 1.0)
+        {
             timer.stop();
             timer.reset();
             canShift = true;
         }
 
-        Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
-        Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
+        // Robot.oi.rumble(RumbleType.kLeftRumble, Math.abs(leftSpeed));
+        // Robot.oi.rumble(RumbleType.kRightRumble, Math.abs(rightSpeed));
 
-        Robot.drivetrain.tankDrive(rightSpeed, leftSpeed);
-
-        // long startTime = System.nanoTime();
-        // double startDistance = Robot.drivetrain.getEncoderDistance();
-
-        // SmartDashboard.putNumber("Encoder Value",
-        // Robot.drivetrain.getEncodersCount());
-
-        // if (System.nanoTime() - startTime > RobotMap.UPDATE_TIME) {
-        // startTime = System.nanoTime();
-        // SmartDashboard.putNumber("Encoder Angle",
-        // Robot.drivetrain.getEncodersCount());
-        // SmartDashboard.putNumber("Robot Speed (cm/s)", Robot.drivetrain.getSpeed());
-        // if (Robot.drivetrain.getSpeed() > RobotMap.ROBOT_GEAR_SHIFT_SPEED) {
-        // Robot.drivetrain.shifterForward();
-        // } else {
-        // Robot.drivetrain.shifterBackward();
-        // }
-        // }
+        Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
     }
 
     private void putEncoderValue() {
-        Robot.log("Speed", Robot.drivetrain.getSpeed());
-        Robot.log("Distance in cm", Robot.drivetrain.getEncoderDistance());
+        SmartDashboard.putNumber("Speed", Robot.drivetrain.getSpeed());
+        SmartDashboard.putNumber("Distance in m", Robot.drivetrain.getEncoderDistance());
     }
 
     @Override

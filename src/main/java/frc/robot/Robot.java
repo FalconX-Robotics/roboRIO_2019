@@ -1,19 +1,9 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.commands.*;
-import frc.robot.commands.Climber.InitializeClimber;
 import frc.robot.commands.Drivetrain.*;
 import frc.robot.subsystems.*;
 
@@ -47,15 +37,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
-    //hatchPanelGrabber = new HatchPanelGrabber();
-    //climber = new Climber();
+    hatchPanelGrabber = new HatchPanelGrabber();
+    climber = new Climber();
     // Vision.initialize();
 
     // MAKE THIS LAST
     oi = new OI();
 
     // drivetrain.faceForwards();
-    // drivetrain.shifterBackward();
+    drivetrain.shifterBackward();
     // climber.reverseBackSolenoid();
     // climber.reverseFrontSolenoid();
 
@@ -73,13 +63,13 @@ public class Robot extends TimedRobot {
     Robot.log("Encoder Speed", drivetrain.getSpeed());
     Robot.log("Encoder Distance", drivetrain.getEncoderDistance());
 
-    Robot.log("Gyro Yaw: ", drivetrain.getYaw());
-    Robot.log("Gyro Pitch: ", drivetrain.getPitch());
-    Robot.log("Gyro Roll: ", drivetrain.getRoll());
+    Robot.log("Gyro Yaw: ", Math.floor(drivetrain.getYaw()));
+    Robot.log("Gyro Pitch: ", Math.floor(drivetrain.getPitch()));
+    Robot.log("Gyro Roll: ", Math.floor(drivetrain.getRoll()));
 
-    Robot.log("Raw Yaw", drivetrain.getGyroData()[0]);
-    Robot.log("Raw Pitch", drivetrain.getGyroData()[1]);
-    Robot.log("Raw Roll", drivetrain.getGyroData()[2]);
+    // Robot.log("Raw Yaw", drivetrain.getGyroData()[0]);
+    // Robot.log("Raw Pitch", drivetrain.getGyroData()[1]);
+    // Robot.log("Raw Roll", drivetrain.getGyroData()[2]);
   }
 
   @Override
@@ -95,8 +85,8 @@ public class Robot extends TimedRobot {
       Robot.log("Gyro Calibration Status", "Ready");
       calibrationCommand = null;
     }
-    // climber.reverseBackSolenoid();
-    // climber.reverseFrontSolenoid();
+    climber.reverseBackSolenoid();
+    climber.reverseFrontSolenoid();
 
     Scheduler.getInstance().run();
   }
@@ -133,3 +123,4 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 }
+

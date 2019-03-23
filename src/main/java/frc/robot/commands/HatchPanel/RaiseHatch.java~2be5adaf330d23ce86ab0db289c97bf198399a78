@@ -9,13 +9,14 @@ package frc.robot.commands.HatchPanel;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-public class LowerHatch extends Command {
 
-  private double speed = -0.4; // set speed of motor
 
-  public LowerHatch() {
-    super("Lower Hatch");
-    requires(Robot.hatchPanelGrabber);
+public class RaiseHatch extends Command {
+
+  private final double speed = 0.4; //set speed for motor
+
+  public RaiseHatch() {
+    super("Raise Hatch");
   }
 
   @Override
@@ -30,7 +31,8 @@ public class LowerHatch extends Command {
 
   @Override
   protected boolean isFinished() {
-    return !Robot.hatchPanelGrabber.getBottomSwitch();
+    return !Robot.hatchPanelGrabber.getTopSwitch();
+
   }
 
   @Override
