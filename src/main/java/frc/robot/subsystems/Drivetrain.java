@@ -35,6 +35,8 @@ public class Drivetrain extends Subsystem {
 
   private double[] gyroOffset;
 
+  private boolean autoShift = false;
+
   private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.REAR_MODULE, RobotMap.SHIFTER_FORWARD,
     RobotMap.SHIFTER_REVERSE);
 
@@ -44,7 +46,7 @@ public class Drivetrain extends Subsystem {
 
   private static DirectionState cameraDirection;
 
-  private static final double DISTANCE_PER_COUNT = (Math.PI * 45.72 / 4096);
+  private static final double DISTANCE_PER_COUNT = (Math.PI * 30.48 / 4096); //was previously 45.72
 
   public Drivetrain() {
     super("Drivetrain");
@@ -69,6 +71,11 @@ public class Drivetrain extends Subsystem {
     rightFront.setSafetyEnabled(true);
     rightRear.setSafetyEnabled(true);
 
+    leftFront.configOpenloopRamp(0.15);
+    leftRear.configOpenloopRamp(0.15);
+    rightFront.configOpenloopRamp(0.15);
+    rightRear.configOpenloopRamp(0.15);
+
     gyroOffset = getGyroData();
   }
 
@@ -84,28 +91,28 @@ public class Drivetrain extends Subsystem {
   public double getYaw(){
     double yaw = getGyroData()[0];
     double smdYaw = Math.floor(yaw);
-    SmartDashboard.putNumber("Yaw", smdYaw);
+    // SmartDashboard.putNumber("Yaw", smdYaw);
     return yaw;
   }
 
   public double getPitch(){
     double pitch = getGyroData()[1] - gyroOffset[1];
     double smdPitch = Math.floor(pitch);
-    SmartDashboard.putNumber("Pitch", smdPitch);
+    // SmartDashboard.putNumber("Pitch", smdPitch);
     return pitch;
   }
 
   public double getRoll(){
     double roll = getGyroData()[2] - gyroOffset[2];
     double smdRoll = Math.floor(roll);
-    SmartDashboard.putNumber("Roll", smdRoll);
+    // SmartDashboard.putNumber("Roll", smdRoll);
     return roll;
   }
 
   public void resetGyro(){
     gyroOffset = getGyroData();
-    SmartDashboard.putNumber("Pitch offset", gyroOffset[1]);
-    SmartDashboard.putNumber("Roll offset", gyroOffset[2]);
+    // SmartDashboard.putNumber("Pitch offset", gyroOffset[1]);
+    // SmartDashboard.putNumber("Roll offset", gyroOffset[2]);
     pigeon.setYaw(0);
   }
 
@@ -157,26 +164,26 @@ public class Drivetrain extends Subsystem {
     return rightFront.getSelectedSensorPosition();
   }
 
-  // Encoder distances in cm
+  // Encoder distances in m
   public double getLeftEncoderDistance() {
-    return getLeftEncoderCount() * DISTANCE_PER_COUNT;
+    return getLeftEncoderCount() * DISTANCE_PER_COUNT / 100;
   }
 
   public double getRightEncoderDistance() {
-    return getRightEncoderCount() * DISTANCE_PER_COUNT;
+    return getRightEncoderCount() * DISTANCE_PER_COUNT / -100;
   }
 
   public double getEncoderDistance() {
     return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
   }
 
-  // Encoder speeds in cm/s
+  // Encoder speeds in m/s
   public double getLeftEncoderSpeed() {
-    return leftFront.getSelectedSensorVelocity() * 10;
+    return leftFront.getSelectedSensorVelocity() / 100;
   }
 
   public double getRightEncoderSpeed() {
-    return rightFront.getSelectedSensorVelocity() * 10;
+    return rightFront.getSelectedSensorVelocity() / -100;
   }
 
   public double getSpeed() {
@@ -232,6 +239,15 @@ public class Drivetrain extends Subsystem {
   public Value getShifterValue() {
     return shifter.get();
   }
+
+  public void setAutoShift(boolean autoShift){
+    this.autoShift = autoShift;
+    SmartDashboard.putBoolean("Can AutoShift", autoShift);
+}
+
+public boolean getAutoShift(){
+    return autoShift;
+}
 
   // DIRECTION
 

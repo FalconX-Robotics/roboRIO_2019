@@ -7,9 +7,9 @@ import frc.robot.Robot;
 
 public class InitializeClimber extends Command {
     // threshold to turn off solenoid in degrees (can change)
-    public final double OFF_ANGLE_THRESHOLD = 5;
+    public final double OFF_ANGLE_THRESHOLD = 2;
     // threshold to turn both solenoids back on in degrees (can change)
-    public final double ON_ANGLE_THRESHOLD = 3;
+    public final double ON_ANGLE_THRESHOLD = 0;
 
     private static Timer timer = new Timer();
 

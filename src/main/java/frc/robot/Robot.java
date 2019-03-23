@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.SendableBase;
@@ -70,13 +63,13 @@ public class Robot extends TimedRobot {
     Robot.log("Encoder Speed", drivetrain.getSpeed());
     Robot.log("Encoder Distance", drivetrain.getEncoderDistance());
 
-    Robot.log("Gyro Yaw: ", drivetrain.getYaw());
-    Robot.log("Gyro Pitch: ", drivetrain.getPitch());
-    Robot.log("Gyro Roll: ", drivetrain.getRoll());
+    Robot.log("Gyro Yaw: ", Math.floor(drivetrain.getYaw()));
+    Robot.log("Gyro Pitch: ", Math.floor(drivetrain.getPitch()));
+    Robot.log("Gyro Roll: ", Math.floor(drivetrain.getRoll()));
 
-    Robot.log("Raw Yaw", drivetrain.getGyroData()[0]);
-    Robot.log("Raw Pitch", drivetrain.getGyroData()[1]);
-    Robot.log("Raw Roll", drivetrain.getGyroData()[2]);
+    // Robot.log("Raw Yaw", drivetrain.getGyroData()[0]);
+    // Robot.log("Raw Pitch", drivetrain.getGyroData()[1]);
+    // Robot.log("Raw Roll", drivetrain.getGyroData()[2]);
   }
 
   @Override
@@ -92,8 +85,8 @@ public class Robot extends TimedRobot {
       Robot.log("Gyro Calibration Status", "Ready");
       calibrationCommand = null;
     }
-    // climber.reverseBackSolenoid();
-    // climber.reverseFrontSolenoid();
+    climber.reverseBackSolenoid();
+    climber.reverseFrontSolenoid();
 
     Scheduler.getInstance().run();
   }
