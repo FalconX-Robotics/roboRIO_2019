@@ -211,7 +211,6 @@ public class Drivetrain extends Subsystem {
       } else {
         set(LOW);
       }
-
       return currentState;
     }
 
